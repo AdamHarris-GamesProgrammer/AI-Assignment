@@ -366,7 +366,11 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PickupItem.cpp" />
+    <ClCompile Include="Track.cpp" />
+    <ClCompile Include="TrackConverter.cpp" />
+    <ClCompile Include="TrackReader.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>
@@ -375,12 +379,17 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DrawableGameObject.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="structures.h" />
+    <ClInclude Include="Track.h" />
+    <ClInclude Include="TrackConverter.h" />
+    <ClInclude Include="TrackReader.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Waypoint.h" />

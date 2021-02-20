@@ -1,14 +1,15 @@
 #include "Vehicle.h"
 
+#define MAX_SPEED 150
 
 HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice)
 {
 	m_scale = XMFLOAT3(30, 20, 1);
-	setTextureName(L"Resources\\car_blue.dds");
+	setTextureName(L"Resources\\car_red.dds");
 
 	HRESULT hr = DrawableGameObject::initMesh(pd3dDevice);
 
-	m_maxSpeed = 200;
+	setMaxSpeed(MAX_SPEED);
 	m_currentSpeed = m_maxSpeed;
 	setVehiclePosition(Vector2D(0, 0));
 
@@ -43,7 +44,7 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 
-	// set the current poistion for the drawablegameobject
+	// set the current position for the drawable gameobject
 	setPosition(XMFLOAT3((float)m_currentPosition.x, (float)m_currentPosition.y, 0));
 
 	DrawableGameObject::update(deltaTime);

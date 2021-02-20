@@ -85,6 +85,11 @@ float4 PS(PS_INPUT IN) : SV_TARGET
 
 	float4 texColor = txDiffuse.Sample(samLinear, IN.Tex);
 
+	
+    if (texColor.a < 0.1f)
+        discard;
+    
+	
 	float4 finalColor = (ambient + diffuse + specular) * texColor;
 
 	return finalColor;
