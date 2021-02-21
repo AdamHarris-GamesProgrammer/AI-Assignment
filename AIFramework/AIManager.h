@@ -7,6 +7,9 @@
 #include <vector>
 #include "Track.h"
 
+#include <list>
+#include "Node.h"
+
 using namespace std;
 
 class Vehicle;
@@ -36,6 +39,9 @@ private:
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
 	Vehicle*				m_pCar = nullptr;
+
+	Node* _currentNode;
+	std::list<Node*> _currentPath;
 
 
 	Track* mTrack = nullptr;

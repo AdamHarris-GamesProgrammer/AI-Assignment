@@ -13,8 +13,8 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 
     if (x >= WAYPOINT_RESOLUTION || y >= WAYPOINT_RESOLUTION) return nullptr;
 
-    assert(x > 0 && x < WAYPOINT_RESOLUTION);
-    assert(y > 0 && y < WAYPOINT_RESOLUTION);
+    assert(x >= 0 && x < WAYPOINT_RESOLUTION);
+    assert(y >= 0 && y < WAYPOINT_RESOLUTION);
 
     return m_waypoints[y * WAYPOINT_RESOLUTION + x];
 }
@@ -58,7 +58,10 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     mTrack = new Track("Resources/waypoints.txt");
     mTrack->SolvePathToNextPoint(0);
 
-    __debugbreak();
+    _currentPath = mTrack->GetNodePath();
+    _currentNode = _currentPath.front();
+
+    //__debugbreak();
 
     return hr;
 }
@@ -67,13 +70,17 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypoints.size(); i++) {
         m_waypoints[i]->update(fDeltaTime);
-        AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
+        //AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
     }
 
     for (unsigned int i = 0; i < m_pickups.size(); i++) {
         m_pickups[i]->update(fDeltaTime);
         AddItemToDrawList(m_pickups[i]);
     }
+
+    AddItemToDrawList(m_waypoints[0]);
+    AddItemToDrawList(m_waypoints[22]);
+    AddItemToDrawList(m_waypoints[32]);
 
     m_pCar->update(fDeltaTime);
 
@@ -84,7 +91,14 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-    m_pCar->setPositionTo(Vector2D(x, y));
+    XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, 0)->getPosition();
+
+    m_pCar->setPositionTo(Vector2D(wpPosition->x, wpPosition->y));
+
+    if (!_currentPath.empty()) {
+        _currentNode = _currentPath.front();
+        _currentPath.pop_front();
+    }
 }
 
 void AIManager::keyPress(WPARAM param)

@@ -41,7 +41,7 @@ bool TrackReader::LoadMap(std::string filepath)
 		mMap = new char[mMapWidth * mMapHeight];
 
 		//y is used to access the row index 
-		int y = 0;
+		int y = 19;
 		//cycles through each string element in the list of lines
 		for (std::string c : lines) {
 			//cycles through all the characters in the line
@@ -50,7 +50,7 @@ bool TrackReader::LoadMap(std::string filepath)
 				mMap[y * mMapWidth + x] = c[x];
 			}
 			//increments the y variable
-			y++;
+			y--;
 		}
 
 		//Close the file now we have finished reading from it
