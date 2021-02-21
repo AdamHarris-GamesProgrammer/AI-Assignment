@@ -9,6 +9,7 @@
 
 #include <list>
 #include "Node.h"
+#include "Vector2D.h"
 
 using namespace std;
 
@@ -36,14 +37,18 @@ protected:
 	bool	checkForCollisions();
 
 private:
+
+	void NextTarget();
+
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
 	Vehicle*				m_pCar = nullptr;
 
 	Node* _currentNode;
 	std::list<Node*> _currentPath;
-
+	Vector2D _targetPosition;
 
 	Track* mTrack = nullptr;
+	int _index = 0;
 };
 

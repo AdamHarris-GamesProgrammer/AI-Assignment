@@ -15,7 +15,9 @@ public:
 	void setPositionTo(Vector2D positionTo); // a position to move to
 	void setVehiclePosition(Vector2D position); // the current position - this resets positionTo
 
-
+	Vector2D GetVectorPosition() const {
+		return m_currentPosition;
+	}
 protected:
 	float m_maxSpeed;
 	float m_currentSpeed;

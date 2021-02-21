@@ -49,7 +49,7 @@ public:
 	/// </summary>
 	std::list<char> GetDirections();
 
-	void SolvePathToNextPoint(int index);
+	void SolvePathToNextPoint(int current, int next);
 
 private:
 	//Holds the MazeReader object which is used for reading the maze from the file

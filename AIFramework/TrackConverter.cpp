@@ -22,8 +22,8 @@ bool TrackConverter::ProcessMap(char* map)
 		return false;
 	}
 
-	bool hasStartPoint = false;
-	bool hasEndPoint = false;
+	mWaypoints.reserve(14);
+	mWaypoints.resize(14);
 
 	for (int x = 0; x < mWidth; x++) {
 		for (int y = 0; y < mHeight; y++) {
@@ -36,40 +36,60 @@ bool TrackConverter::ProcessMap(char* map)
 
 			//Sets the current node's properties based on what the current character is. 
 			switch (currentCharacter) {
-			case '0':
+			case 'x':
 				//'x' is used to denote impassable nodes such as walls
 				mNodeMap[index].isObstacle = true;
 				break;
-			case '1':
+			case '.':
 				//'.' is used to represent a empty space
 				mNodeMap[index].isObstacle = false;
 				break;
-			case 'A':
+			case '1':
 				//'A' is used to represent the starting point
 				mStartPoint = &mNodeMap[index];
 
-				//if has start point has not been set to true then set it
-				if (!hasStartPoint) hasStartPoint = true;
-				else
-				{
-					//if this code is called again then it means there are two starting points on the map
-					std::cerr << "[ERROR: MazeConverter::ProcessMap(): Current Map has more than one start point" << std::endl;
-					successful = false;
-				}
-
 				break;
-			case '*':
-
-				mWaypoints.push_back(&mNodeMap[index]);
-
-				//if has end point has not been set to true then set it
-				if (!hasEndPoint) hasEndPoint = true;
-				else
-				{
-					//if this code is called again then it means there are two end points on the map 
-					std::cerr << "[ERROR: MazeConverter::ProcessMap(): Current Map has more than one end point" << std::endl;
-					successful = false;
-				}
+			case 'A':
+				mWaypoints[0] = &mNodeMap[index];
+				break;
+			case 'B':
+				mWaypoints[1] = &mNodeMap[index];
+				break;
+			case 'C':
+				mWaypoints[2] = &mNodeMap[index];
+				break;
+			case 'D':
+				mWaypoints[3] = &mNodeMap[index];
+				break;
+			case 'E':
+				mWaypoints[4] = &mNodeMap[index];
+				break;
+			case 'F':
+				mWaypoints[5] = &mNodeMap[index];
+				break;
+			case 'G':
+				mWaypoints[6] = &mNodeMap[index];
+				break;
+			case 'H':
+				mWaypoints[7] = &mNodeMap[index];
+				break;
+			case 'I':
+				mWaypoints[8] = &mNodeMap[index];
+				break;
+			case 'J':
+				mWaypoints[9] = &mNodeMap[index];
+				break;
+			case 'K':
+				mWaypoints[10] = &mNodeMap[index];
+				break;
+			case 'L':
+				mWaypoints[11] = &mNodeMap[index];
+				break;
+			case 'M':
+				mWaypoints[12] = &mNodeMap[index];
+				break;
+			case 'N':
+				mWaypoints[13] = &mNodeMap[index];
 				break;
 			default:
 				//Invalid character has been found
@@ -114,19 +134,6 @@ bool TrackConverter::ProcessMap(char* map)
 				mNodeMap[y * mWidth + x].neighborNodes.push_back(&mNodeMap[(y + 1) * mWidth + (x + 1)]);
 
 		}
-	}
-	//If the maze does not have a start point
-	if (!hasStartPoint) {
-		//Output error
-		successful = false;
-		std::cerr << "ERROR: MazeConverter::ProcessMap(): No start point on map" << std::endl;
-	}
-
-	//If the maze does not have a end point
-	if (!hasEndPoint) {
-		//Output error
-		successful = false;
-		std::cerr << "ERROR: MazeConverter::ProcessMap(): No end point on map" << std::endl;
 	}
 
 	//Returns if there was any errors during the conversion process

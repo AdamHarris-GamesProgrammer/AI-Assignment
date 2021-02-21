@@ -93,9 +93,10 @@ std::list<char> Track::GetDirections()
 	return mDirections;
 }
 
-void Track::SolvePathToNextPoint(int index)
+void Track::SolvePathToNextPoint(int current, int next)
 {
-	mPathfinder = new Pathfinder(mConverter->GetStartPoint(), mConverter->GetWaypoints()[index]);
+	mPathfinder = new Pathfinder(mConverter->GetWaypoints()[current], mConverter->GetWaypoints()[next]);
+
 
 	mPathfinder->FindPath();
 	mPathfinder->ProcessDirections();

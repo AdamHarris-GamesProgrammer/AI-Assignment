@@ -56,12 +56,15 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 
     mTrack = new Track("Resources/waypoints.txt");
-    mTrack->SolvePathToNextPoint(0);
+    mTrack->SolvePathToNextPoint(_index, _index +1);
 
     _currentPath = mTrack->GetNodePath();
     _currentNode = _currentPath.front();
 
-    //__debugbreak();
+    XMFLOAT3* pos = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
+
+    m_pCar->setPositionTo(Vector2D(pos->x, pos->y));
+    _targetPosition = Vector2D(pos->x, pos->y);
 
     return hr;
 }
@@ -70,7 +73,7 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypoints.size(); i++) {
         m_waypoints[i]->update(fDeltaTime);
-        //AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
+        AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
     }
 
     for (unsigned int i = 0; i < m_pickups.size(); i++) {
@@ -78,9 +81,10 @@ void AIManager::update(const float fDeltaTime)
         AddItemToDrawList(m_pickups[i]);
     }
 
-    AddItemToDrawList(m_waypoints[0]);
-    AddItemToDrawList(m_waypoints[22]);
-    AddItemToDrawList(m_waypoints[32]);
+
+    if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
+        NextTarget();
+    }
 
     m_pCar->update(fDeltaTime);
 
@@ -91,14 +95,7 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-    XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, 0)->getPosition();
 
-    m_pCar->setPositionTo(Vector2D(wpPosition->x, wpPosition->y));
-
-    if (!_currentPath.empty()) {
-        _currentNode = _currentPath.front();
-        _currentPath.pop_front();
-    }
 }
 
 void AIManager::keyPress(WPARAM param)
@@ -176,5 +173,31 @@ bool AIManager::checkForCollisions()
     return false;
 }
 
+void AIManager::NextTarget()
+{
+	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
+
+    _targetPosition = Vector2D(wpPosition->x, wpPosition->y);
+	m_pCar->setPositionTo(Vector2D(wpPosition->x, wpPosition->y));
+
+	if (!_currentPath.empty()) {
+		_currentNode = _currentPath.front();
+		_currentPath.pop_front();
+	}
+    else
+    {
+        _index++;
+		if (_index >= 13) {
+			_index = 0;
+		}
+
+
+		mTrack->SolvePathToNextPoint(_index - 1, _index);
+        _currentPath.clear();
+        _currentPath = mTrack->GetNodePath();
+
+    }
+
+}
 
 
