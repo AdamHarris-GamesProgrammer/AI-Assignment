@@ -5,7 +5,6 @@
 #include <directxcolors.h>
 #include <DirectXCollision.h>
 #include <vector>
-#include "Track.h"
 
 using namespace std;
 
@@ -22,8 +21,6 @@ class AIManager
 {
 public:
 
-	Waypoint* GetWaypoint(const unsigned int x, const unsigned int y);
-
 	HRESULT initialise(ID3D11Device* pd3dDevice);
 	void	update(const float fDeltaTime);
 	void	mouseUp(int x, int y);
@@ -37,7 +34,5 @@ private:
 	vecPickups              m_pickups;
 	Vehicle*				m_pCar = nullptr;
 
-
-	Track* mTrack = nullptr;
 };
 

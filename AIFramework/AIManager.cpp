@@ -7,18 +7,6 @@
 #include "main.h"
 
 
-Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
-{
-    if (x < 0 || y < 0) return nullptr;
-
-    if (x >= WAYPOINT_RESOLUTION || y >= WAYPOINT_RESOLUTION) return nullptr;
-
-    assert(x > 0 && x < WAYPOINT_RESOLUTION);
-    assert(y > 0 && y < WAYPOINT_RESOLUTION);
-
-    return m_waypoints[y * WAYPOINT_RESOLUTION + x];
-}
-
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
     // create a pickup item ----------------------------------------------
@@ -54,12 +42,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
         }
     }
 
-
-    mTrack = new Track("Resources/waypoints.txt");
-    mTrack->SolvePathToNextPoint(0);
-
-    __debugbreak();
-
     return hr;
 }
 
@@ -67,7 +49,7 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypoints.size(); i++) {
         m_waypoints[i]->update(fDeltaTime);
-        AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
+        //AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
     }
 
     for (unsigned int i = 0; i < m_pickups.size(); i++) {
@@ -105,9 +87,6 @@ void AIManager::keyPress(WPARAM param)
         {
             break;
         }
-        case VK_SPACE:
-            m_pCar->setPositionTo(Vector2D(0, 0));
-            break;
         // etc
         default:
             break;
@@ -155,7 +134,7 @@ bool AIManager::checkForCollisions()
     // test
     if (boundingSphereCar.Intersects(boundingSpherePU))
     {
-        OutputDebugStringA("Pickup Collision!\n");
+        OutputDebugStringA("Collision!\n");
         return true;
     }
 

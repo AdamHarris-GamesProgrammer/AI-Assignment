@@ -599,8 +599,6 @@ void DrawItem(DrawableGameObject* object)
 
 void AddItemToDrawList(DrawableGameObject* object)
 {
-    if (object == nullptr) return;
-
     g_GameObjects.push_back(object);
 }
 

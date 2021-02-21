@@ -13,18 +13,6 @@
     <ClCompile Include="Background.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Pathfinder.cpp">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="TrackConverter.cpp">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="Track.cpp">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="TrackReader.cpp">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -44,21 +32,6 @@
     <CLInclude Include="resource.h">
       <Filter>Core</Filter>
     </CLInclude>
-    <ClInclude Include="Node.h">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="Pathfinder.h">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="TrackConverter.h">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="Track.h">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="TrackReader.h">
-      <Filter>A%2a Pathfinding</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -95,9 +68,6 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{c721d74b-61d3-4ae0-9d17-be739d070a1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="A%2a Pathfinding">
-      <UniqueIdentifier>{10cefddf-ec78-4ea2-81b5-0b3c3e0916df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

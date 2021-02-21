@@ -1,8 +1,5 @@
 #pragma once
 #include "DrawableGameObject.h"
-
-#define WAYPOINT_RESOLUTION 20
-
 class Waypoint :
     public DrawableGameObject
 {
@@ -12,8 +9,6 @@ public:
     bool isOnTrack() { return m_isOnTrack; }
     void setVisible(const bool visible) { m_visible = visible; }
     bool isVisible() {return m_visible;}
-
-    
 
 private:
     bool m_isOnTrack;
