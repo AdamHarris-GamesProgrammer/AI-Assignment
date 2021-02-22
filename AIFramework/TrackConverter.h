@@ -1,6 +1,7 @@
 #pragma once
 #include "Node.h"
 #include <iostream>
+#include <vector>
 
 class TrackConverter
 {
@@ -35,7 +36,7 @@ public:
 	/// <summary>
 	/// This function returns the entire Node Map
 	/// </summary>
-	Node* GetNodeMap();
+	std::vector<Node*> GetNodeMap();
 
 	/// <summary>
 	/// This function returns a pointer to the start node
@@ -43,6 +44,9 @@ public:
 	Node* GetStartPoint();
 
 	std::vector<Node*> GetWaypoints();
+
+
+	void ClearParentNodes();
 
 private:
 	//The width of the map
@@ -52,7 +56,9 @@ private:
 	int mHeight = 0;
 
 	//The node map in its entirety
-	Node* mNodeMap = nullptr;
+	//Node* mNodeMap = nullptr;
+
+	std::vector<Node*> mNodeMap;
 
 	//The starting point
 	Node* mStartPoint = nullptr;
