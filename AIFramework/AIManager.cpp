@@ -57,6 +57,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
     mTrack = new Track("Resources/waypoints.txt");
 
+    _index = 11;
     NextTarget();
 
     return hr;
@@ -178,12 +179,18 @@ void AIManager::NextTarget()
 {
 	if (_currentPath.empty()) {
 		_index++;
-		if (_index >= 13) {
-			_index = 0;
-		}
+        if (_index >= 13) {
+            _index = 0;
+        }
+            if (_index == 0) {
+                mTrack->SolvePathToNextPoint(13, 0);
+            }
+            else
+            {
+				mTrack->SolvePathToNextPoint(_index - 1, _index);
 
+            }
 
-		mTrack->SolvePathToNextPoint(_index - 1, _index);
 		_currentPath.clear();
 		_currentPath = mTrack->GetNodePath();
 	}
