@@ -56,7 +56,10 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 
     mTrack = new Track("Resources/waypoints.txt");
-    mTrack->SolvePathToNextPoint(_index, _index +1);
+
+    NextTarget();
+
+   /* mTrack->SolvePathToNextPoint(_index, _index +1);
 
     _currentPath = mTrack->GetNodePath();
     _currentNode = _currentPath.front();
@@ -64,7 +67,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     XMFLOAT3* pos = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
 
     m_pCar->setPositionTo(Vector2D(pos->x, pos->y));
-    _targetPosition = Vector2D(pos->x, pos->y);
+    _targetPosition = Vector2D(pos->x, pos->y);*/
 
     return hr;
 }
@@ -73,7 +76,7 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypoints.size(); i++) {
         m_waypoints[i]->update(fDeltaTime);
-        AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
+        //AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the waypoints
     }
 
     for (unsigned int i = 0; i < m_pickups.size(); i++) {
@@ -175,14 +178,9 @@ bool AIManager::checkForCollisions()
 
 void AIManager::NextTarget()
 {
-	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
-
-    _targetPosition = Vector2D(wpPosition->x, wpPosition->y);
-	m_pCar->setPositionTo(Vector2D(wpPosition->x, wpPosition->y));
-
 	if (!_currentPath.empty()) {
-		_currentNode = _currentPath.front();
-		_currentPath.pop_front();
+		_currentNode = _currentPath.back();
+		_currentPath.pop_back();
 	}
     else
     {
@@ -196,8 +194,14 @@ void AIManager::NextTarget()
         _currentPath.clear();
         _currentPath = mTrack->GetNodePath();
 
+		_currentNode = _currentPath.back();
+		_currentPath.pop_back();
     }
 
+	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
+
+	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
+	m_pCar->setPositionTo(_targetPosition);
 }
 
 

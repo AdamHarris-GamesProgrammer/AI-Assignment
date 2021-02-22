@@ -31,11 +31,6 @@ public:
 	void ProcessDirections();
 
 	/// <summary>
-	/// This function returns the directions list to the user
-	/// </summary>
-	std::list<char> GetDirections();
-
-	/// <summary>
 	/// This function returns the node path list to the user
 	/// </summary>
 	std::list<Node*> GetPathOfNodes();
@@ -46,9 +41,6 @@ private:
 
 	//The ending node
 	Node* mEndNode = nullptr;
-
-	//This list contains the directions the player needs to take in the form of NSEW directions
-	std::list<char> mDirectionsToGoal;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
 	std::list<Node*> mPathOfNodes;

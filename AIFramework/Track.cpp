@@ -26,9 +26,6 @@ void Track::Solve()
 		//process the directions
 		mPathfinder->ProcessDirections();
 
-		//set the directions list equal to the pathfinders directions
-		mDirections = mPathfinder->GetDirections();
-
 		//sets the node path list equal to the pathfinders node path list
 		mNodePath = mPathfinder->GetPathOfNodes();
 	}

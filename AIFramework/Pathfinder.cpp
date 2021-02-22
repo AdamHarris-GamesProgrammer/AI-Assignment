@@ -5,9 +5,6 @@ Pathfinder::Pathfinder(Node* startNode, Node* endNode) : mStartNode(startNode), 
 
 Pathfinder::~Pathfinder()
 {
-	//Clears the directions list
-	mDirectionsToGoal.clear();
-
 	//clears the nodes list
 	mPathOfNodes.clear();
 }
@@ -118,23 +115,10 @@ void Pathfinder::ProcessDirections()
 
 
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
-		while (previousNode->parentNode != nullptr)
+		while (previousNode->parentNode != nullptr )
 		{
 			//adds the node to the path of nodes
 			mPathOfNodes.push_back(previousNode);
-
-			//Adds the directions to the direction list
-			//Adds eastern direction
-			if (previousNode->parentNode->xPos < previousNode->xPos) mDirectionsToGoal.push_front('E');
-
-			//Adds western direction
-			else if (previousNode->parentNode->xPos > previousNode->xPos) mDirectionsToGoal.push_front('W');
-
-			//Adds northern direction
-			else if (previousNode->parentNode->yPos > previousNode->yPos) mDirectionsToGoal.push_front('N');
-
-			//Adds southern direction
-			else if (previousNode->parentNode->yPos < previousNode->yPos) mDirectionsToGoal.push_front('S');
 
 			//Sets the previous node to the parent of this node
 			previousNode = previousNode->parentNode;
@@ -144,11 +128,6 @@ void Pathfinder::ProcessDirections()
 
 
 #pragma region Getters
-std::list<char> Pathfinder::GetDirections()
-{
-	return mDirectionsToGoal;
-}
-
 std::list<Node*> Pathfinder::GetPathOfNodes()
 {
 	return mPathOfNodes;
