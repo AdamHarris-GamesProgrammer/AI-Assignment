@@ -5,7 +5,7 @@
 #include "Waypoint.h"
 
 #include "main.h"
-
+#include "Imgui/imgui.h"
 
 Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 {
@@ -83,6 +83,10 @@ void AIManager::update(const float fDeltaTime)
         m_pickups[i]->update(fDeltaTime);
         AddItemToDrawList(m_pickups[i]);
     }
+
+    ImGui::Begin("Test");
+    ImGui::Text("test");
+    ImGui::End();
 
 
     if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {

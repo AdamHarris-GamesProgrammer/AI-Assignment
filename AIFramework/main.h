@@ -12,7 +12,7 @@
 
 #include "DrawableGameObject.h"
 #include "structures.h"
-
+#include "ImGUIManager.h"
 
 void AddItemToDrawList(DrawableGameObject* object);
 

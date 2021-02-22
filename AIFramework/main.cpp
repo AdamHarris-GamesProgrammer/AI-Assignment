@@ -79,6 +79,7 @@ vecDrawables			g_GameObjects;
 Background              g_background;
 AIManager               g_AIManager;
 
+ImGUIManager _imguiManager;
 
 
 
@@ -411,6 +412,8 @@ HRESULT InitDevice()
     // initialise the AI / SceneManager
     g_AIManager.initialise(g_pd3dDevice);
 
+    _imguiManager = ImGUIManager(g_pd3dDevice, g_pImmediateContext, g_hWnd);
+
     return S_OK;
 }
 
@@ -533,10 +536,17 @@ void CleanupDevice()
 //--------------------------------------------------------------------------------------
 // Called every time the application receives a message
 //--------------------------------------------------------------------------------------
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
     PAINTSTRUCT ps;
     HDC hdc;
+
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
+
 
     switch( message )
     {
@@ -614,6 +624,9 @@ void Update(const float deltaTime)
 //--------------------------------------------------------------------------------------
 void Render()
 {
+    _imguiManager.BeginFrame();
+
+
     // Update our time
     static float deltaTime = 0.0f;
     static ULONGLONG timeStart = 0;
@@ -645,6 +658,8 @@ void Render()
 	}
 
     g_GameObjects.clear(); // the list of items to draw is cleared each frame
+
+    _imguiManager.EndFrame();
 
     // Present our back buffer to our front buffer
     g_pSwapChain->Present( 0, 0 );
