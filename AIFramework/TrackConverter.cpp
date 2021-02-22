@@ -7,7 +7,8 @@ TrackConverter::TrackConverter(int width, int height) : mWidth(width), mHeight(h
 TrackConverter::~TrackConverter()
 {
 	//Deletes the node map for this maze
-	mNodeMap.clear();
+	delete[] mNodeMap;
+	mNodeMap = nullptr;
 	//No need to delete mStartNode and mEndNode here as they are contained in the mNodeMap
 }
 
@@ -15,18 +16,20 @@ bool TrackConverter::ProcessMap(char* map)
 {
 	bool successful = true;
 
+	mNodeMap = new Node[mWidth * mHeight];
+	if (!mNodeMap) {
+		std::cerr << "[ERROR: MazeConverter::ProcessMap(): Failed to allocate memory to map" << std::endl;
+		return false;
+	}
+
 	mWaypoints.reserve(14);
 	mWaypoints.resize(14);
-
-	mNodeMap.resize(mWidth * mHeight);
 
 	for (int x = 0; x < mWidth; x++) {
 		for (int y = 0; y < mHeight; y++) {
 
 			//This is the current index we want to get the character from
 			int index = y * mWidth + x;
-
-			mNodeMap[index] = new Node();
 
 			//Gets the current character
 			char currentCharacter = map[index];
@@ -35,58 +38,58 @@ bool TrackConverter::ProcessMap(char* map)
 			switch (currentCharacter) {
 			case 'x':
 				//'x' is used to denote impassable nodes such as walls
-				mNodeMap[index]->isObstacle = true;
+				mNodeMap[index].isObstacle = true;
 				break;
 			case '.':
 				//'.' is used to represent a empty space
-				mNodeMap[index]->isObstacle = false;
+				mNodeMap[index].isObstacle = false;
 				break;
 			case '1':
 				//'A' is used to represent the starting point
-				mStartPoint = mNodeMap[index];
+				mStartPoint = &mNodeMap[index];
 
 				break;
 			case 'A':
-				mWaypoints[0] = mNodeMap[index];
+				mWaypoints[0] = &mNodeMap[index];
 				break;
 			case 'B':
-				mWaypoints[1] = mNodeMap[index];
+				mWaypoints[1] = &mNodeMap[index];
 				break;
 			case 'C':
-				mWaypoints[2] = mNodeMap[index];
+				mWaypoints[2] = &mNodeMap[index];
 				break;
 			case 'D':
-				mWaypoints[3] = mNodeMap[index];
+				mWaypoints[3] = &mNodeMap[index];
 				break;
 			case 'E':
-				mWaypoints[4] = mNodeMap[index];
+				mWaypoints[4] = &mNodeMap[index];
 				break;
 			case 'F':
-				mWaypoints[5] = mNodeMap[index];
+				mWaypoints[5] = &mNodeMap[index];
 				break;
 			case 'G':
-				mWaypoints[6] = mNodeMap[index];
+				mWaypoints[6] = &mNodeMap[index];
 				break;
 			case 'H':
-				mWaypoints[7] = mNodeMap[index];
+				mWaypoints[7] = &mNodeMap[index];
 				break;
 			case 'I':
-				mWaypoints[8] = mNodeMap[index];
+				mWaypoints[8] = &mNodeMap[index];
 				break;
 			case 'J':
-				mWaypoints[9] = mNodeMap[index];
+				mWaypoints[9] = &mNodeMap[index];
 				break;
 			case 'K':
-				mWaypoints[10] = mNodeMap[index];
+				mWaypoints[10] = &mNodeMap[index];
 				break;
 			case 'L':
-				mWaypoints[11] = mNodeMap[index];
+				mWaypoints[11] = &mNodeMap[index];
 				break;
 			case 'M':
-				mWaypoints[12] = mNodeMap[index];
+				mWaypoints[12] = &mNodeMap[index];
 				break;
 			case 'N':
-				mWaypoints[13] = mNodeMap[index];
+				mWaypoints[13] = &mNodeMap[index];
 				break;
 			default:
 				//Invalid character has been found
@@ -95,40 +98,40 @@ bool TrackConverter::ProcessMap(char* map)
 			}
 
 			//Initializes all default values for each node
-			mNodeMap[index]->xPos = x;
-			mNodeMap[index]->yPos = y;
+			mNodeMap[index].xPos = x;
+			mNodeMap[index].yPos = y;
 
 
 			//Sets neighbor nodes
 			//if the node is not on the left most side then add the left hand node to the nodes neighbors
 			if (x > 0) {
-				mNodeMap[index]->neighborNodes.push_back(mNodeMap[y * mWidth + (x - 1)]);
+				mNodeMap[index].neighborNodes.push_back(&mNodeMap[y * mWidth + (x - 1)]);
 			}
 
 			//if the node is not on the right most side then add the right hand node to the nodes neighbors
 			if (x < mWidth - 1) {
-				mNodeMap[index]->neighborNodes.push_back(mNodeMap[y * mWidth + (x + 1)]);
+				mNodeMap[index].neighborNodes.push_back(&mNodeMap[y * mWidth + (x + 1)]);
 			}
 
 			//if the node is not on top of the map then add the node above to the nodes neighbors
 			if (y > 0) {
-				mNodeMap[index]->neighborNodes.push_back(mNodeMap[(y - 1) * mWidth + x]);
+				mNodeMap[index].neighborNodes.push_back(&mNodeMap[(y - 1) * mWidth + x]);
 			}
 
 			//if the node is not at the bottom of the map then add the node below it to the nodes neighbors
 			if (y < mHeight - 1) {
-				mNodeMap[index]->neighborNodes.push_back(mNodeMap[(y + 1) * mWidth + x]);
+				mNodeMap[index].neighborNodes.push_back(&mNodeMap[(y + 1) * mWidth + x]);
 			}
 
 			//Diagonal neighbors
 			if (y > 0 && x > 0)
-				mNodeMap[y * mWidth + x]->neighborNodes.push_back(mNodeMap[(y - 1) * mWidth + (x - 1)]);
+				mNodeMap[y * mWidth + x].neighborNodes.push_back(&mNodeMap[(y - 1) * mWidth + (x - 1)]);
 			if (y < mHeight - 1 && x>0)
-				mNodeMap[y * mWidth + x]->neighborNodes.push_back(mNodeMap[(y + 1) * mWidth + (x - 1)]);
+				mNodeMap[y * mWidth + x].neighborNodes.push_back(&mNodeMap[(y + 1) * mWidth + (x - 1)]);
 			if (y > 0 && x < mWidth - 1)
-				mNodeMap[y * mWidth + x]->neighborNodes.push_back(mNodeMap[(y - 1) * mWidth + (x + 1)]);
+				mNodeMap[y * mWidth + x].neighborNodes.push_back(&mNodeMap[(y - 1) * mWidth + (x + 1)]);
 			if (y < mWidth - 1 && x < mWidth - 1)
-				mNodeMap[y * mWidth + x]->neighborNodes.push_back(mNodeMap[(y + 1) * mWidth + (x + 1)]);
+				mNodeMap[y * mWidth + x].neighborNodes.push_back(&mNodeMap[(y + 1) * mWidth + (x + 1)]);
 
 		}
 	}
@@ -147,7 +150,7 @@ int TrackConverter::GetWidth()
 	return mWidth;
 }
 
-std::vector<Node*> TrackConverter::GetNodeMap()
+Node* TrackConverter::GetNodeMap()
 {
 	return mNodeMap;
 }
@@ -160,23 +163,4 @@ Node* TrackConverter::GetStartPoint()
 std::vector<Node*> TrackConverter::GetWaypoints()
 {
 	return mWaypoints;
-}
-
-void TrackConverter::ClearParentNodes()
-{
-	//for (int x = 0; x < mWidth; ++x) {
-	//	for (int y = 0; y < mHeight; ++y) {
-	//		int index = y * mWidth + x;
-
-	//		if (index > (mWidth * mHeight) - 1) return;
-
-	//		Node* current = &mNodeMap[index];
-	//		current->parentNode = 0;
-	//	}
-	//}
-
-	for (int i = 0; i < mWidth * mHeight; i++) {
-		mNodeMap[i]->parentNode = 0;
-	}
-
 }
