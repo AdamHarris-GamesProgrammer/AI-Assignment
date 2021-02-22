@@ -59,16 +59,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
     NextTarget();
 
-   /* mTrack->SolvePathToNextPoint(_index, _index +1);
-
-    _currentPath = mTrack->GetNodePath();
-    _currentNode = _currentPath.front();
-
-    XMFLOAT3* pos = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
-
-    m_pCar->setPositionTo(Vector2D(pos->x, pos->y));
-    _targetPosition = Vector2D(pos->x, pos->y);*/
-
     return hr;
 }
 
@@ -84,9 +74,13 @@ void AIManager::update(const float fDeltaTime)
         AddItemToDrawList(m_pickups[i]);
     }
 
-    ImGui::Begin("Test");
-    ImGui::Text("test");
+    ImGui::Begin("Car Information");
+    ImGui::Text("Car Details");
+    ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
+    ImGui::Text("Target Position: %f, %f", _targetPosition.x, _targetPosition.y);
     ImGui::End();
+
+
 
 
     if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
@@ -182,30 +176,25 @@ bool AIManager::checkForCollisions()
 
 void AIManager::NextTarget()
 {
-	if (!_currentPath.empty()) {
-		_currentNode = _currentPath.back();
-		_currentPath.pop_back();
-	}
-    else
-    {
-        _index++;
+	if (_currentPath.empty()) {
+		_index++;
 		if (_index >= 13) {
 			_index = 0;
 		}
 
 
 		mTrack->SolvePathToNextPoint(_index - 1, _index);
-        _currentPath.clear();
-        _currentPath = mTrack->GetNodePath();
+		_currentPath.clear();
+		_currentPath = mTrack->GetNodePath();
+	}
 
-		_currentNode = _currentPath.back();
-		_currentPath.pop_back();
-    }
+	_currentNode = _currentPath.back();
+	_currentPath.pop_back();
+
 
 	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
 
 	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
+
 	m_pCar->setPositionTo(_targetPosition);
 }
-
-
