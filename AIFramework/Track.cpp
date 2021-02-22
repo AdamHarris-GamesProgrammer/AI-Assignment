@@ -92,6 +92,7 @@ std::list<char> Track::GetDirections()
 
 void Track::SolvePathToNextPoint(int current, int next)
 {
+	mConverter->SetAllNodesToUnvisited();
 	mPathfinder = new Pathfinder(mConverter->GetWaypoints()[current], mConverter->GetWaypoints()[next]);
 
 

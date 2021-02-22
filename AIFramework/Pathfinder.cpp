@@ -47,6 +47,10 @@ bool Pathfinder::FindPath()
 
 	bool pathFound = false;
 
+	if (mStartNode->xPos == 18 && mStartNode->yPos == 2) {
+		//__debugbreak();
+	}
+
 	while (!untestedNodes.empty())
 	{
 		/*Sorts the list by order of distance in ascending order.
@@ -72,6 +76,8 @@ bool Pathfinder::FindPath()
 		//sets the current node to the front of the list
 		currentNode = untestedNodes.front();
 		currentNode->isVisited = true; //Nodes only need to be calculated once
+
+
 
 		//Explore this node's neighbors
 		for (auto nodeNeighbor : currentNode->neighborNodes) {
@@ -113,16 +119,19 @@ void Pathfinder::ProcessDirections()
 		//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node* previousNode = mEndNode;
 
+		if (previousNode != nullptr) {
+			//keep looping until the previousNode no longer has a parent this can only be the starting node
+			while (previousNode->parentNode != mStartNode)
+			{
+				//adds the node to the path of nodes
+				mPathOfNodes.push_back(previousNode);
 
-		//keep looping until the previousNode no longer has a parent this can only be the starting node
-		while (previousNode->parentNode != nullptr )
-		{
-			//adds the node to the path of nodes
-			mPathOfNodes.push_back(previousNode);
-
-			//Sets the previous node to the parent of this node
-			previousNode = previousNode->parentNode;
+				//Sets the previous node to the parent of this node
+				previousNode = previousNode->parentNode;
+			}
 		}
+
+
 	}
 }
 

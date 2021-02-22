@@ -44,6 +44,12 @@ public:
 
 	std::vector<Node*> GetWaypoints();
 
+	void SetAllNodesToUnvisited() {
+		for (int i = 0; i < mWidth * mHeight; i++) {
+			mNodeMap[i].isVisited = false;
+		}
+	}
+
 private:
 	//The width of the map
 	int mWidth = 0;
