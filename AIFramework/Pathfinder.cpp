@@ -11,6 +11,8 @@ Pathfinder::~Pathfinder()
 
 bool Pathfinder::FindPath()
 {
+	mPath.clear();
+
 	/// <summary>
 	/// Lambda expression to get the distance between two nodes on the map. 
 	/// </summary>
@@ -33,23 +35,31 @@ bool Pathfinder::FindPath()
 	};
 
 	//Sets the current node to the starting node
-	Node* currentNode = mStartNode;
+	//Node* currentNode = mStartNode;
 
 	//sets the local goal to 0 as this is needed to compare the viability of the path
-	mStartNode->localGoal = 0.0f;
+	//mStartNode->localGoal = 0.0f;
 	//sets the heuristic value between this tile and the end tile
-	mStartNode->globalGoal = heuristic(currentNode, mEndNode);
+	//mStartNode->globalGoal = heuristic(currentNode, mEndNode);
 
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::list<Node*> untestedNodes;
 	//Adds the starting node to the untested node list
-	untestedNodes.push_back(mStartNode);
+	//untestedNodes.push_back(mStartNode);
+
+	Node* currentNode = new Node();
+	currentNode->localGoal = 0.0f;
+	currentNode->globalGoal = heuristic(currentNode, mEndNode);
+	currentNode->isObstacle = mStartNode->isObstacle;
+	currentNode->isVisited = mStartNode->isVisited;
+	currentNode->neighborNodes = mStartNode->neighborNodes;
+	currentNode->xPos = mStartNode->xPos;
+	currentNode->yPos = mStartNode->yPos;
+
+	untestedNodes.push_back(currentNode);
+
 
 	bool pathFound = false;
-
-	if (mStartNode->xPos == 18 && mStartNode->yPos == 2) {
-		//__debugbreak();
-	}
 
 	while (!untestedNodes.empty())
 	{
@@ -95,6 +105,7 @@ bool Pathfinder::FindPath()
 			if (potentiallyLowerGoal < nodeNeighbor->localGoal) {
 				//Sets the parent node to the new closest node
 				nodeNeighbor->parentNode = currentNode;
+
 
 				//sets the local goal to the new lowest goal
 				nodeNeighbor->localGoal = potentiallyLowerGoal;

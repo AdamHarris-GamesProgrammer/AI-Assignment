@@ -45,5 +45,7 @@ private:
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
 	std::list<Node*> mPathOfNodes;
+
+	std::list<Node*> mPath;
 };
 
