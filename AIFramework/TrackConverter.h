@@ -37,6 +37,7 @@ public:
 	/// </summary>
 	Node* GetNodeMap();
 
+
 	/// <summary>
 	/// This function returns a pointer to the start node
 	/// </summary>
@@ -63,8 +64,7 @@ private:
 	//The starting point
 	Node* mStartPoint = nullptr;
 
-	//The ending point
-	//Node* mEndPoint = nullptr;
+	
 
 	std::vector<Node*> mWaypoints;
 };

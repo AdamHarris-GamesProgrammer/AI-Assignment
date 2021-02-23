@@ -1,6 +1,8 @@
 #include "Track.h"
 
-Track::Track(std::string filepath) : mFilePath(filepath) { Initialize(); }
+Track::Track(std::string filepath) : mFilePath(filepath) { 
+	Initialize(); 
+}
 
 Track::~Track()
 {
@@ -29,28 +31,6 @@ void Track::Solve()
 		//sets the node path list equal to the pathfinders node path list
 		mNodePath = mPathfinder->GetPathOfNodes();
 	}
-	else
-	{
-		//Output a error if a path could not be found
-		std::cerr << "ERROR: Maze::Solve(): No Path for maze " << mFilePath << " could be found" << std::endl;
-	}
-}
-
-void Track::PrintDirections()
-{
-	//if the directions are empty then return
-	if (mDirections.empty()) return;
-
-	//Output the directions
-	std::cout << "Solution for Maze: " << mFilePath << " is ";
-
-	//cycles through each character in the directions list
-	for (char direction : mDirections) {
-		//output the current direction
-		std::cout << direction;
-	}
-	//outputs an endline for formatting purposes
-	std::cout << std::endl;
 }
 
 bool Track::Initialize()
@@ -71,10 +51,9 @@ bool Track::Initialize()
 	if (!mConverter->ProcessMap(mReader->GetMapArray())) {
 		//Outputs error if map cannot be converted for any reason
 		std::cerr << "ERROR: Maze::Initialize(): Map Converter for " << mFilePath << " failed" << std::endl;
-		return false;
 	}
 	//Creates the pathfinder object 
-	//mPathfinder = new Pathfinder(mConverter->GetStartPoint(), mConverter->GetEndPoint());
+
 
 	//Returns true as if the program gets to here there has been no problem initializing the map
 	return true;
@@ -94,7 +73,6 @@ void Track::SolvePathToNextPoint(int current, int next)
 {
 	mConverter->SetAllNodesToUnvisited();
 	mPathfinder = new Pathfinder(mConverter->GetWaypoints()[current], mConverter->GetWaypoints()[next]);
-
 
 	mPathfinder->FindPath();
 	mPathfinder->ProcessDirections();

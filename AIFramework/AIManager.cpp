@@ -57,7 +57,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
     mTrack = new Track("Resources/waypoints.txt");
 
-    _index = 11;
+    m_pCar->setMaxSpeed(250.0f);
+
+    //_index = 11;
     NextTarget();
 
     return hr;
@@ -188,7 +190,6 @@ void AIManager::NextTarget()
             else
             {
 				mTrack->SolvePathToNextPoint(_index - 1, _index);
-
             }
 
 		_currentPath.clear();

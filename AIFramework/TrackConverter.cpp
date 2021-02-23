@@ -164,3 +164,4 @@ std::vector<Node*> TrackConverter::GetWaypoints()
 {
 	return mWaypoints;
 }
+

@@ -2,6 +2,7 @@
 #include "Node.h"
 #include "List"
 #include <iostream>
+#include <algorithm>
 
 class Pathfinder
 {

@@ -28,10 +28,7 @@ public:
 	/// </summary>
 	void Solve();
 
-	/// <summary>
-	/// Prints the directions to the user
-	/// </summary>
-	void PrintDirections();
+
 
 	/// <summary>
 	/// Initializes the reader and converter with the map provided
@@ -69,5 +66,8 @@ private:
 
 	//This list holds the Node path to the end point in pure Node form
 	std::list<Node*> mNodePath;
+
+	Node* mCopyOfMap;
+	std::vector <Node*> mCopyOfWaypoints;
 };
 

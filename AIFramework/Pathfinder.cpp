@@ -115,23 +115,26 @@ bool Pathfinder::FindPath()
 
 void Pathfinder::ProcessDirections()
 {
+	mPathOfNodes.clear();
+
 	if (mEndNode != nullptr) {
 		//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node* previousNode = mEndNode;
 
 		if (previousNode != nullptr) {
 			//keep looping until the previousNode no longer has a parent this can only be the starting node
-			while (previousNode->parentNode != mStartNode)
+			while (previousNode != nullptr && previousNode->parentNode != mStartNode)
 			{
 				//adds the node to the path of nodes
-				mPathOfNodes.push_back(previousNode);
+				auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
+				if (it == mPathOfNodes.end()) {
+					mPathOfNodes.push_back(previousNode);
+				}
 
 				//Sets the previous node to the parent of this node
 				previousNode = previousNode->parentNode;
 			}
 		}
-
-
 	}
 }
 
