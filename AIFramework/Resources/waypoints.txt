@@ -2,7 +2,7 @@ xx...xxxxxxxxxxxxxxx
 x.N....xxxxxxxxxxxxx
 x.........x.xxxxxxxx
 ..xxxx.......xxxxxxx
-.xxxxxxx...1...xxxxx
+.xxxxxxx...O...xxxxx
 .xx...xxxxx2......xx
 .xx.H...xxxxx......x
 M.x......xxxxxxx....

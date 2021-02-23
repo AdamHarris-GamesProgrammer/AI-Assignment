@@ -22,8 +22,8 @@ bool TrackConverter::ProcessMap(char* map)
 		return false;
 	}
 
-	mWaypoints.reserve(14);
-	mWaypoints.resize(14);
+	mWaypoints.reserve(15);
+	mWaypoints.resize(15);
 
 	for (int x = 0; x < mWidth; x++) {
 		for (int y = 0; y < mHeight; y++) {
@@ -90,6 +90,9 @@ bool TrackConverter::ProcessMap(char* map)
 				break;
 			case 'N':
 				mWaypoints[13] = &mNodeMap[index];
+				break;
+			case 'O':
+				mWaypoints[14] = &mNodeMap[index];
 				break;
 			default:
 				//Invalid character has been found
@@ -163,5 +166,11 @@ Node* TrackConverter::GetStartPoint()
 std::vector<Node*> TrackConverter::GetWaypoints()
 {
 	return mWaypoints;
+}
+
+void TrackConverter::DestroyMap()
+{
+	delete[] mNodeMap;
+	mNodeMap = nullptr;
 }
 

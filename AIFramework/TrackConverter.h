@@ -51,6 +51,7 @@ public:
 		}
 	}
 
+	void DestroyMap();
 private:
 	//The width of the map
 	int mWidth = 0;

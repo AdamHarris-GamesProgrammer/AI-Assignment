@@ -48,6 +48,8 @@ public:
 
 	void SolvePathToNextPoint(int current, int next);
 
+	void ResetMap();
+
 private:
 	//Holds the MazeReader object which is used for reading the maze from the file
 	TrackReader* mReader = nullptr;
@@ -67,7 +69,5 @@ private:
 	//This list holds the Node path to the end point in pure Node form
 	std::list<Node*> mNodePath;
 
-	Node* mCopyOfMap;
-	std::vector <Node*> mCopyOfWaypoints;
 };
 
