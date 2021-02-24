@@ -28,13 +28,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	m_pickups.push_back(pPickup);
 
 
-	// create the vehicle ------------------------------------------------
-	float xPos = 0;
-	float yPos = 0;
-
 	m_pCar = new Vehicle();
 	hr = m_pCar->initMesh(pd3dDevice);
-	m_pCar->setPosition(XMFLOAT3(xPos, yPos, 0));
 	if (FAILED(hr))
 		return hr;
 
@@ -55,12 +50,16 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	}
 
 
+
 	mTrack = new Track("Resources/waypoints.txt");
 
 	m_pCar->setMaxSpeed(450.0f);
 
 	//_index = 11;
 	NextTarget();
+
+	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
+	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
 
 	return hr;
 }
@@ -69,7 +68,7 @@ void AIManager::update(const float fDeltaTime)
 {
 	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
 		m_waypoints[i]->update(fDeltaTime);
-		AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
+		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
 	for (unsigned int i = 0; i < m_pickups.size(); i++) {
@@ -82,13 +81,12 @@ void AIManager::update(const float fDeltaTime)
 	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
 	ImGui::Text("Target Position: %f, %f", _targetPosition.x, _targetPosition.y);
 	ImGui::Text("Index: %i", _index);
+	ImGui::Text("Tile Position: %i, %i", _currentNode->xPos, _currentNode->yPos);
+
 	ImGui::End();
 
-
-
-
 	if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
-		NextTarget();
+			NextTarget();
 	}
 
 	m_pCar->update(fDeltaTime);
@@ -100,7 +98,21 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
+	_isFollowingTrack = false;
 
+	mTrack->SolvePathToNextPoint(Vector2D(_currentNode->xPos, _currentNode->yPos), Vector2D(11, 15));
+
+	_currentPath = mTrack->GetNodePath();
+
+	_currentNode = _currentPath.back();
+	_currentPath.pop_back();
+
+
+	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
+
+	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
+
+	m_pCar->setPositionTo(_targetPosition);
 }
 
 void AIManager::keyPress(WPARAM param)
@@ -174,17 +186,29 @@ bool AIManager::checkForCollisions()
 	return false;
 }
 
+Vector2D AIManager::ConvertPosition(Vector2D pos)
+{
+	Vector2D val;
+	val.x = (int)pos.x / 51.2;
+	val.y = (int)pos.y / 38.4;
+	return val;
+}
+
 void AIManager::NextTarget()
 {
 	if (_currentPath.empty()) {
+
+		if (!_isFollowingTrack) {
+			_isFollowingTrack = true;
+		}
+
 		_index++;
-		if (_index >= 14) {
-			//mTrack->ResetMap();
+		if (_index >= 15) {
 			_index = 0;
 		}
 
 		if (_index == 0) {
-			
+
 			mTrack->SolvePathToNextPoint(14, 0);
 		}
 		else

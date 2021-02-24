@@ -8,6 +8,7 @@
 #include "resource.h"
 #include <iostream>
 #include "structures.h"
+#include "Vector2D.h"
 
 using namespace DirectX;
 
@@ -27,6 +28,10 @@ public:
 	void								setPosition(XMFLOAT3 position);
 	XMFLOAT3*							getPosition() { return &m_position; }
 	XMFLOAT3*							getDirection() { return &m_direction; }
+
+	Vector2D GetVectorPosition() const {
+		return Vector2D(m_position.x, m_position.y);
+	}
 
 protected:
 	void								setDirection(XMFLOAT3 direction); 

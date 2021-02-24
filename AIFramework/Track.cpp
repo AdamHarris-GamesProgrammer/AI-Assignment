@@ -79,6 +79,25 @@ void Track::SolvePathToNextPoint(int current, int next)
 	mNodePath = mPathfinder->GetPathOfNodes();
 }
 
+void Track::SolvePathToNextPoint(Vector2D a, Vector2D b)
+{
+	ResetMap();
+
+	int aX = a.x;
+	int aY = a.y;
+	int bX = b.x;
+	int bY = b.y;
+
+	Node* nodeA = &mConverter->GetNodeMap()[aY * mConverter->GetHeight() + aX];
+	Node* nodeB = &mConverter->GetNodeMap()[bY * mConverter->GetHeight() + bX];
+
+	mPathfinder = new Pathfinder(nodeA, nodeB);
+	mPathfinder->FindPath();
+	mPathfinder->ProcessDirections();
+	mNodePath = mPathfinder->GetPathOfNodes();
+
+}
+
 void Track::ResetMap()
 {
 	delete mPathfinder;

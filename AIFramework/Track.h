@@ -8,6 +8,8 @@
 #include <string>
 #include <iostream>
 
+#include "Vector2D.h"
+
 class Track
 {
 public:
@@ -47,6 +49,7 @@ public:
 	std::list<char> GetDirections();
 
 	void SolvePathToNextPoint(int current, int next);
+	void SolvePathToNextPoint(Vector2D a, Vector2D b);
 
 	void ResetMap();
 

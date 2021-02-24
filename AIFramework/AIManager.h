@@ -37,8 +37,10 @@ protected:
 	bool	checkForCollisions();
 
 private:
-
+	Vector2D ConvertPosition(Vector2D pos);
 	void NextTarget();
+
+	bool _isFollowingTrack = true;
 
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
