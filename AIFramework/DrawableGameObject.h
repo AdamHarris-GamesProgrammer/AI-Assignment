@@ -9,6 +9,8 @@
 #include <iostream>
 #include "structures.h"
 #include "Vector2D.h"
+#include <algorithm>
+#include <cstdint>
 
 using namespace DirectX;
 
@@ -45,9 +47,13 @@ protected:
 	XMFLOAT3							multiplyFloat3(XMFLOAT3& f1, const float scalar);
 	XMFLOAT3							divideFloat3(XMFLOAT3& f1, const float scalar);
 
+	float Lerp(float v0, float v1, float t);
+
 protected: // protected variables
 	XMFLOAT3							m_scale;
 	float								m_radianRotation;
+	float m_targetRotation;
+	float m_rotationSpeed = 7.15f;
 
 private: // private variables
 	

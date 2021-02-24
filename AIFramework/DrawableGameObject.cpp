@@ -152,7 +152,11 @@ void DrawableGameObject::setPosition(XMFLOAT3 position)
 
 void DrawableGameObject::update(float deltaTime)
 {
-	// Cube:  Rotate around origin
+	if (m_radianRotation != m_targetRotation) {
+		m_radianRotation = Lerp(m_radianRotation, m_targetRotation, m_rotationSpeed * deltaTime);
+	}
+
+
 	XMMATRIX mRotate = DirectX::XMMatrixRotationZ(m_radianRotation);
 
 	XMMATRIX mTranslate = DirectX::XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
@@ -200,6 +204,11 @@ XMFLOAT3 DrawableGameObject::divideFloat3(XMFLOAT3& f1, const float scalar)
 	out.z = f1.z / scalar;
 
 	return out;
+}
+
+float DrawableGameObject::Lerp(float v0, float v1, float t)
+{
+	return v0 + t * (v1 - v0);
 }
 
 float DrawableGameObject::magnitudeFloat3(XMFLOAT3& f1)

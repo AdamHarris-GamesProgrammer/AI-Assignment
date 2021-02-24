@@ -66,6 +66,32 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 void AIManager::update(const float fDeltaTime)
 {
+	if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
+			NextTarget();
+	}
+
+	m_pCar->update(fDeltaTime);
+
+	checkForCollisions();
+	Render(fDeltaTime);
+
+}
+
+void AIManager::DrawUI()
+{
+	ImGui::Begin("Car Information");
+	ImGui::Text("Car Details");
+	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
+	ImGui::Text("Target Position: %f, %f", _targetPosition.x, _targetPosition.y);
+	ImGui::Text("Index: %i", _index);
+	ImGui::Text("Tile Position: %i, %i", _currentNode->xPos, _currentNode->yPos);
+	ImGui::End();
+}
+
+void AIManager::Render(const float fDeltaTime)
+{
+	DrawUI();
+
 	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
 		m_waypoints[i]->update(fDeltaTime);
 		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
@@ -75,23 +101,6 @@ void AIManager::update(const float fDeltaTime)
 		m_pickups[i]->update(fDeltaTime);
 		AddItemToDrawList(m_pickups[i]);
 	}
-
-	ImGui::Begin("Car Information");
-	ImGui::Text("Car Details");
-	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
-	ImGui::Text("Target Position: %f, %f", _targetPosition.x, _targetPosition.y);
-	ImGui::Text("Index: %i", _index);
-	ImGui::Text("Tile Position: %i, %i", _currentNode->xPos, _currentNode->yPos);
-
-	ImGui::End();
-
-	if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
-			NextTarget();
-	}
-
-	m_pCar->update(fDeltaTime);
-
-	checkForCollisions();
 
 	AddItemToDrawList(m_pCar);
 }
@@ -197,12 +206,13 @@ Vector2D AIManager::ConvertPosition(Vector2D pos)
 void AIManager::NextTarget()
 {
 	if (_currentPath.empty()) {
+		_index++;
 
 		if (!_isFollowingTrack) {
 			_isFollowingTrack = true;
+			_index = 0;
 		}
 
-		_index++;
 		if (_index >= 15) {
 			_index = 0;
 		}

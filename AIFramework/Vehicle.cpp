@@ -1,4 +1,5 @@
 #include "Vehicle.h"
+#include "Imgui/imgui.h"
 
 #define MAX_SPEED 150
 
@@ -36,11 +37,17 @@ void Vehicle::update(const float deltaTime)
 		m_currentPosition += vecTo;
 	}
 
+	ImGui::Begin("Car Information");
+	ImGui::Text("Radian Rotation: %f", m_radianRotation);
+	ImGui::Text("Target Rotation: %f", m_targetRotation);
+	ImGui::End();
+
+
 	// rotate the object based on its last & current position
 	Vector2D diff = m_currentPosition - m_lastPosition;
 	if (diff.Length() > 0) { // if zero then don't update rotation
 		diff.Normalize();
-		m_radianRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
+		m_targetRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
 	}
 	m_lastPosition = m_currentPosition;
 
