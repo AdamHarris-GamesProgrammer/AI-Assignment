@@ -414,6 +414,7 @@
   <ItemGroup>
     <Image Include="Resources\blue.dds" />
     <Image Include="Resources\car_blue.dds" />
+    <Image Include="Resources\car_red.dds" />
     <Image Include="Resources\floor.dds" />
     <Image Include="Resources\green.dds" />
     <Image Include="Resources\pickup.dds" />

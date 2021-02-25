@@ -29,6 +29,9 @@ public:
 	Waypoint* GetWaypoint(const unsigned int x, const unsigned int y);
 
 	HRESULT initialise(ID3D11Device* pd3dDevice);
+
+	void InitializeWaypoints(ID3D11Device* pd3dDevice);
+
 	void	update(const float fDeltaTime);
 
 	void DrawUI();

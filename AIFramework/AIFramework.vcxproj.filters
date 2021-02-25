@@ -132,6 +132,9 @@
     <Image Include="Resources\yellow.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Resources\car_red.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

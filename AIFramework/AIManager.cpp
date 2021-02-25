@@ -28,11 +28,24 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	m_pickups.push_back(pPickup);
 
 
-	m_pCar = new Vehicle();
-	hr = m_pCar->initMesh(pd3dDevice);
-	if (FAILED(hr))
-		return hr;
+	m_pCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
 
+	InitializeWaypoints(pd3dDevice);
+
+	mTrack = new Track("Resources/waypoints.txt");
+
+
+	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
+	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
+
+	NextTarget();
+
+
+	return hr;
+}
+
+void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
+{
 	// create the waypoints
 	float xGap = SCREEN_WIDTH / WAYPOINT_RESOLUTION;
 	float yGap = SCREEN_HEIGHT / WAYPOINT_RESOLUTION;
@@ -43,25 +56,11 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	for (unsigned int j = 0; j < WAYPOINT_RESOLUTION; j++) {
 		for (unsigned int i = 0; i < WAYPOINT_RESOLUTION; i++) {
 			Waypoint* wp = new Waypoint();
-			hr = wp->initMesh(pd3dDevice, index++);
+			wp->initMesh(pd3dDevice, index++);
 			wp->setPosition(XMFLOAT3(xStart + (xGap * i), yStart + (yGap * j), 0));
 			m_waypoints.push_back(wp);
 		}
 	}
-
-
-
-	mTrack = new Track("Resources/waypoints.txt");
-
-	m_pCar->setMaxSpeed(450.0f);
-
-	//_index = 11;
-	NextTarget();
-
-	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
-	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
-
-	return hr;
 }
 
 void AIManager::update(const float fDeltaTime)

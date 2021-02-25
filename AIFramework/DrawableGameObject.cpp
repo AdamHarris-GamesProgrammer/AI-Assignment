@@ -208,7 +208,9 @@ XMFLOAT3 DrawableGameObject::divideFloat3(XMFLOAT3& f1, const float scalar)
 
 float DrawableGameObject::Lerp(float v0, float v1, float t)
 {
-	return v0 + t * (v1 - v0);
+	
+	return (1 - t) * v0 + t * v1;
+
 }
 
 float DrawableGameObject::magnitudeFloat3(XMFLOAT3& f1)

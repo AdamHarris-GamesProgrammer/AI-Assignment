@@ -1,22 +1,19 @@
 #include "Vehicle.h"
 #include "Imgui/imgui.h"
 
-#define MAX_SPEED 150
+#define MAX_SPEED 250
 
-HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice)
+Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 {
 	m_scale = XMFLOAT3(30, 20, 1);
-	setTextureName(L"Resources\\car_red.dds");
-
-	HRESULT hr = DrawableGameObject::initMesh(pd3dDevice);
-
 	setMaxSpeed(MAX_SPEED);
 	m_currentSpeed = m_maxSpeed;
-	setVehiclePosition(Vector2D(0, 0));
 
-	m_lastPosition = Vector2D(0, 0);
+	setVehiclePosition(Vector2D(74.5, 205));
+	
 
-	return hr;
+	setTextureName(textureName);
+	DrawableGameObject::initMesh(device);
 }
 
 void Vehicle::update(const float deltaTime)
@@ -78,5 +75,6 @@ void Vehicle::setVehiclePosition(Vector2D position)
 	m_currentPosition = position;
 	m_positionTo = position;
 	m_startPosition = position;
+	m_lastPosition = position;
 	setPosition(XMFLOAT3((float)position.x, (float)position.y, 0));
 }
