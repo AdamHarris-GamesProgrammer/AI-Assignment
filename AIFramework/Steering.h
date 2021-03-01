@@ -17,13 +17,20 @@ public:
 	Vector2D CalculateForce();
 
 	Vector2D Seek(Vector2D target);
-	void SeekOn();;
+	void SeekOn();
 	void SeekOff();
+
+	Vector2D Arrive(Vector2D target);
+	void ArriveOn();
+	void ArriveOff();
+
 
 private:
 	enum BehaviorType {
 		none = 0x00000,
-		seek = 0x00002
+		seek = 0x00002,
+		flee = 0x00004,
+		arrive = 0x00006
 	};
 
 

@@ -30,9 +30,6 @@ void Vehicle::InitializeStates()
 
 
 	pFSM = new VehicleFSM(this);
-
-	pSteering->SeekOn();
-
 }
 
 void Vehicle::update(const float deltaTime)
@@ -59,6 +56,8 @@ void Vehicle::update(const float deltaTime)
 		diff.Normalize();
 		m_targetRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
 	}
+
+
 	m_lastPosition = m_currentPosition;
 
 	// set the current position for the drawable gameobject
@@ -91,6 +90,7 @@ void Vehicle::setPositionTo(Vector2D position)
 {
 	m_startPosition = m_currentPosition;
 	m_positionTo = position;
+	
 }
 
 // the current position

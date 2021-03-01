@@ -4,6 +4,7 @@
 Steering::Steering(Vehicle* owner)
 {
 	pOwner = owner;
+	_flags = 0;
 }
 
 Vector2D Steering::CalculateForce()
@@ -12,7 +13,10 @@ Vector2D Steering::CalculateForce()
 
 	if (IsOn(seek))
 	{
-		_steeringForce += Seek(pOwner->GetTarget()) * 250.0f;
+		_steeringForce += Seek(pOwner->GetTarget());
+	}
+	if (IsOn(arrive)) {
+		_steeringForce += Arrive(pOwner->GetTarget());
 	}
 
 
@@ -36,6 +40,35 @@ void Steering::SeekOn()
 void Steering::SeekOff()
 {
 	if (IsOn(seek)) _flags ^= seek;
+}
+
+Vector2D Steering::Arrive(Vector2D target)
+{
+	Vector2D direction = target - pOwner->GetVectorPosition();
+
+	double distance = direction.Length();
+
+	if (distance > 0) {
+		double speed = distance / .6;
+
+		speed = min(speed, pOwner->GetMaxSpeed());
+
+		Vector2D desiredVelocity = direction * speed / distance;
+
+		return (desiredVelocity - pOwner->GetVelocity());
+	}
+
+	return Vector2D(0, 0);
+}
+
+void Steering::ArriveOn()
+{
+	_flags |= arrive;
+}
+
+void Steering::ArriveOff()
+{
+	if (IsOn(arrive)) _flags ^= arrive;
 }
 
 bool Steering::IsOn(BehaviorType bt)
