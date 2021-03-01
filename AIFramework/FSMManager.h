@@ -4,6 +4,7 @@
 class FSMManager
 {
 public:
+	FSMManager() = default;
 	FSMManager(State* startingState);
 
 	void Update(float dt);

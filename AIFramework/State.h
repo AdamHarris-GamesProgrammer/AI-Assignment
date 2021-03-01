@@ -1,5 +1,7 @@
-#pragma once
-#include "Vehicle.h"
+#ifndef STATE_H
+#define STATE_H
+
+class Vehicle;
 
 class State {
 public:
@@ -7,11 +9,13 @@ public:
 		pOwner = owner;
 	}
 
-	virtual void OnEnter() {}
-	virtual void OnExit() {}
-	virtual void Update(float dt) {}
+	virtual void OnEnter() = 0;
+	virtual void OnExit() = 0;
+	virtual void Update(float dt) = 0;
 
-private:
+protected:
 	Vehicle* pOwner = nullptr;
 
 };
+
+#endif

@@ -363,6 +363,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DrawableGameObject.cpp" />
+    <ClCompile Include="FSMManager.cpp" />
     <ClCompile Include="ImGUIManager.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
@@ -374,12 +375,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Pathfinder.cpp" />
+    <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="PickupItem.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Steering.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="TrackConverter.cpp" />
     <ClCompile Include="TrackReader.cpp" />
     <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="VehicleFSM.cpp" />
     <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +391,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DrawableGameObject.h" />
+    <ClInclude Include="FSMManager.h" />
     <ClInclude Include="ImGUIManager.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
@@ -401,8 +406,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Pathfinder.h" />
+    <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Steering.h" />
     <ClInclude Include="structures.h" />
     <ClInclude Include="Track.h" />
@@ -410,6 +417,7 @@
     <ClInclude Include="TrackReader.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="VehicleFSM.h" />
     <ClInclude Include="Waypoint.h" />
     <ResourceCompile Include="AIFramework.rc" />
   </ItemGroup>

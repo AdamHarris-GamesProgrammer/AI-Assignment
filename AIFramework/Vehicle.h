@@ -5,6 +5,8 @@
 
 #include "Vector2D.h"
 
+
+class VehicleFSM;
 class Steering;
 
 class Vehicle : public DrawableGameObject
@@ -12,6 +14,7 @@ class Vehicle : public DrawableGameObject
 	Steering* pSteering;
 public:
 	Vehicle(ID3D11Device* device, std::wstring textureName);
+	void InitializeStates();
 
 	virtual void update(const float deltaTime);
 
@@ -23,6 +26,9 @@ public:
 	Vector2D GetVelocity();
 
 	Steering* GetSteering();
+
+	void SetWaypoints(std::vector<Waypoint*> waypoints);
+	Waypoint* GetWaypoint(const int x, const int y);
 
 protected:
 	float m_maxSpeed;
@@ -36,6 +42,11 @@ protected:
 	Vector2D _velocity;
 
 	
+	VehicleFSM* pFSM = nullptr;
+
+	vector<Waypoint*> _waypoints;
+
+
 
 public:
 	Vector2D GetTarget();

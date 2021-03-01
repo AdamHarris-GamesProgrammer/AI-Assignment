@@ -4,6 +4,8 @@
 
 #include "Steering.h"
 
+#include "VehicleFSM.h"
+
 #define MAX_SPEED 250
 
 Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
@@ -18,11 +20,25 @@ Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);
 
+
+}
+
+void Vehicle::InitializeStates()
+{
 	pSteering = new Steering(this);
+
+
+
+	pFSM = new VehicleFSM(this);
+
+	pSteering->SeekOn();
+
 }
 
 void Vehicle::update(const float deltaTime)
 {
+	pFSM->Update(deltaTime);
+
 	Vector2D steeringForce;
 	steeringForce = pSteering->CalculateForce();
 
@@ -100,6 +116,23 @@ Vector2D Vehicle::GetVelocity()
 Steering* Vehicle::GetSteering()
 {
 	return pSteering;
+}
+
+void Vehicle::SetWaypoints(std::vector<Waypoint*> waypoints)
+{
+	_waypoints = waypoints;
+}
+
+Waypoint* Vehicle::GetWaypoint(const int x, const int y)
+{
+	if (x < 0 || y < 0) return nullptr;
+
+	if (x >= 20 || y >= 20) return nullptr;
+
+	assert(x >= 0 && x < 20);
+	assert(y >= 0 && y < 20);
+
+	return _waypoints[y * 20 + x];
 }
 
 Vector2D Vehicle::GetTarget()

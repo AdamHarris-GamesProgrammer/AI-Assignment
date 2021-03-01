@@ -32,19 +32,18 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	m_pCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
 
+	
+
 	InitializeWaypoints(pd3dDevice);
 
-	mTrack = new Track("Resources/waypoints.txt");
+	m_pCar->SetWaypoints(m_waypoints);
 
 
 	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
 	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
 	m_pCar->setPositionTo(Vector2D(0, 0));
 
-	m_pCar->GetSteering()->SeekOn();
-
-	NextTarget();
-
+	m_pCar->InitializeStates();
 
 	return hr;
 }
@@ -70,10 +69,6 @@ void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 
 void AIManager::update(const float fDeltaTime)
 {
-	if (m_pCar->GetVectorPosition().Distance(_targetPosition) < 1.0) {
-			NextTarget();
-	}
-
 	m_pCar->update(fDeltaTime);
 
 	checkForCollisions();
@@ -86,9 +81,6 @@ void AIManager::DrawUI()
 	ImGui::Begin("Car Information");
 	ImGui::Text("Car Details");
 	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
-	ImGui::Text("Target Position: %f, %f", _targetPosition.x, _targetPosition.y);
-	ImGui::Text("Index: %i", _index);
-	ImGui::Text("Tile Position: %i, %i", _currentNode->xPos, _currentNode->yPos);
 	ImGui::End();
 }
 
@@ -111,21 +103,7 @@ void AIManager::Render(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-	/*_isFollowingTrack = false;
 
-	mTrack->SolvePathToNextPoint(Vector2D(_currentNode->xPos, _currentNode->yPos), Vector2D(11, 15));
-
-	_currentPath = mTrack->GetNodePath();
-
-	_currentNode = _currentPath.back();
-	_currentPath.pop_back();
-
-
-	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
-
-	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
-
-	m_pCar->setPositionTo(_targetPosition);*/
 
 	m_pCar->setPositionTo(Vector2D(x, y));
 }
@@ -207,42 +185,4 @@ Vector2D AIManager::ConvertPosition(Vector2D pos)
 	val.x = (int)pos.x / 51.2;
 	val.y = (int)pos.y / 38.4;
 	return val;
-}
-
-void AIManager::NextTarget()
-{
-	if (_currentPath.empty()) {
-		_index++;
-
-		if (!_isFollowingTrack) {
-			_isFollowingTrack = true;
-			_index = 0;
-		}
-
-		if (_index >= 15) {
-			_index = 0;
-		}
-
-		if (_index == 0) {
-
-			mTrack->SolvePathToNextPoint(14, 0);
-		}
-		else
-		{
-			mTrack->SolvePathToNextPoint(_index - 1, _index);
-		}
-
-		_currentPath.clear();
-		_currentPath = mTrack->GetNodePath();
-	}
-
-	_currentNode = _currentPath.back();
-	_currentPath.pop_back();
-
-
-	XMFLOAT3* wpPosition = GetWaypoint(_currentNode->xPos, _currentNode->yPos)->getPosition();
-
-	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
-
-	m_pCar->setPositionTo(_targetPosition);
 }

@@ -46,19 +46,12 @@ protected:
 
 private:
 	Vector2D ConvertPosition(Vector2D pos);
-	void NextTarget();
 
-	bool _isFollowingTrack = true;
 
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
 	Vehicle*				m_pCar = nullptr;
 
-	Node* _currentNode;
-	std::list<Node*> _currentPath;
-	Vector2D _targetPosition;
 
-	Track* mTrack = nullptr;
-	int _index = 0;
 };
 

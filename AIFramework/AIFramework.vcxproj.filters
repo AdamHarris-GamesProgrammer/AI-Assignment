@@ -45,6 +45,14 @@
     </ClCompile>
     <ClCompile Include="ImGUIManager.cpp" />
     <ClCompile Include="Steering.cpp" />
+    <ClCompile Include="FSMManager.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="PathfindingState.cpp" />
+    <ClCompile Include="VehicleFSM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -105,6 +113,16 @@
     </ClInclude>
     <ClInclude Include="ImGUIManager.h" />
     <ClInclude Include="Steering.h" />
+    <ClInclude Include="FSMManager.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfindingState.h">
+      <Filter>FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleFSM.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -150,6 +168,12 @@
     </Filter>
     <Filter Include="ImGUI">
       <UniqueIdentifier>{0aa7ead7-d48a-4b12-9c96-b1a6e51cdc47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{27b61ebf-f1a7-43f0-acd5-9fe6470dc4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\States">
+      <UniqueIdentifier>{7ce41f8c-eabb-4c0c-a28b-c702973aa36d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
