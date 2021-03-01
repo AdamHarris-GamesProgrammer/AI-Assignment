@@ -375,6 +375,7 @@
     </ClCompile>
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PickupItem.cpp" />
+    <ClCompile Include="Steering.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="TrackConverter.cpp" />
     <ClCompile Include="TrackReader.cpp" />
@@ -402,6 +403,7 @@
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
+    <ClInclude Include="Steering.h" />
     <ClInclude Include="structures.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackConverter.h" />

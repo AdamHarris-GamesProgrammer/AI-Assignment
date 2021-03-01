@@ -1,5 +1,8 @@
 #include "Vehicle.h"
+
 #include "Imgui/imgui.h"
+
+#include "Steering.h"
 
 #define MAX_SPEED 250
 
@@ -14,30 +17,24 @@ Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);
+
+	pSteering = new Steering(this);
 }
 
 void Vehicle::update(const float deltaTime)
 {
-	// consider replacing with force based acceleration / velocity calculations
-	Vector2D vecTo = m_positionTo - m_currentPosition;
-	float velocity = deltaTime * m_currentSpeed;
+	Vector2D steeringForce;
+	steeringForce = pSteering->CalculateForce();
 
-	float length = (float)vecTo.Length();
-	// if the distance to the end point is less than the car would move, then only move that distance. 
-	if (length > 0) {
-		vecTo.Normalize();
-		if(length > velocity)
-			vecTo *= velocity;
-		else
-			vecTo *= length;
+	Vector2D acceleration = steeringForce / _mass;
 
-		m_currentPosition += vecTo;
-	}
+	_velocity += acceleration * deltaTime;
+	_velocity.Truncate(m_maxSpeed);
 
-	ImGui::Begin("Car Information");
-	ImGui::Text("Radian Rotation: %f", m_radianRotation);
-	ImGui::Text("Target Rotation: %f", m_targetRotation);
-	ImGui::End();
+	m_currentPosition += _velocity * deltaTime;
+
+
+
 
 
 	// rotate the object based on its last & current position
@@ -52,6 +49,17 @@ void Vehicle::update(const float deltaTime)
 	setPosition(XMFLOAT3((float)m_currentPosition.x, (float)m_currentPosition.y, 0));
 
 	DrawableGameObject::update(deltaTime);
+
+	ImGui::Begin("Car Information");
+	ImGui::Text("Radian Rotation: %f", m_radianRotation);
+	ImGui::Text("Target Rotation: %f", m_targetRotation);
+	ImGui::End();
+
+}
+
+void Vehicle::setMaxSpeed(const float maxSpeed)
+{
+	m_maxSpeed = maxSpeed;
 }
 
 // a ratio: a value between 0 and 1 (1 being max speed)
@@ -77,4 +85,24 @@ void Vehicle::setVehiclePosition(Vector2D position)
 	m_startPosition = position;
 	m_lastPosition = position;
 	setPosition(XMFLOAT3((float)position.x, (float)position.y, 0));
+}
+
+float Vehicle::GetMaxSpeed()
+{
+	return m_maxSpeed;
+}
+
+Vector2D Vehicle::GetVelocity()
+{
+	return _velocity;
+}
+
+Steering* Vehicle::GetSteering()
+{
+	return pSteering;
+}
+
+Vector2D Vehicle::GetTarget()
+{
+	return m_positionTo;
 }

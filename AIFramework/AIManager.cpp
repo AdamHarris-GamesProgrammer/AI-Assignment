@@ -1,11 +1,13 @@
 #include "AIManager.h"
-#include "Vehicle.h"
 #include "DrawableGameObject.h"
 #include "PickupItem.h"
 #include "Waypoint.h"
 
 #include "main.h"
 #include "Imgui/imgui.h"
+
+#include "Steering.h"
+#include "Vehicle.h"
 
 Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 {
@@ -37,6 +39,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
 	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
+	m_pCar->setPositionTo(Vector2D(0, 0));
+
+	m_pCar->GetSteering()->SeekOn();
 
 	NextTarget();
 
@@ -106,7 +111,7 @@ void AIManager::Render(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-	_isFollowingTrack = false;
+	/*_isFollowingTrack = false;
 
 	mTrack->SolvePathToNextPoint(Vector2D(_currentNode->xPos, _currentNode->yPos), Vector2D(11, 15));
 
@@ -120,7 +125,9 @@ void AIManager::mouseUp(int x, int y)
 
 	_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-	m_pCar->setPositionTo(_targetPosition);
+	m_pCar->setPositionTo(_targetPosition);*/
+
+	m_pCar->setPositionTo(Vector2D(x, y));
 }
 
 void AIManager::keyPress(WPARAM param)

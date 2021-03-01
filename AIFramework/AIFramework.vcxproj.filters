@@ -44,6 +44,7 @@
       <Filter>ImGUI</Filter>
     </ClCompile>
     <ClCompile Include="ImGUIManager.cpp" />
+    <ClCompile Include="Steering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -103,6 +104,7 @@
       <Filter>ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="ImGUIManager.h" />
+    <ClInclude Include="Steering.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
