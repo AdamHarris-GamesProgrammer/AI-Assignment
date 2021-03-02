@@ -103,8 +103,6 @@ void AIManager::Render(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-
-
 	m_pCar->setPositionTo(Vector2D(x, y));
 }
 

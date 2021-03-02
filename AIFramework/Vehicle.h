@@ -2,8 +2,9 @@
 #define VEHICHLE_H
 
 #include "DrawableGameObject.h"
-
+#include "Imgui/imgui.h"
 #include "Vector2D.h"
+
 
 
 class VehicleFSM;
@@ -17,6 +18,8 @@ public:
 	void InitializeStates();
 
 	virtual void update(const float deltaTime);
+
+	void DrawUI();
 
 	void setMaxSpeed(const float maxSpeed);
 	void setCurrentSpeed(const float speed); // a ratio: a value between 0 and 1 (1 being max speed)
@@ -41,7 +44,6 @@ protected:
 	Vector2D m_lastPosition;
 	Vector2D _velocity;
 
-	
 	VehicleFSM* pFSM = nullptr;
 
 	vector<Waypoint*> _waypoints;

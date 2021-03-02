@@ -1,6 +1,6 @@
 #include "Vehicle.h"
 
-#include "Imgui/imgui.h"
+
 
 #include "Steering.h"
 
@@ -19,14 +19,11 @@ Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);
-
-
 }
 
 void Vehicle::InitializeStates()
 {
 	pSteering = new Steering(this);
-
 
 
 	pFSM = new VehicleFSM(this);
@@ -35,6 +32,8 @@ void Vehicle::InitializeStates()
 void Vehicle::update(const float deltaTime)
 {
 	pFSM->Update(deltaTime);
+
+	
 
 	Vector2D steeringForce;
 	steeringForce = pSteering->CalculateForce();
@@ -47,15 +46,13 @@ void Vehicle::update(const float deltaTime)
 	m_currentPosition += _velocity * deltaTime;
 
 
-
-
-
 	// rotate the object based on its last & current position
 	Vector2D diff = m_currentPosition - m_lastPosition;
 	if (diff.Length() > 0) { // if zero then don't update rotation
 		diff.Normalize();
 		m_targetRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
 	}
+
 
 
 	m_lastPosition = m_currentPosition;
@@ -65,11 +62,15 @@ void Vehicle::update(const float deltaTime)
 
 	DrawableGameObject::update(deltaTime);
 
+	DrawUI();
+}
+
+void Vehicle::DrawUI()
+{
 	ImGui::Begin("Car Information");
 	ImGui::Text("Radian Rotation: %f", m_radianRotation);
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
 	ImGui::End();
-
 }
 
 void Vehicle::setMaxSpeed(const float maxSpeed)

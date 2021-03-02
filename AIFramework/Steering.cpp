@@ -1,11 +1,7 @@
 #include "Steering.h"
 #include "Vehicle.h"
 
-Steering::Steering(Vehicle* owner)
-{
-	pOwner = owner;
-	_flags = 0;
-}
+Steering::Steering(Vehicle* owner) :_flags(0), pOwner(owner) {}
 
 Vector2D Steering::CalculateForce()
 {
@@ -48,8 +44,8 @@ Vector2D Steering::Arrive(Vector2D target)
 
 	double distance = direction.Length();
 
-	if (distance > 0) {
-		double speed = distance / .6;
+	if (distance > 0.2) {
+		double speed = distance / 2;
 
 		speed = min(speed, pOwner->GetMaxSpeed());
 

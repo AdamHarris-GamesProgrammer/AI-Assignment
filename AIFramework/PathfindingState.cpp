@@ -27,7 +27,7 @@ void PathfindingState::OnExit()
 
 void PathfindingState::Update(float dt)
 {
-	pOwner->GetSteering()->Arrive(_targetPosition);
+	//pOwner->GetSteering()->Arrive(_targetPosition);
 
 	if (pOwner->GetVectorPosition().Distance(_targetPosition) < 15.0) {
 		NextTarget();

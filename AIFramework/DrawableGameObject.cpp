@@ -152,12 +152,16 @@ void DrawableGameObject::setPosition(XMFLOAT3 position)
 
 void DrawableGameObject::update(float deltaTime)
 {
-	if (m_radianRotation != m_targetRotation) {
+	//Angle lerping in progress
+	/*if (m_radianRotation != m_targetRotation) {
 		m_radianRotation = Lerp(m_radianRotation, m_targetRotation, m_rotationSpeed * deltaTime);
-	}
+	}*/
 
+	//Snap to angle
+	m_radianRotation = m_targetRotation;
 
 	XMMATRIX mRotate = DirectX::XMMatrixRotationZ(m_radianRotation);
+	
 
 	XMMATRIX mTranslate = DirectX::XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 

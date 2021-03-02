@@ -30,7 +30,7 @@ private:
 		none = 0x00000,
 		seek = 0x00002,
 		flee = 0x00004,
-		arrive = 0x00006
+		arrive = 0x00008
 	};
 
 
