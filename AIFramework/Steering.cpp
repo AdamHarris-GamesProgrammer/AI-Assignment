@@ -45,11 +45,12 @@ Vector2D Steering::Arrive(Vector2D target)
 	double distance = direction.Length();
 
 	if (distance > 0.2) {
-		double speed = distance / 2;
+		//double speed = distance / 2;
 
-		speed = min(speed, pOwner->GetMaxSpeed());
+		//speed = min(speed, pOwner->GetMaxSpeed());
 
-		Vector2D desiredVelocity = direction * speed / distance;
+
+		Vector2D desiredVelocity = direction * (pOwner->GetMaxSpeed() * .5) / distance;
 
 		return (desiredVelocity - pOwner->GetVelocity());
 	}

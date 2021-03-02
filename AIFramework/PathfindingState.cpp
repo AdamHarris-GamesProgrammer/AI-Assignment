@@ -14,7 +14,6 @@ void PathfindingState::OnEnter()
 	_index = 0;
 	pTrack = new Track("Resources/waypoints.txt");
 
-	pOwner->GetSteering()->SeekOff();
 	pOwner->GetSteering()->ArriveOn();
 
 	NextTarget();
@@ -27,9 +26,7 @@ void PathfindingState::OnExit()
 
 void PathfindingState::Update(float dt)
 {
-	//pOwner->GetSteering()->Arrive(_targetPosition);
-
-	if (pOwner->GetVectorPosition().Distance(_targetPosition) < 15.0) {
+	if (pOwner->GetVectorPosition().Distance(_targetPosition) < 55.0) {
 		NextTarget();
 	}
 }
