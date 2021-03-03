@@ -78,15 +78,33 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::DrawUI()
 {
+
+	_inMenus = false;
+
 	ImGui::Begin("Car Information");
 	ImGui::Text("Car Details");
 	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
 	ImGui::End();
+
+	ImGui::Begin("Car Information");
+	if (ImGui::IsWindowFocused()) {
+		_inMenus = true;
+
+	}
+	ImGui::End();
+
+	ImGui::Begin("AI Control Panel");
+	if (ImGui::IsWindowFocused()) {
+		_inMenus = true;
+	}
+	ImGui::End();
+
 }
 
 void AIManager::Render(const float fDeltaTime)
 {
 	DrawUI();
+	m_pCar->DrawUI();
 
 	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
 		m_waypoints[i]->update(fDeltaTime);
@@ -103,7 +121,13 @@ void AIManager::Render(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-	m_pCar->setPositionTo(Vector2D(x, y));
+	
+
+
+
+	if (!_inMenus) {
+		m_pCar->setPositionTo(Vector2D(x, y));
+	}
 }
 
 void AIManager::keyPress(WPARAM param)

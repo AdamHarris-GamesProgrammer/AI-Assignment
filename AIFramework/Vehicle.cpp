@@ -27,6 +27,8 @@ void Vehicle::InitializeStates()
 
 
 	pFSM = new VehicleFSM(this);
+
+	pFSM->Section2AI();
 }
 
 void Vehicle::update(const float deltaTime)
@@ -61,8 +63,6 @@ void Vehicle::update(const float deltaTime)
 	setPosition(XMFLOAT3((float)m_currentPosition.x, (float)m_currentPosition.y, 0));
 
 	DrawableGameObject::update(deltaTime);
-
-	DrawUI();
 }
 
 void Vehicle::DrawUI()

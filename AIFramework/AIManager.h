@@ -52,6 +52,8 @@ private:
 	vecPickups              m_pickups;
 	Vehicle*				m_pCar = nullptr;
 
+	bool _inMenus = false;
+
 
 };
 
