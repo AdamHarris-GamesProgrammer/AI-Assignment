@@ -13,6 +13,9 @@
 class VehicleFSM : public FSMManager
 {
 private:
+
+
+public:
 	//Enum created to help control which section of the assignment I am showcasing
 	enum Sections {
 		steering,
@@ -20,7 +23,6 @@ private:
 		decisionMaking
 	};
 
-public:
 	VehicleFSM(Vehicle* owner) {
 		//initializes pathfinding state
 		pPathfindingState = new PathfindingState(owner);
@@ -80,6 +82,10 @@ public:
 		if (_section == steering) {
 			pSteeringState->Wandering();
 		}
+	}
+
+	Sections GetSection() const {
+		return _section;
 	}
 
 private:

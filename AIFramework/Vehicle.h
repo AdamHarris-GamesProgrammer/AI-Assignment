@@ -28,6 +28,8 @@ public:
 	float GetMaxSpeed();
 	Vector2D GetVelocity();
 
+	void SetSteeringTarget(Vector2D pos);
+
 	Steering* GetSteering();
 
 	void SetWaypoints(std::vector<Waypoint*> waypoints);
@@ -39,9 +41,20 @@ protected:
 	float _mass = 1.0f;
 
 
-	bool _isSteering = true;
+	bool _isSteering = false;
 	bool _isPathfinding = false;
 	bool _isDecisionMaking = false;
+
+
+	//Steering Settings
+	bool _isSeeking = false;
+	bool _isFleeing = false;
+	bool _isArriving = false;
+	bool _isPursuing = false;
+	bool _isAvoiding = false;
+	bool _isWandering = false;
+
+
 
 	Vector2D m_currentPosition;
 	Vector2D m_startPosition;
@@ -57,6 +70,10 @@ protected:
 
 public:
 	Vector2D GetTarget();
+private:
+	void DrawSteeringOptions();
+	void DrawPathfindingOptions();
+	void DrawDecisionMakingOptions();
 };
 
 #endif // !VEHICHLE_H

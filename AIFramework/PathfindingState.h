@@ -23,7 +23,9 @@ public:
 	}
 
 	void OnExit() override {
-
+		_index = 0;
+		pCurrentNode = nullptr;
+		_currentPath.clear();
 	}
 
 

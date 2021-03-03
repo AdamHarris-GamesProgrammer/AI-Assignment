@@ -82,11 +82,6 @@ void AIManager::DrawUI()
 	_inMenus = false;
 
 	ImGui::Begin("Car Information");
-	ImGui::Text("Car Details");
-	ImGui::Text("Current Position: %f, %f", m_pCar->GetVectorPosition().x, m_pCar->GetVectorPosition().y);
-	ImGui::End();
-
-	ImGui::Begin("Car Information");
 	if (ImGui::IsWindowFocused()) {
 		_inMenus = true;
 
@@ -121,12 +116,8 @@ void AIManager::Render(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-	
-
-
-
-	if (!_inMenus) {
-		m_pCar->setPositionTo(Vector2D(x, y));
+	if (!_inMenus) { 
+		m_pCar->SetSteeringTarget(Vector2D(x, y));
 	}
 }
 

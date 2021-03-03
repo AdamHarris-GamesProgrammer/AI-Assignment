@@ -15,7 +15,7 @@ Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 	m_currentSpeed = m_maxSpeed;
 
 	setVehiclePosition(Vector2D(74.5, 205));
-	
+
 
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);
@@ -28,14 +28,12 @@ void Vehicle::InitializeStates()
 
 	pFSM = new VehicleFSM(this);
 
-	pFSM->Section2AI();
+	//pFSM->Section2AI();
 }
 
 void Vehicle::update(const float deltaTime)
 {
 	pFSM->Update(deltaTime);
-
-	
 
 	Vector2D steeringForce;
 	steeringForce = pSteering->CalculateForce();
@@ -68,37 +66,43 @@ void Vehicle::update(const float deltaTime)
 void Vehicle::DrawUI()
 {
 	ImGui::Begin("Car Information");
+	ImGui::Text("Car Details");
+	ImGui::Text("Current Position: %f, %f", m_currentPosition.x, m_currentPosition.y);
 	ImGui::Text("Radian Rotation: %f", m_radianRotation);
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
 	ImGui::End();
 
 
-
+	//Checks to see if the user is pressing any of the radio buttons
 	ImGui::Begin("AI Control Panel");
 	if (ImGui::RadioButton("Steering", _isSteering)) {
 		_isSteering = true;
 		_isPathfinding = false;
 		_isDecisionMaking = false;
+		pFSM->Section1AI();
 	}
-	if (ImGui::RadioButton("Pathfinding", _isPathfinding)) {
+	else if (ImGui::RadioButton("Pathfinding", _isPathfinding)) {
 		_isPathfinding = true;
 		_isSteering = false;
 		_isDecisionMaking = false;
+		pFSM->Section2AI();
 	}
-	if (ImGui::RadioButton("Decision Making", _isDecisionMaking)) {
+	else if (ImGui::RadioButton("Decision Making", _isDecisionMaking)) {
 		_isDecisionMaking = true;
 		_isSteering = false;
 		_isPathfinding = false;
+		pFSM->Section3AI();
 	}
 
 	if (_isSteering) {
-		ImGui::Text("Steering Test");
+		DrawSteeringOptions();
+
 	}
 	else if (_isPathfinding) {
-		ImGui::Text("Pathfinding Test");
+		DrawPathfindingOptions();
 	}
 	else if (_isDecisionMaking) {
-		ImGui::Text("Decision Making Test");
+		DrawDecisionMakingOptions();
 	}
 	ImGui::End();
 }
@@ -121,7 +125,7 @@ void Vehicle::setPositionTo(Vector2D position)
 {
 	m_startPosition = m_currentPosition;
 	m_positionTo = position;
-	
+
 }
 
 // the current position
@@ -142,6 +146,13 @@ float Vehicle::GetMaxSpeed()
 Vector2D Vehicle::GetVelocity()
 {
 	return _velocity;
+}
+
+void Vehicle::SetSteeringTarget(Vector2D pos)
+{
+	if (pFSM->GetSection() == VehicleFSM::steering) {
+		setPositionTo(pos);
+	}
 }
 
 Steering* Vehicle::GetSteering()
@@ -169,4 +180,73 @@ Waypoint* Vehicle::GetWaypoint(const int x, const int y)
 Vector2D Vehicle::GetTarget()
 {
 	return m_positionTo;
+}
+
+void Vehicle::DrawSteeringOptions()
+{
+	ImGui::Text("Steering Options");
+	if (ImGui::RadioButton("Seek", _isSeeking)) {
+		_isSeeking = true;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
+		pFSM->SeekOn();
+	}
+	else if (ImGui::RadioButton("Flee", _isFleeing)) {
+		_isSeeking = false;
+		_isFleeing = true;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
+		pFSM->FleeOn();
+	}
+	else if (ImGui::RadioButton("Arrive", _isArriving)) {
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = true;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
+		pFSM->ArriveOn();
+	}
+	else if (ImGui::RadioButton("Pursuit", _isPursuing)) {
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = true;
+		_isAvoiding = false;
+		_isWandering = false;
+		pFSM->PursuitOn();
+	}
+	else if (ImGui::RadioButton("Obstacle Avoidance", _isAvoiding)) {
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = true;
+		_isWandering = false;
+		pFSM->ObstacleAvoidanceOn();
+	}
+	else if (ImGui::RadioButton("Wandering", _isWandering)) {
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = true;
+		pFSM->WanderingOn();
+	}
+}
+
+void Vehicle::DrawPathfindingOptions()
+{
+
+}
+
+void Vehicle::DrawDecisionMakingOptions()
+{
+	
 }
