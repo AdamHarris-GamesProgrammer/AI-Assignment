@@ -15,7 +15,7 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Arrive(pOwner->GetTarget());
 	}
 	if (IsOn(flee)) {
-		
+		_steeringForce += Flee(pOwner->GetTarget()) * 15.0f;
 	}
 	if (IsOn(pursuit)) {
 
@@ -82,7 +82,7 @@ void Steering::ArriveOff()
 
 Vector2D Steering::Flee(Vector2D target)
 {
-	Vector2D desiredVelocity = Vec2DNormalize(pOwner->GetVectorPosition() - target * pOwner->GetMaxSpeed());
+	Vector2D desiredVelocity = Vec2DNormalize(pOwner->GetVectorPosition() - target) * pOwner->GetMaxSpeed();
 
 	return (desiredVelocity - pOwner->GetVelocity());
 }
