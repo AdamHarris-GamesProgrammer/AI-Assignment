@@ -78,7 +78,6 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::DrawUI()
 {
-
 	_inMenus = false;
 
 	ImGui::Begin("Car Information");

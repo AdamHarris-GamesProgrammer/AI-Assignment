@@ -29,6 +29,10 @@ public:
 
 	}
 
+	void Clear() {
+		pOwner->GetSteering()->ClearFlags();
+	}
+
 	void Seek() {
 		pOwner->GetSteering()->ClearFlags();
 		pOwner->GetSteering()->SeekOn();
@@ -41,22 +45,22 @@ public:
 
 	void Flee() {
 		pOwner->GetSteering()->ClearFlags();
-		//TODO: Implement flee behavior
+		pOwner->GetSteering()->FleeOn();
 	}
 
 	void Pursuit() {
 		pOwner->GetSteering()->ClearFlags();
-		//TODO: Implement Pursuit behavior
+		pOwner->GetSteering()->PursuitOn();
 	}
 
 	void ObstacleAvoidance() {
 		pOwner->GetSteering()->ClearFlags();
-		//TODO: Implement Obstacle behavior
+		pOwner->GetSteering()->ObstacleAvoidanceOn();
 	}
 
 	void Wandering() {
 		pOwner->GetSteering()->ClearFlags();
-		//TODO: Implement wandering behavior
+		pOwner->GetSteering()->WanderOn();
 	}
 
 

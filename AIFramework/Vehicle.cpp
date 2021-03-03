@@ -1,12 +1,10 @@
 #include "Vehicle.h"
 
-
-
 #include "Steering.h"
 
 #include "VehicleFSM.h"
 
-#define MAX_SPEED 250
+#define MAX_SPEED 150
 
 Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 {
@@ -25,10 +23,7 @@ void Vehicle::InitializeStates()
 {
 	pSteering = new Steering(this);
 
-
 	pFSM = new VehicleFSM(this);
-
-	//pFSM->Section2AI();
 }
 
 void Vehicle::update(const float deltaTime)
@@ -79,18 +74,36 @@ void Vehicle::DrawUI()
 		_isSteering = true;
 		_isPathfinding = false;
 		_isDecisionMaking = false;
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
 		pFSM->Section1AI();
 	}
 	else if (ImGui::RadioButton("Pathfinding", _isPathfinding)) {
 		_isPathfinding = true;
 		_isSteering = false;
 		_isDecisionMaking = false;
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
 		pFSM->Section2AI();
 	}
 	else if (ImGui::RadioButton("Decision Making", _isDecisionMaking)) {
 		_isDecisionMaking = true;
 		_isSteering = false;
 		_isPathfinding = false;
+		_isSeeking = false;
+		_isFleeing = false;
+		_isArriving = false;
+		_isPursuing = false;
+		_isAvoiding = false;
+		_isWandering = false;
 		pFSM->Section3AI();
 	}
 

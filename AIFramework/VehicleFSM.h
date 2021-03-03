@@ -36,16 +36,19 @@ public:
 
 	void Section1AI() {
 		_section = steering;
+		pSteeringState->Clear();
 		ChangeState(pSteeringState);
 	}
 
 	void Section2AI() {
-		_section = pathfinding;
+		_section = pathfinding; 
+		pSteeringState->Clear();
 		ChangeState(pPathfindingState);
 	}
 
 	void Section3AI() {
 		_section = pathfinding;
+		pSteeringState->Clear();
 	}
 
 	void SeekOn() {

@@ -17,7 +17,7 @@ public:
 		_index = 0;
 		pTrack = new Track("Resources/waypoints.txt");
 
-		pOwner->GetSteering()->ArriveOn();
+		pOwner->GetSteering()->SeekOn();
 
 		NextTarget();
 	}
@@ -30,7 +30,7 @@ public:
 
 
 	void Update(float dt) override {
-		if (pOwner->GetVectorPosition().Distance(_targetPosition) < 55.0) {
+		if (pOwner->GetVectorPosition().Distance(_targetPosition) < 70.0) {
 			NextTarget();
 		}
 	}
