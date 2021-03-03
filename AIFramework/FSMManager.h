@@ -7,7 +7,7 @@ public:
 	FSMManager() = default;
 	FSMManager(State* startingState);
 
-	void Update(float dt);
+	virtual void Update(float dt);
 	void ChangeState(State* newState);
 
 private:

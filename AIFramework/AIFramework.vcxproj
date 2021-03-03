@@ -375,7 +375,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Pathfinder.cpp" />
-    <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="PickupItem.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Steering.cpp" />
@@ -411,6 +410,7 @@
     <CLInclude Include="resource.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Steering.h" />
+    <ClInclude Include="SteeringState.h" />
     <ClInclude Include="structures.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackConverter.h" />

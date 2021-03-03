@@ -24,6 +24,7 @@ public:
 	void ArriveOn();
 	void ArriveOff();
 
+	void ClearFlags();
 
 private:
 	enum BehaviorType {

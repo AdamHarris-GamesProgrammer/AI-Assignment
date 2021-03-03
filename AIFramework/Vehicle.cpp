@@ -71,6 +71,36 @@ void Vehicle::DrawUI()
 	ImGui::Text("Radian Rotation: %f", m_radianRotation);
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
 	ImGui::End();
+
+
+
+	ImGui::Begin("AI Control Panel");
+	if (ImGui::RadioButton("Steering", _isSteering)) {
+		_isSteering = true;
+		_isPathfinding = false;
+		_isDecisionMaking = false;
+	}
+	if (ImGui::RadioButton("Pathfinding", _isPathfinding)) {
+		_isPathfinding = true;
+		_isSteering = false;
+		_isDecisionMaking = false;
+	}
+	if (ImGui::RadioButton("Decision Making", _isDecisionMaking)) {
+		_isDecisionMaking = true;
+		_isSteering = false;
+		_isPathfinding = false;
+	}
+
+	if (_isSteering) {
+		ImGui::Text("Steering Test");
+	}
+	else if (_isPathfinding) {
+		ImGui::Text("Pathfinding Test");
+	}
+	else if (_isDecisionMaking) {
+		ImGui::Text("Decision Making Test");
+	}
+	ImGui::End();
 }
 
 void Vehicle::setMaxSpeed(const float maxSpeed)

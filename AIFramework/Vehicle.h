@@ -38,6 +38,11 @@ protected:
 	float m_currentSpeed;
 	float _mass = 1.0f;
 
+
+	bool _isSteering = true;
+	bool _isPathfinding = false;
+	bool _isDecisionMaking = false;
+
 	Vector2D m_currentPosition;
 	Vector2D m_startPosition;
 	Vector2D m_positionTo;

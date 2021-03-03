@@ -44,9 +44,8 @@ Vector2D Steering::Arrive(Vector2D target)
 
 	double distance = direction.Length();
 
-	if (distance > 0.2) {
+	if (distance > 20.0) {
 		//double speed = distance / 2;
-
 		//speed = min(speed, pOwner->GetMaxSpeed());
 
 
@@ -66,6 +65,11 @@ void Steering::ArriveOn()
 void Steering::ArriveOff()
 {
 	if (IsOn(arrive)) _flags ^= arrive;
+}
+
+void Steering::ClearFlags()
+{
+	_flags = 0;
 }
 
 bool Steering::IsOn(BehaviorType bt)
