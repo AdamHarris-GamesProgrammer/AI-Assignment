@@ -18,13 +18,13 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Flee(pOwner->GetTarget()) * 15.0f;
 	}
 	if (IsOn(pursuit)) {
-
+		//TODO: Create a second vehicle and have a reference to the other in the class
 	}
 	if (IsOn(wander)) {
 		_steeringForce += Wander();
 	}
 	if (IsOn(obstacle_avoidance)) {
-
+		//TODO: Have some form of obstalce to avoid
 	}
 
 
@@ -101,8 +101,18 @@ Vector2D Steering::Pursuit(Vehicle* target)
 {
 	Vector2D directionToTarget = target->GetVectorPosition() - pOwner->GetVectorPosition();
 
-	//TODO: Create a transform forward system
-	return Vector2D(0, 0);
+	double relativeForward = pOwner->GetForward().Dot(target->GetForward());
+
+	//if the target is in front of us then we can just seek to them
+	if ((directionToTarget.Dot(pOwner->GetForward()) > 0) && (relativeForward < -0.95)) {
+		return Seek(target->GetVectorPosition());
+	}
+
+	//the target is not infront of us so we have to predict where it will be
+
+	double lookAheadTime = directionToTarget.Length() / (pOwner->GetMaxSpeed() + target->GetCurrentSpeed());
+
+	return Seek(target->GetVectorPosition() + target->GetVelocity() * lookAheadTime);
 }
 
 Vector2D Steering::Wander()

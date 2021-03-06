@@ -28,9 +28,13 @@ public:
 	float GetMaxSpeed();
 	Vector2D GetVelocity();
 
+	float GetCurrentSpeed() const;
+
 	void SetSteeringTarget(Vector2D pos);
 
 	Steering* GetSteering();
+
+	Vector2D GetForward() const;
 
 	void SetWaypoints(std::vector<Waypoint*> waypoints);
 	Waypoint* GetWaypoint(const int x, const int y);
@@ -61,6 +65,8 @@ protected:
 	Vector2D m_positionTo;
 	Vector2D m_lastPosition;
 	Vector2D _velocity;
+
+	Vector2D _forward;
 
 	VehicleFSM* pFSM = nullptr;
 

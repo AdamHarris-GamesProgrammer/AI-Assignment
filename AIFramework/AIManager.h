@@ -50,7 +50,8 @@ private:
 
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
-	Vehicle*				m_pCar = nullptr;
+	Vehicle*				_pRaceCar = nullptr;
+	Vehicle* _pDodgeCar = nullptr;
 
 	bool _inMenus = false;
 

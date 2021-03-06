@@ -52,6 +52,9 @@ void Vehicle::update(const float deltaTime)
 
 	m_lastPosition = m_currentPosition;
 
+
+	_forward = Vector2D(cosf(m_radianRotation), sinf(m_radianRotation));
+
 	// set the current position for the drawable gameobject
 	setPosition(XMFLOAT3((float)m_currentPosition.x, (float)m_currentPosition.y, 0));
 
@@ -65,6 +68,7 @@ void Vehicle::DrawUI()
 	ImGui::Text("Current Position: %f, %f", m_currentPosition.x, m_currentPosition.y);
 	ImGui::Text("Radian Rotation: %f", m_radianRotation);
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
+	ImGui::Text("Forward Vector: %f, %f", _forward.x, _forward.y);
 	ImGui::End();
 
 
@@ -161,6 +165,11 @@ Vector2D Vehicle::GetVelocity()
 	return _velocity;
 }
 
+float Vehicle::GetCurrentSpeed() const
+{
+	return m_currentSpeed;
+}
+
 void Vehicle::SetSteeringTarget(Vector2D pos)
 {
 	if (pFSM->GetSection() == VehicleFSM::steering) {
@@ -171,6 +180,11 @@ void Vehicle::SetSteeringTarget(Vector2D pos)
 Steering* Vehicle::GetSteering()
 {
 	return pSteering;
+}
+
+Vector2D Vehicle::GetForward() const
+{
+	return _forward;
 }
 
 void Vehicle::SetWaypoints(std::vector<Waypoint*> waypoints)

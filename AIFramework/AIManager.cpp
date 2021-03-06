@@ -30,20 +30,27 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	m_pickups.push_back(pPickup);
 
 
-	m_pCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
+	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
 
-	
+	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds");
+	_pDodgeCar->setMaxSpeed(50.0f);
 
 	InitializeWaypoints(pd3dDevice);
 
-	m_pCar->SetWaypoints(m_waypoints);
+	_pRaceCar->SetWaypoints(m_waypoints);
+	_pDodgeCar->SetWaypoints(m_waypoints);
 
 
 	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
-	m_pCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
-	m_pCar->setPositionTo(Vector2D(0, 0));
+	_pRaceCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
+	_pRaceCar->setPositionTo(Vector2D(0, 0));
 
-	m_pCar->InitializeStates();
+	Vector2D dodgePosition = GetWaypoint(11, 16)->GetVectorPosition();
+	_pDodgeCar->setPosition(XMFLOAT3(dodgePosition.x, dodgePosition.y, 0.0f));
+	_pDodgeCar->setPositionTo(Vector2D(0, 0));
+
+	_pRaceCar->InitializeStates();
+	_pDodgeCar->InitializeStates();
 
 	return hr;
 }
@@ -69,7 +76,9 @@ void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 
 void AIManager::update(const float fDeltaTime)
 {
-	m_pCar->update(fDeltaTime);
+	_pRaceCar->update(fDeltaTime);
+
+	_pDodgeCar->update(fDeltaTime);
 
 	checkForCollisions();
 	Render(fDeltaTime);
@@ -98,7 +107,7 @@ void AIManager::DrawUI()
 void AIManager::Render(const float fDeltaTime)
 {
 	DrawUI();
-	m_pCar->DrawUI();
+	_pRaceCar->DrawUI();
 
 	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
 		m_waypoints[i]->update(fDeltaTime);
@@ -110,13 +119,14 @@ void AIManager::Render(const float fDeltaTime)
 		AddItemToDrawList(m_pickups[i]);
 	}
 
-	AddItemToDrawList(m_pCar);
+	AddItemToDrawList(_pRaceCar);
+	AddItemToDrawList(_pDodgeCar);
 }
 
 void AIManager::mouseUp(int x, int y)
 {
 	if (!_inMenus) { 
-		m_pCar->SetSteeringTarget(Vector2D(x, y));
+		_pRaceCar->SetSteeringTarget(Vector2D(x, y));
 	}
 }
 
@@ -157,7 +167,7 @@ bool AIManager::checkForCollisions()
 		&carScale,
 		&dummy,
 		&carPos,
-		XMLoadFloat4x4(m_pCar->getTransform())
+		XMLoadFloat4x4(_pRaceCar->getTransform())
 	);
 
 	XMFLOAT3 scale;
