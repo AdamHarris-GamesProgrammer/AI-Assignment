@@ -72,10 +72,18 @@ protected:
 
 	vector<Waypoint*> _waypoints;
 
-
+	Vehicle* _pOtherVehicle;
 
 public:
 	Vector2D GetTarget();
+
+	void SetOtherVehicle(Vehicle* vehicle) {
+		_pOtherVehicle = vehicle;
+	}
+
+	Vehicle* GetOtherVehicle() const {
+		return _pOtherVehicle;
+	}
 private:
 	void DrawSteeringOptions();
 	void DrawPathfindingOptions();

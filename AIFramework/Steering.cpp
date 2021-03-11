@@ -19,6 +19,7 @@ Vector2D Steering::CalculateForce()
 	}
 	if (IsOn(pursuit)) {
 		//TODO: Create a second vehicle and have a reference to the other in the class
+		_steeringForce += Pursuit(pOwner->GetOtherVehicle());
 	}
 	if (IsOn(wander)) {
 		_steeringForce += Wander();

@@ -52,6 +52,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pRaceCar->InitializeStates();
 	_pDodgeCar->InitializeStates();
 
+	_pRaceCar->SetOtherVehicle(_pDodgeCar);
+	_pDodgeCar->SetOtherVehicle(_pRaceCar);
+
 	return hr;
 }
 
