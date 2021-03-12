@@ -42,6 +42,8 @@ public:
 
 	void ClearFlags();
 
+	void NewWanderTarget();
+
 private:
 	enum BehaviorType {
 		none = 0x00000,
@@ -67,6 +69,7 @@ private:
 private:
 	bool IsOn(BehaviorType bt);
 
+	
 };
 
 #endif

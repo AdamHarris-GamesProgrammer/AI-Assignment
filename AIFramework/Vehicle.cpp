@@ -69,6 +69,7 @@ void Vehicle::DrawUI()
 	ImGui::Text("Radian Rotation: %f", m_radianRotation);
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
 	ImGui::Text("Forward Vector: %f, %f", _forward.x, _forward.y);
+	ImGui::Text("Wander Target: %f, %f", _wanderTarget.x, _wanderTarget.y);
 	ImGui::End();
 
 
@@ -264,6 +265,7 @@ void Vehicle::DrawSteeringOptions()
 		_isPursuing = false;
 		_isAvoiding = false;
 		_isWandering = true;
+		pSteering->NewWanderTarget();
 		pFSM->WanderingOn();
 	}
 }

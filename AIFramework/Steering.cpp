@@ -118,8 +118,12 @@ Vector2D Steering::Pursuit(Vehicle* target)
 
 Vector2D Steering::Wander()
 {
+	if (pOwner->GetVectorPosition().Distance(pOwner->GetWanderTarget()) < 3.5f) {
+		NewWanderTarget();
+	}
 
-	return Vector2D(0, 0);
+
+	return Seek(pOwner->GetWanderTarget());
 }
 
 void Steering::WanderOn()
@@ -160,4 +164,14 @@ void Steering::ClearFlags()
 bool Steering::IsOn(BehaviorType bt)
 {
 	return (_flags & bt) == bt;
+}
+
+void Steering::NewWanderTarget()
+{
+	Vector2D randomTarget = Vector2D(rand() % 1024, rand() % 768);
+
+	randomTarget.x -= 1024 / 2;
+	randomTarget.y -= 768 / 2;
+
+	pOwner->SetWanderTarget(randomTarget);
 }

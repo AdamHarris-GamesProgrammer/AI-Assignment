@@ -39,6 +39,14 @@ public:
 	void SetWaypoints(std::vector<Waypoint*> waypoints);
 	Waypoint* GetWaypoint(const int x, const int y);
 
+	Vector2D GetWanderTarget() const {
+		return _wanderTarget;
+	}
+
+	void SetWanderTarget(Vector2D val) {
+		_wanderTarget = val;
+	}
+
 protected:
 	float m_maxSpeed;
 	float m_currentSpeed;
@@ -66,7 +74,11 @@ protected:
 	Vector2D m_lastPosition;
 	Vector2D _velocity;
 
+	Vector2D _wanderTarget;
+
 	Vector2D _forward;
+
+
 
 	VehicleFSM* pFSM = nullptr;
 
