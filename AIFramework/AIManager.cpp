@@ -31,6 +31,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
+	_pRaceCar->setMaxSpeed(150.0f);
 
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds");
 	_pDodgeCar->setMaxSpeed(50.0f);
@@ -54,6 +55,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
+
+	
 
 	return hr;
 }
@@ -116,6 +119,8 @@ void AIManager::Render(const float fDeltaTime)
 		m_waypoints[i]->update(fDeltaTime);
 		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
+
+	AddItemToDrawList(GetWaypoint(4, 5));
 
 	for (unsigned int i = 0; i < m_pickups.size(); i++) {
 		m_pickups[i]->update(fDeltaTime);

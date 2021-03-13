@@ -54,7 +54,7 @@ protected:
 
 
 	bool _isSteering = false;
-	bool _isPathfinding = false;
+	bool _isPathfinding = true;
 	bool _isDecisionMaking = false;
 
 
@@ -77,6 +77,8 @@ protected:
 	Vector2D _wanderTarget;
 
 	Vector2D _forward;
+
+	Vector2D _side;
 
 
 

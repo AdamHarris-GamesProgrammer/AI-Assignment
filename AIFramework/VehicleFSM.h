@@ -31,7 +31,7 @@ public:
 
 		ChangeState(pPathfindingState);
 
-		_section = steering;
+		_section = pathfinding;
 	}
 
 	void Section1AI() {

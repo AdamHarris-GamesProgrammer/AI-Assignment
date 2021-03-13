@@ -122,7 +122,9 @@
       <Filter>FSM\States</Filter>
     </ClInclude>
     <ClInclude Include="VehicleFSM.h" />
-    <ClInclude Include="SteeringState.h" />
+    <ClInclude Include="SteeringState.h">
+      <Filter>FSM\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">

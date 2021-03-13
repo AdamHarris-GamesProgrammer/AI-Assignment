@@ -39,6 +39,7 @@ public:
 
 	void ObstacleAvoidanceOn();
 	void ObstacleAvoidanceOff();
+	Vector2D ObstacleAvoidance();
 
 	void ClearFlags();
 

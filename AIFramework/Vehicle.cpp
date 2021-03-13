@@ -53,7 +53,11 @@ void Vehicle::update(const float deltaTime)
 	m_lastPosition = m_currentPosition;
 
 
+	//Calculate the forward vector
 	_forward = Vector2D(cosf(m_radianRotation), sinf(m_radianRotation));
+
+	//Calculate the right vector
+	_side = _forward.Perp();
 
 	// set the current position for the drawable gameobject
 	setPosition(XMFLOAT3((float)m_currentPosition.x, (float)m_currentPosition.y, 0));

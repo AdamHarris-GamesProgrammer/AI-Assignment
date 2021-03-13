@@ -18,14 +18,13 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Flee(pOwner->GetTarget()) * 15.0f;
 	}
 	if (IsOn(pursuit)) {
-		//TODO: Create a second vehicle and have a reference to the other in the class
 		_steeringForce += Pursuit(pOwner->GetOtherVehicle());
 	}
 	if (IsOn(wander)) {
 		_steeringForce += Wander();
 	}
 	if (IsOn(obstacle_avoidance)) {
-		//TODO: Have some form of obstalce to avoid
+		_steeringForce += ObstacleAvoidance();
 	}
 
 
@@ -154,6 +153,63 @@ void Steering::ObstacleAvoidanceOn()
 void Steering::ObstacleAvoidanceOff()
 {
 	if (IsOn(obstacle_avoidance)) _flags ^= obstacle_avoidance;
+}
+
+Vector2D Steering::ObstacleAvoidance()
+{
+	Vector2D localPos = pOwner->GetOtherVehicle()->GetVectorPosition() - pOwner->GetVectorPosition();
+	//localPos.x = -localPos.x;
+	//localPos.y = -localPos.y;
+
+	Vehicle* possibleCollision = nullptr;
+
+	float mininumBoxLength = 30.0f + (pOwner->GetCurrentSpeed() / pOwner->GetMaxSpeed()) * 30.0f;
+
+	//Based on scale of cars
+	double range = 30.0f + 30.0f;
+
+	//Target is actually in front of us
+	if (localPos.x >= 0.0f) {
+
+		if (localPos.LengthSq() < range * range) {
+
+			XMFLOAT3 ownerScale = pOwner->GetScale();
+			XMFLOAT3 otherScale = pOwner->GetOtherVehicle()->GetScale();
+
+			double radius = otherScale.x + otherScale.x;
+
+			//possible collision
+			if (fabsf(localPos.y) < radius) {
+				double cX = localPos.x;
+				double cY = localPos.y;
+
+				double sqrPart = sqrt(radius * radius - cY * cY);
+
+				double ip = cX - sqrPart;
+
+				if (ip <= 0.0) {
+					ip = cX + sqrPart;
+				}
+
+				possibleCollision = pOwner->GetOtherVehicle();
+			}
+		}
+
+	}
+
+	Vector2D steeringForce = Vector2D();
+
+	if (possibleCollision != nullptr) {
+		double multiplier = 1.0 + (mininumBoxLength - localPos.x) / mininumBoxLength;
+
+		steeringForce.y = (possibleCollision->GetScale().x - localPos.y) * multiplier;
+
+		double breakPower = 0.2;
+
+		steeringForce.x = (possibleCollision->GetScale().x - localPos.x) * breakPower;
+	}
+
+	return steeringForce;
 }
 
 void Steering::ClearFlags()

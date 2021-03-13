@@ -35,6 +35,10 @@ public:
 		return Vector2D(m_position.x, m_position.y);
 	}
 
+	XMFLOAT3 GetScale() const {
+		return m_scale;
+	}
+
 protected:
 	void								setDirection(XMFLOAT3 direction); 
 	void								setTextureName(wstring texName) { m_textureName = texName; }
