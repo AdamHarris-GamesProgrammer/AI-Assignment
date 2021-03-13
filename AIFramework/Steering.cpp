@@ -24,7 +24,7 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Wander();
 	}
 	if (IsOn(obstacle_avoidance)) {
-		_steeringForce += ObstacleAvoidance();
+		_steeringForce += ObstacleAvoidance() * 10.0;
 	}
 
 
@@ -161,22 +161,36 @@ Vector2D Steering::ObstacleAvoidance()
 	//localPos.x = -localPos.x;
 	//localPos.y = -localPos.y;
 
+	//C2DMatrix matTransform;
+
+	//double Tx = -AgentPosition.Dot(AgentHeading);
+	//double Ty = -AgentPosition.Dot(AgentSide);
+
+	////create the transformation matrix
+	//matTransform._11(AgentHeading.x); matTransform._12(AgentSide.x);
+	//matTransform._21(AgentHeading.y); matTransform._22(AgentSide.y);
+	//matTransform._31(Tx);           matTransform._32(Ty);
+
+
 	Vehicle* possibleCollision = nullptr;
 
 	float mininumBoxLength = 30.0f + (pOwner->GetCurrentSpeed() / pOwner->GetMaxSpeed()) * 30.0f;
+	mininumBoxLength *= 1.5f;
 
 	//Based on scale of cars
-	double range = 30.0f + 30.0f;
+	
+
+	double aRadius = 45.0;
+	double bRadius = 45.0;
+
+	double range = aRadius + bRadius;
 
 	//Target is actually in front of us
 	if (localPos.x >= 0.0f) {
 
 		if (localPos.LengthSq() < range * range) {
 
-			XMFLOAT3 ownerScale = pOwner->GetScale();
-			XMFLOAT3 otherScale = pOwner->GetOtherVehicle()->GetScale();
-
-			double radius = otherScale.x + otherScale.x;
+			double radius = aRadius + bRadius;
 
 			//possible collision
 			if (fabsf(localPos.y) < radius) {
@@ -202,14 +216,43 @@ Vector2D Steering::ObstacleAvoidance()
 	if (possibleCollision != nullptr) {
 		double multiplier = 1.0 + (mininumBoxLength - localPos.x) / mininumBoxLength;
 
-		steeringForce.y = (possibleCollision->GetScale().x - localPos.y) * multiplier;
+		steeringForce.y = (bRadius - localPos.y) * multiplier;
 
 		double breakPower = 0.2;
 
-		steeringForce.x = (possibleCollision->GetScale().x - localPos.x) * breakPower;
+		steeringForce.x = (bRadius - localPos.x) * breakPower;
 	}
 
-	return steeringForce;
+
+	//Vec: steering force
+	//heading: pOwner forward
+	//side: pOwner Side
+
+	XMFLOAT3X3 transform;
+	
+	Vector2D vec = steeringForce;
+	Vector2D forward = pOwner->GetForward();
+	Vector2D side = pOwner->GetSide();
+
+	transform._11 = forward.x;
+	transform._12 = forward.y;
+	transform._13 = 0;
+
+	transform._21 = side.x;
+	transform._22 = side.y;
+	transform._23 = 0;
+
+	transform._31 = 0;
+	transform._32 = 0;
+	transform._33 = 1;
+
+	double tempX = (transform._11 * vec.x) + (transform._21 * vec.y) + (transform._31);
+	double tempY = (transform._12 * vec.x) + (transform._22 * vec.y) + (transform._32);
+	
+	vec.x = tempX;
+	vec.y = tempY;
+
+	return vec;
 }
 
 void Steering::ClearFlags()

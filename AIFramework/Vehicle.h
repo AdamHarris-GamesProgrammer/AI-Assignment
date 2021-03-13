@@ -47,6 +47,10 @@ public:
 		_wanderTarget = val;
 	}
 
+	Vector2D GetSide() const {
+		return _side;
+	}
+
 protected:
 	float m_maxSpeed;
 	float m_currentSpeed;
