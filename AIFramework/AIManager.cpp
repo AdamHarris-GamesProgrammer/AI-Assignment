@@ -120,8 +120,6 @@ void AIManager::Render(const float fDeltaTime)
 		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
-	AddItemToDrawList(GetWaypoint(4, 5));
-
 	for (unsigned int i = 0; i < m_pickups.size(); i++) {
 		m_pickups[i]->update(fDeltaTime);
 		AddItemToDrawList(m_pickups[i]);

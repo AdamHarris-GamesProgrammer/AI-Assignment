@@ -24,7 +24,7 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Wander();
 	}
 	if (IsOn(obstacle_avoidance)) {
-		_steeringForce += ObstacleAvoidance() * 10.0;
+		_steeringForce += ObstacleAvoidance() * 4.0;
 	}
 
 
@@ -157,20 +157,33 @@ void Steering::ObstacleAvoidanceOff()
 
 Vector2D Steering::ObstacleAvoidance()
 {
-	Vector2D localPos = pOwner->GetOtherVehicle()->GetVectorPosition() - pOwner->GetVectorPosition();
+	//Vector2D localPos = pOwner->GetOtherVehicle()->GetVectorPosition() - pOwner->GetVectorPosition();
 	//localPos.x = -localPos.x;
 	//localPos.y = -localPos.y;
 
-	//C2DMatrix matTransform;
+	XMFLOAT3X3 matTransform;
 
-	//double Tx = -AgentPosition.Dot(AgentHeading);
-	//double Ty = -AgentPosition.Dot(AgentSide);
+	double Tx = -pOwner->GetVectorPosition().Dot(pOwner->GetForward());
+	double Ty = -pOwner->GetVectorPosition().Dot(pOwner->GetSide());
 
-	////create the transformation matrix
-	//matTransform._11(AgentHeading.x); matTransform._12(AgentSide.x);
-	//matTransform._21(AgentHeading.y); matTransform._22(AgentSide.y);
-	//matTransform._31(Tx);           matTransform._32(Ty);
+	//create the transformation matrix
+	matTransform._11= pOwner->GetForward().x;
+	matTransform._12 = pOwner->GetSide().x;
+	matTransform._21= pOwner->GetForward().y;
+	matTransform._22= pOwner->GetSide().y;
+	matTransform._31= Tx;      
+	matTransform._32= Ty;
 
+
+	Vector2D otherPos = pOwner->GetOtherVehicle()->GetVectorPosition();
+
+	double tempX = (matTransform._11 * otherPos.x) + (matTransform._21 * otherPos.y) + (matTransform._31);
+	double tempY = (matTransform._12 * otherPos.x) + (matTransform._22 * otherPos.y) + (matTransform._32);
+
+	otherPos.x = tempX;
+	otherPos.y = tempY;
+
+	Vector2D localPos = otherPos;
 
 	Vehicle* possibleCollision = nullptr;
 
@@ -246,8 +259,8 @@ Vector2D Steering::ObstacleAvoidance()
 	transform._32 = 0;
 	transform._33 = 1;
 
-	double tempX = (transform._11 * vec.x) + (transform._21 * vec.y) + (transform._31);
-	double tempY = (transform._12 * vec.x) + (transform._22 * vec.y) + (transform._32);
+	tempX = (transform._11 * vec.x) + (transform._21 * vec.y) + (transform._31);
+	tempY = (transform._12 * vec.x) + (transform._22 * vec.y) + (transform._32);
 	
 	vec.x = tempX;
 	vec.y = tempY;
