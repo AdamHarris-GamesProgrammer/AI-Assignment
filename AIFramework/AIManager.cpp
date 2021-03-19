@@ -31,10 +31,10 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
-	_pRaceCar->setMaxSpeed(150.0f);
+	_pRaceCar->SetMaxSpeed(150.0f);
 
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds");
-	_pDodgeCar->setMaxSpeed(50.0f);
+	_pDodgeCar->SetMaxSpeed(50.0f);
 
 	InitializeWaypoints(pd3dDevice);
 
@@ -44,11 +44,11 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
 	_pRaceCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
-	_pRaceCar->setPositionTo(Vector2D(0, 0));
+	_pRaceCar->SetPositionTo(Vector2D(0, 0));
 
 	Vector2D dodgePosition = GetWaypoint(11, 16)->GetVectorPosition();
 	_pDodgeCar->setPosition(XMFLOAT3(dodgePosition.x, dodgePosition.y, 0.0f));
-	_pDodgeCar->setPositionTo(Vector2D(0, 0));
+	_pDodgeCar->SetPositionTo(Vector2D(0, 0));
 
 	_pRaceCar->InitializeStates();
 	_pDodgeCar->InitializeStates();

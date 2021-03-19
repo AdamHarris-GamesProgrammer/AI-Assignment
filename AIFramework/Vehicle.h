@@ -21,55 +21,112 @@ public:
 
 	void DrawUI();
 
-	void setMaxSpeed(const float maxSpeed);
-	void setCurrentSpeed(const float speed); // a ratio: a value between 0 and 1 (1 being max speed)
-	void setPositionTo(Vector2D positionTo); // a position to move to
-	void setVehiclePosition(Vector2D position); // the current position - this resets positionTo
-	float GetMaxSpeed();
-	Vector2D GetVelocity();
-
-	float GetCurrentSpeed() const;
-
-	void SetSteeringTarget(Vector2D pos);
-
-	Steering* GetSteering();
-
-	Vector2D GetForward() const;
-
-	void SetWaypoints(std::vector<Waypoint*> waypoints);
-	Waypoint* GetWaypoint(const int x, const int y);
-
-	Vector2D GetWanderTarget() const {
-		return _wanderTarget;
-	}
-
-	void SetWanderTarget(Vector2D val) {
-		_wanderTarget = val;
-	}
-
+#pragma region Getters
 	Vector2D GetSide() const {
 		return _side;
 	}
-
 	bool GetActive() const {
 		return _isActive;
 	}
+	Waypoint* GetWaypoint(const int x, const int y)
+	{
+		if (x < 0 || y < 0) return nullptr;
 
+		if (x >= 20 || y >= 20) return nullptr;
+
+		assert(x >= 0 && x < 20);
+		assert(y >= 0 && y < 20);
+
+		return _waypoints[y * 20 + x];
+	}
+	Vector2D GetWanderTarget() const {
+		return _wanderTarget;
+	}
+	Steering* GetSteering()
+	{
+		return pSteering;
+	}
+	Vector2D GetForward() const
+	{
+		return _forward;
+	}
+	float GetMaxSpeed() const
+	{
+		return _maxSpeed;
+	}
+	Vector2D GetVelocity() const
+	{
+		return _velocity;
+	}
+	float GetCurrentSpeed() const
+	{
+		return _currentSpeed;
+	}
+	Vector2D GetTarget()
+	{
+		return _positionTo;
+	}
+#pragma endregion
+
+#pragma region Setters
 	void SetActive(bool val = true) {
 		_isActive = val;
 	}
+	void SetWanderTarget(Vector2D val) {
+		_wanderTarget = val;
+	}
+	void SetWaypoints(std::vector<Waypoint*> waypoints)
+	{
+		_waypoints = waypoints;
+	}
+	void SetSteeringTarget(Vector2D pos);
+	void SetMaxSpeed(const float maxSpeed)
+	{
+		_maxSpeed = maxSpeed;
+	}
+	// a ratio: a value between 0 and 1 (1 being max speed)
+	void SetCurrentSpeed(const float speed)
+	{
+		_currentSpeed = _maxSpeed * speed;
+		_currentSpeed = max(0, _currentSpeed);
+		_currentSpeed = min(1, _currentSpeed);
+	} // a ratio: a value between 0 and 1 (1 being max speed)
+											 // a position to move to
+	void SetPositionTo(Vector2D positionTo)
+	{
+		_startPosition = _currentPosition;
+		_positionTo = positionTo;
+
+	} // a position to move to
+
+	// the current position
+	void SetVehiclePosition(Vector2D position) // the current position - this resets positionTo
+	{
+		_currentPosition = position;
+		_positionTo = position;
+		_startPosition = position;
+		_lastPosition = position;
+		setPosition(XMFLOAT3((float)position.x, (float)position.y, 0));
+	}
+	void SetOtherVehicle(Vehicle* vehicle) {
+		_pOtherVehicle = vehicle;
+	}
+	Vehicle* GetOtherVehicle() const {
+		return _pOtherVehicle;
+	}
+#pragma endregion
 
 protected:
-	float m_maxSpeed;
-	float m_currentSpeed;
+	float _maxSpeed;
+	float _currentSpeed;
 	float _mass = 1.0f;
 
 	bool _isActive = true;
 
-	Vector2D m_currentPosition;
-	Vector2D m_startPosition;
-	Vector2D m_positionTo;
-	Vector2D m_lastPosition;
+	Vector2D _currentPosition;
+	Vector2D _startPosition;
+	Vector2D _positionTo;
+	Vector2D _lastPosition;
 	Vector2D _velocity;
 
 	Vector2D _wanderTarget;
@@ -78,29 +135,11 @@ protected:
 
 	Vector2D _side;
 
-
-
 	VehicleFSM* pFSM = nullptr;
 
 	vector<Waypoint*> _waypoints;
 
 	Vehicle* _pOtherVehicle;
-
-public:
-	Vector2D GetTarget();
-
-	void SetOtherVehicle(Vehicle* vehicle) {
-		_pOtherVehicle = vehicle;
-	}
-
-	Vehicle* GetOtherVehicle() const {
-		return _pOtherVehicle;
-	}
-private:
 };
 
 #endif // !VEHICHLE_H
-
-
-
-

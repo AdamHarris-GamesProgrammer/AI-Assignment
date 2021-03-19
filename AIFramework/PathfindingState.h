@@ -40,7 +40,7 @@ public:
 
 			_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-			pOwner->setPositionTo(_targetPosition);
+			pOwner->SetPositionTo(_targetPosition);
 		}
 
 
@@ -82,7 +82,7 @@ private:
 
 		_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-		pOwner->setPositionTo(_targetPosition);
+		pOwner->SetPositionTo(_targetPosition);
 	}
 
 private:

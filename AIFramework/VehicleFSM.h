@@ -63,7 +63,7 @@ public:
 			Section3AI();
 		}
 
-
+		ImGui::End();
 
 		switch (_section)
 		{
@@ -136,6 +136,7 @@ private:
 				DisableBehaviors();
 				_isPursuing = true;
 				pSteeringState->Pursuit();
+				_pOwner->GetOtherVehicle()->SetActive();
 			}
 			else if (ImGui::RadioButton("Obstacle Avoidance", _isAvoiding)) {
 				DisableBehaviors();
