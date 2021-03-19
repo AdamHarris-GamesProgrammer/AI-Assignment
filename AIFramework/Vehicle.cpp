@@ -76,46 +76,8 @@ void Vehicle::DrawUI()
 	ImGui::Text("Wander Target: %f, %f", _wanderTarget.x, _wanderTarget.y);
 	ImGui::End();
 
+	pFSM->DrawUI();
 
-	//Checks to see if the user is pressing any of the radio buttons
-	ImGui::Begin("AI Control Panel");
-	if (ImGui::RadioButton("Steering", _isSteering)) {
-		_isSteering = true;
-		_isPathfinding = false;
-		_isDecisionMaking = false;
-		DisableBehaviors();
-
-		pFSM->Section1AI();
-	}
-	else if (ImGui::RadioButton("Pathfinding", _isPathfinding)) {
-		_isPathfinding = true;
-		_isSteering = false;
-		_isDecisionMaking = false;
-		DisableBehaviors();
-		
-		pFSM->Section2AI();
-	}
-	else if (ImGui::RadioButton("Decision Making", _isDecisionMaking)) {
-		_isDecisionMaking = true;
-		_isSteering = false;
-		_isPathfinding = false;
-		DisableBehaviors();
-
-		_pOtherVehicle->SetActive(true);
-
-		pFSM->Section3AI();
-	}
-
-	if (_isSteering) {
-		DrawSteeringOptions();
-
-	}
-	else if (_isPathfinding) {
-		DrawPathfindingOptions();
-	}
-	else if (_isDecisionMaking) {
-		DrawDecisionMakingOptions();
-	}
 	ImGui::End();
 }
 
@@ -204,60 +166,4 @@ Vector2D Vehicle::GetTarget()
 	return m_positionTo;
 }
 
-void Vehicle::DrawSteeringOptions()
-{
-	ImGui::Text("Steering Options");
-	if (ImGui::RadioButton("Seek", _isSeeking)) {
-		DisableBehaviors();
-		_isSeeking = true;
-		pFSM->SeekOn();
-	}
-	else if (ImGui::RadioButton("Flee", _isFleeing)) {
-		DisableBehaviors();
-		_isFleeing = true;
-		pFSM->FleeOn();
-	}
-	else if (ImGui::RadioButton("Arrive", _isArriving)) {
-		DisableBehaviors();
-		_isArriving = true;
-		pFSM->ArriveOn();
-	}
-	else if (ImGui::RadioButton("Pursuit", _isPursuing)) {
-		DisableBehaviors();
-		_isPursuing = true;
-		pFSM->PursuitOn();
-	}
-	else if (ImGui::RadioButton("Obstacle Avoidance", _isAvoiding)) {
-		DisableBehaviors();
-		_isSteering = true;
-		_pOtherVehicle->SetActive();
-		pFSM->ObstacleAvoidanceOn();
-	}
-	else if (ImGui::RadioButton("Wandering", _isWandering)) {
-		DisableBehaviors();
-		_isWandering = true;
-		pSteering->NewWanderTarget();
-		pFSM->WanderingOn();
-	}
-}
 
-void Vehicle::DisableBehaviors()
-{
-	_isSeeking = false;
-	_isFleeing = false;
-	_isArriving = false;
-	_isPursuing = false;
-	_isAvoiding = false;
-	_isWandering = false;
-	_pOtherVehicle->SetActive(false);
-}
-
-void Vehicle::DrawPathfindingOptions()
-{
-
-}
-
-void Vehicle::DrawDecisionMakingOptions()
-{
-	
-}

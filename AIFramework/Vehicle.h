@@ -64,20 +64,6 @@ protected:
 	float m_currentSpeed;
 	float _mass = 1.0f;
 
-
-	bool _isSteering = false;
-	bool _isPathfinding = true;
-	bool _isDecisionMaking = false;
-
-
-	//Steering Settings
-	bool _isSeeking = false;
-	bool _isFleeing = false;
-	bool _isArriving = false;
-	bool _isPursuing = false;
-	bool _isAvoiding = false;
-	bool _isWandering = false;
-
 	bool _isActive = true;
 
 	Vector2D m_currentPosition;
@@ -111,10 +97,6 @@ public:
 		return _pOtherVehicle;
 	}
 private:
-	void DrawSteeringOptions();
-	void DisableBehaviors();
-	void DrawPathfindingOptions();
-	void DrawDecisionMakingOptions();
 };
 
 #endif // !VEHICHLE_H
