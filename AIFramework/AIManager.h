@@ -45,9 +45,6 @@ protected:
 	bool	checkForCollisions();
 
 private:
-	Vector2D ConvertPosition(Vector2D pos);
-
-
 	vecWaypoints            m_waypoints;
 	vecPickups              m_pickups;
 	Vehicle*				_pRaceCar = nullptr;

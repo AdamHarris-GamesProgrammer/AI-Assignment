@@ -55,6 +55,7 @@ public:
 
 	void ObstacleAvoidance() {
 		pOwner->GetSteering()->ClearFlags();
+		pOwner->GetSteering()->SeekOn();
 		pOwner->GetSteering()->ObstacleAvoidanceOn();
 	}
 

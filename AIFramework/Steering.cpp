@@ -157,10 +157,6 @@ void Steering::ObstacleAvoidanceOff()
 
 Vector2D Steering::ObstacleAvoidance()
 {
-	//Vector2D localPos = pOwner->GetOtherVehicle()->GetVectorPosition() - pOwner->GetVectorPosition();
-	//localPos.x = -localPos.x;
-	//localPos.y = -localPos.y;
-
 	XMFLOAT3X3 matTransform;
 
 	double Tx = -pOwner->GetVectorPosition().Dot(pOwner->GetForward());
@@ -280,8 +276,11 @@ bool Steering::IsOn(BehaviorType bt)
 
 void Steering::NewWanderTarget()
 {
+	//Generates a random wander target in the screen bounds
 	Vector2D randomTarget = Vector2D(rand() % 1024, rand() % 768);
 
+	//The left bound of the screen is -512 so to get this in the range
+	//we subtract half  of our screen width from the random location
 	randomTarget.x -= 1024 / 2;
 	randomTarget.y -= 768 / 2;
 

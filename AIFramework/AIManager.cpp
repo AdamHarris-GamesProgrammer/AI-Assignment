@@ -56,6 +56,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
 
+	_pDodgeCar->SetActive(false);
 	
 
 	return hr;
@@ -63,12 +64,13 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 {
-	// create the waypoints
+	//Calculate shared values for each waypoiny
 	float xGap = SCREEN_WIDTH / WAYPOINT_RESOLUTION;
 	float yGap = SCREEN_HEIGHT / WAYPOINT_RESOLUTION;
 	float xStart = -(SCREEN_WIDTH / 2) + (xGap / 2);
 	float yStart = -(SCREEN_HEIGHT / 2) + (yGap / 2);
 
+	//Adds the waypoints to the mesh system
 	unsigned int index = 0;
 	for (unsigned int j = 0; j < WAYPOINT_RESOLUTION; j++) {
 		for (unsigned int i = 0; i < WAYPOINT_RESOLUTION; i++) {
@@ -84,7 +86,12 @@ void AIManager::update(const float fDeltaTime)
 {
 	_pRaceCar->update(fDeltaTime);
 
-	_pDodgeCar->update(fDeltaTime);
+
+	//Checks we are active 
+	if (_pDodgeCar->GetActive()) {
+		_pDodgeCar->update(fDeltaTime);
+	}
+
 
 	checkForCollisions();
 	Render(fDeltaTime);
@@ -126,11 +133,15 @@ void AIManager::Render(const float fDeltaTime)
 	}
 
 	AddItemToDrawList(_pRaceCar);
-	AddItemToDrawList(_pDodgeCar);
+
+	if (_pDodgeCar->GetActive()) {
+		AddItemToDrawList(_pDodgeCar);
+	}
 }
 
 void AIManager::mouseUp(int x, int y)
 {
+	//If we are not over a menu then set our steering target
 	if (!_inMenus) { 
 		_pRaceCar->SetSteeringTarget(Vector2D(x, y));
 	}
@@ -205,12 +216,4 @@ bool AIManager::checkForCollisions()
 	}
 
 	return false;
-}
-
-Vector2D AIManager::ConvertPosition(Vector2D pos)
-{
-	Vector2D val;
-	val.x = (int)pos.x / 51.2;
-	val.y = (int)pos.y / 38.4;
-	return val;
 }

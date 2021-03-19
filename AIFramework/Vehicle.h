@@ -51,6 +51,14 @@ public:
 		return _side;
 	}
 
+	bool GetActive() const {
+		return _isActive;
+	}
+
+	void SetActive(bool val = true) {
+		_isActive = val;
+	}
+
 protected:
 	float m_maxSpeed;
 	float m_currentSpeed;
@@ -70,7 +78,7 @@ protected:
 	bool _isAvoiding = false;
 	bool _isWandering = false;
 
-
+	bool _isActive = true;
 
 	Vector2D m_currentPosition;
 	Vector2D m_startPosition;
@@ -104,6 +112,7 @@ public:
 	}
 private:
 	void DrawSteeringOptions();
+	void DisableBehaviors();
 	void DrawPathfindingOptions();
 	void DrawDecisionMakingOptions();
 };
