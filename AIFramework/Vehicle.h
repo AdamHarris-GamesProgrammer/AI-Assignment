@@ -4,13 +4,14 @@
 #include "DrawableGameObject.h"
 #include "Imgui/imgui.h"
 #include "Vector2D.h"
+#include "Observer.h"
 
 
 
 class VehicleFSM;
 class Steering;
 
-class Vehicle : public DrawableGameObject
+class Vehicle : public DrawableGameObject, public Observer
 {
 	Steering* pSteering;
 public:
@@ -115,6 +116,12 @@ public:
 		return _pOtherVehicle;
 	}
 #pragma endregion
+
+
+	void OnNotify(const Entity& entity, Event event) override;
+
+
+	void OnNotify(Event event) override;
 
 protected:
 	float _maxSpeed;

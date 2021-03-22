@@ -24,10 +24,9 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
 	// create a pickup item ----------------------------------------------
-
-	PickupItem* pPickup = new PickupItem();
-	HRESULT hr = pPickup->initMesh(pd3dDevice);
-	m_pickups.push_back(pPickup);
+	_pPickup = new PickupItem();
+	HRESULT hr = _pPickup->initMesh(pd3dDevice);
+		
 
 
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
@@ -36,7 +35,21 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds");
 	_pDodgeCar->SetMaxSpeed(50.0f);
 
+	_pPickup->AddObserver(_pRaceCar);
+	
+
 	InitializeWaypoints(pd3dDevice);
+
+	std::vector<Vector2D> placeablePoints;
+	for (int i = 0; i < m_waypoints.size(); i++) {
+		if (m_waypoints[i]->isOnTrack()) {
+			placeablePoints.push_back(m_waypoints[i]->GetVectorPosition());
+		}
+	}
+
+	_pPickup->SetPlaceablePositions(placeablePoints);
+
+	_pPickup->GenerateNewPosition();
 
 	_pRaceCar->SetWaypoints(m_waypoints);
 	_pDodgeCar->SetWaypoints(m_waypoints);
@@ -93,7 +106,7 @@ void AIManager::update(const float fDeltaTime)
 	}
 
 
-	checkForCollisions();
+	CollisionDetection();
 	Render(fDeltaTime);
 
 }
@@ -127,10 +140,9 @@ void AIManager::Render(const float fDeltaTime)
 		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
-	for (unsigned int i = 0; i < m_pickups.size(); i++) {
-		m_pickups[i]->update(fDeltaTime);
-		AddItemToDrawList(m_pickups[i]);
-	}
+
+	_pPickup->update(fDeltaTime);
+	AddItemToDrawList(_pPickup);
 
 	AddItemToDrawList(_pRaceCar);
 
@@ -153,7 +165,7 @@ void AIManager::keyPress(WPARAM param)
 	{
 	case VK_NUMPAD0:
 	{
-		OutputDebugStringA("0 pressed \n");
+		
 		break;
 	}
 	case VK_NUMPAD1:
@@ -170,11 +182,8 @@ void AIManager::keyPress(WPARAM param)
 	}
 }
 
-bool AIManager::checkForCollisions()
+bool AIManager::CollisionDetection()
 {
-	if (m_pickups.size() == 0)
-		return false;
-
 	XMVECTOR dummy;
 
 	// the car
@@ -200,7 +209,7 @@ bool AIManager::checkForCollisions()
 		&puScale,
 		&dummy,
 		&puPos,
-		XMLoadFloat4x4(m_pickups[0]->getTransform())
+		XMLoadFloat4x4(_pPickup->getTransform())
 	);
 
 	XMStoreFloat3(&scale, puScale);
@@ -211,7 +220,7 @@ bool AIManager::checkForCollisions()
 	// test
 	if (boundingSphereCar.Intersects(boundingSpherePU))
 	{
-		OutputDebugStringA("Pickup Collision!\n");
+		_pPickup->GenerateNewPosition();
 		return true;
 	}
 

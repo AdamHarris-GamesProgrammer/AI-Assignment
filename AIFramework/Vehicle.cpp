@@ -84,3 +84,22 @@ void Vehicle::SetSteeringTarget(Vector2D pos)
 		SetPositionTo(pos);
 	}
 }
+
+void Vehicle::OnNotify(const Entity& entity, Event event)
+{
+	
+}
+
+void Vehicle::OnNotify(Event event)
+{
+	switch (event)
+	{
+	case PICKUP_SPAWNED:
+		//TODO Add in move to pickup logic
+
+
+		break;
+	default:
+		break;
+	}
+}

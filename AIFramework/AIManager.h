@@ -42,11 +42,12 @@ public:
 	void	keyPress(WPARAM param);
 
 protected:
-	bool	checkForCollisions();
+	bool	CollisionDetection();
 
 private:
 	vecWaypoints            m_waypoints;
-	vecPickups              m_pickups;
+	//vecPickups              m_pickups;
+	PickupItem* _pPickup;
 	Vehicle*				_pRaceCar = nullptr;
 	Vehicle* _pDodgeCar = nullptr;
 

@@ -125,6 +125,18 @@
     <ClInclude Include="SteeringState.h">
       <Filter>FSM\States</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>ObserverPattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -176,6 +188,9 @@
     </Filter>
     <Filter Include="FSM\States">
       <UniqueIdentifier>{7ce41f8c-eabb-4c0c-a28b-c702973aa36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObserverPattern">
+      <UniqueIdentifier>{c4a4bc38-e69c-4522-a114-15247dc3eaee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

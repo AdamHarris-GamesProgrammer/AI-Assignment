@@ -390,6 +390,8 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DrawableGameObject.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="FSMManager.h" />
     <ClInclude Include="ImGUIManager.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -404,6 +406,7 @@
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="PickupItem.h" />
@@ -412,6 +415,7 @@
     <ClInclude Include="Steering.h" />
     <ClInclude Include="SteeringState.h" />
     <ClInclude Include="structures.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackConverter.h" />
     <ClInclude Include="TrackReader.h" />
