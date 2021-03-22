@@ -42,7 +42,7 @@ public:
 	void	keyPress(WPARAM param);
 
 protected:
-	bool	CollisionDetection();
+	void	CollisionDetection();
 
 private:
 	vecWaypoints            m_waypoints;

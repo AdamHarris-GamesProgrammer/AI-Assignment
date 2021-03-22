@@ -128,6 +128,12 @@ protected:
 	float _currentSpeed;
 	float _mass = 1.0f;
 
+	float _steerSpeedFactor = 1.0f;
+
+	float _speedBoostDuration = 3.0f;
+	float _speedBoostTimer = _speedBoostDuration;
+	bool _isSpeedBoostActive = false;
+
 	bool _isActive = true;
 
 	Vector2D _currentPosition;

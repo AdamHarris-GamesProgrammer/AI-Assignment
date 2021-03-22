@@ -16,6 +16,18 @@ HRESULT	PickupItem::initMesh(ID3D11Device* pd3dDevice)
 	return hr;
 }
 
+void PickupItem::CollisionResolution()
+{
+	_timer = _timeBetweenPickups;
+	_isPickedUp = true;
+
+	//Move pickup off screen instead of deleting it
+	setPosition(XMFLOAT3(1000.0f, 1000.0f, 0.0f));
+
+	//Notifies observers that a pickup has been collected
+	Notify(PICKUP_COLLECTED);
+}
+
 void PickupItem::GenerateNewPosition()
 {
 	//Generates a index between 0 and the length of the vector
@@ -35,6 +47,26 @@ void PickupItem::GenerateNewPosition()
 	_position.y -= SCREEN_HEIGHT / 2;
 
 	setPosition(XMFLOAT3(_position.x, _position.y, 0.0f));
+}
 
-	Notify(PICKUP_SPAWNED);
+void PickupItem::update(const float t)
+{
+	if (_isPickedUp) {
+		_timer -= t;
+
+		if (_timer <= 0.0f) {
+			GenerateNewPosition();
+
+			//Notifies observers that a pickup has spawned
+			Notify(PICKUP_SPAWNED);
+
+			//Reset our timer logic
+			_isPickedUp = false;
+			_timer = _timeBetweenPickups;
+		}
+
+	}
+
+
+	DrawableGameObject::update(t);
 }

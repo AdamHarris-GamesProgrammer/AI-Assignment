@@ -32,13 +32,26 @@ void Vehicle::update(const float deltaTime)
 	Vector2D steeringForce;
 	steeringForce = pSteering->CalculateForce();
 
-	Vector2D acceleration = steeringForce / _mass;
+	if (_isSpeedBoostActive)
+	{
+		_speedBoostTimer -= deltaTime;
+		if (_speedBoostTimer <= 0.0f) {
+			_isSpeedBoostActive = false;
+			_steerSpeedFactor = 1.0f;
+		}
+	}
+
+	Vector2D acceleration = (steeringForce * _steerSpeedFactor) / _mass;
 
 	_velocity += acceleration * deltaTime;
+
+	//Stops the velocity going beyond our maximum speed
 	_velocity.Truncate(_maxSpeed);
 
+	//Adds the velocity to our current position
 	_currentPosition += _velocity * deltaTime;
 
+	//Calculates our current speed (used in steering behaviors) 
 	_currentSpeed = _velocity.Length();
 
 	// rotate the object based on its last & current position
@@ -56,7 +69,7 @@ void Vehicle::update(const float deltaTime)
 	//Calculate the right vector
 	_side = _forward.Perp();
 
-	// set the current position for the drawable gameobject
+	// set the current position for the drawable Gameobject
 	setPosition(XMFLOAT3((float)_currentPosition.x, (float)_currentPosition.y, 0));
 
 	DrawableGameObject::update(deltaTime);
@@ -71,6 +84,15 @@ void Vehicle::DrawUI()
 	ImGui::Text("Target Rotation: %f", m_targetRotation);
 	ImGui::Text("Forward Vector: %f, %f", _forward.x, _forward.y);
 	ImGui::Text("Wander Target: %f, %f", _wanderTarget.x, _wanderTarget.y);
+
+	if (_isSpeedBoostActive) {
+		ImGui::Text("Speed boost active, time left: %f", _speedBoostTimer);
+	}
+	else
+	{
+		ImGui::Text("Speed boost inactive");
+	}
+
 	ImGui::End();
 
 
@@ -95,9 +117,14 @@ void Vehicle::OnNotify(Event event)
 	switch (event)
 	{
 	case PICKUP_SPAWNED:
-		//TODO Add in move to pickup logic
+		//TODO Add in pickup to vehicle AI system
 
 
+		break;
+	case PICKUP_COLLECTED:
+		_isSpeedBoostActive = true;
+		_speedBoostTimer = _speedBoostDuration;
+		_steerSpeedFactor = 4.5f;
 		break;
 	default:
 		break;

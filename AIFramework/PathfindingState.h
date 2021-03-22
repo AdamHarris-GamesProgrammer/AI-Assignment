@@ -18,8 +18,7 @@ public:
 		pTrack = new Track("Resources/waypoints.txt");
 
 		pOwner->GetSteering()->SeekOn();
-		pOwner->GetSteering()->ObstacleAvoidanceOn();
-
+		
 		NextTarget();
 	}
 

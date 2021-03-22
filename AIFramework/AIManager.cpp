@@ -182,25 +182,44 @@ void AIManager::keyPress(WPARAM param)
 	}
 }
 
-bool AIManager::CollisionDetection()
+void AIManager::CollisionDetection()
 {
 	XMVECTOR dummy;
 
-	// the car
-	XMVECTOR carPos;
-	XMVECTOR carScale;
+	// the race car
+	XMVECTOR raceCarPos;
+	XMVECTOR raceCarScale;
 	XMMatrixDecompose(
-		&carScale,
+		&raceCarScale,
 		&dummy,
-		&carPos,
+		&raceCarPos,
 		XMLoadFloat4x4(_pRaceCar->getTransform())
 	);
 
-	XMFLOAT3 scale;
-	XMStoreFloat3(&scale, carScale);
-	BoundingSphere boundingSphereCar;
-	XMStoreFloat3(&boundingSphereCar.Center, carPos);
-	boundingSphereCar.Radius = scale.x;
+	XMFLOAT3 raceScale;
+	XMStoreFloat3(&raceScale, raceCarScale);
+	BoundingSphere bsRaceCar;
+	XMStoreFloat3(&bsRaceCar.Center, raceCarPos);
+	bsRaceCar.Radius = raceScale.x;
+
+
+
+	// the dodge car
+	XMVECTOR dodgeCarPos;
+	XMVECTOR dodgeCarScale;
+	XMMatrixDecompose(
+		&dodgeCarScale,
+		&dummy,
+		&dodgeCarPos,
+		XMLoadFloat4x4(_pDodgeCar->getTransform())
+	);
+
+	XMFLOAT3 dodgeScale;
+	XMStoreFloat3(&dodgeScale, dodgeCarScale);
+	BoundingSphere bsDodgeCar;
+	XMStoreFloat3(&bsDodgeCar.Center, dodgeCarPos);
+	bsDodgeCar.Radius = dodgeScale.x;
+
 
 	// a pickup - !! NOTE it is only referring the first one in the list !!
 	XMVECTOR puPos;
@@ -212,17 +231,22 @@ bool AIManager::CollisionDetection()
 		XMLoadFloat4x4(_pPickup->getTransform())
 	);
 
-	XMStoreFloat3(&scale, puScale);
+	XMStoreFloat3(&raceScale, puScale);
 	BoundingSphere boundingSpherePU;
 	XMStoreFloat3(&boundingSpherePU.Center, puPos);
-	boundingSpherePU.Radius = scale.x;
+	boundingSpherePU.Radius = raceScale.x;
 
 	// test
-	if (boundingSphereCar.Intersects(boundingSpherePU))
+	if (bsRaceCar.Intersects(boundingSpherePU))
 	{
-		_pPickup->GenerateNewPosition();
-		return true;
+		_pPickup->CollisionResolution();
+
+		//TODO: Speed up race car
 	}
 
-	return false;
+	if (bsRaceCar.Intersects(bsDodgeCar)) {
+		//TODO: Slow down race car upon collision with dodge car
+
+
+	}
 }
