@@ -59,7 +59,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pRaceCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
 	_pRaceCar->SetPositionTo(Vector2D(0, 0));
 
-	Vector2D dodgePosition = GetWaypoint(11, 16)->GetVectorPosition();
+	Vector2D dodgePosition = GetWaypoint(9, 16)->GetVectorPosition();
 	_pDodgeCar->setPosition(XMFLOAT3(dodgePosition.x, dodgePosition.y, 0.0f));
 	_pDodgeCar->SetPositionTo(Vector2D(0, 0));
 
@@ -221,7 +221,7 @@ void AIManager::CollisionDetection()
 	bsDodgeCar.Radius = dodgeScale.x;
 
 
-	// a pickup - !! NOTE it is only referring the first one in the list !!
+	//Pickup system
 	XMVECTOR puPos;
 	XMVECTOR puScale;
 	XMMatrixDecompose(
@@ -240,13 +240,11 @@ void AIManager::CollisionDetection()
 	if (bsRaceCar.Intersects(boundingSpherePU))
 	{
 		_pPickup->CollisionResolution();
-
-		//TODO: Speed up race car
 	}
 
 	if (bsRaceCar.Intersects(bsDodgeCar)) {
 		//TODO: Slow down race car upon collision with dodge car
-
+		_pRaceCar->ActivateCollisionPenalty();
 
 	}
 }

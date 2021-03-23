@@ -62,9 +62,7 @@ public:
 
 			Section3AI();
 		}
-
-		ImGui::End();
-
+		
 		switch (_section)
 		{
 		case steering:
@@ -79,6 +77,8 @@ public:
 		default:
 			break;
 		}
+
+		ImGui::End();
 	}
 
 	void Section1AI() {

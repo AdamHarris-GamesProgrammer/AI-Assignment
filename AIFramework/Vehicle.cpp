@@ -32,11 +32,21 @@ void Vehicle::update(const float deltaTime)
 	Vector2D steeringForce;
 	steeringForce = pSteering->CalculateForce();
 
+
+
 	if (_isSpeedBoostActive)
 	{
 		_speedBoostTimer -= deltaTime;
 		if (_speedBoostTimer <= 0.0f) {
 			_isSpeedBoostActive = false;
+			_steerSpeedFactor = 1.0f;
+		}
+	}
+
+	if (_isCollisionPenaltyActive) {
+		_collisionPenaltyTimer -= deltaTime;
+		if (_collisionPenaltyTimer <= 0.0f) {
+			_isCollisionPenaltyActive = false;
 			_steerSpeedFactor = 1.0f;
 		}
 	}
@@ -93,10 +103,25 @@ void Vehicle::DrawUI()
 		ImGui::Text("Speed boost inactive");
 	}
 
+	if (_isCollisionPenaltyActive) {
+		ImGui::Text("Collision Penalty active, time left: %f", _collisionPenaltyTimer);
+	}
+	else {
+		ImGui::Text("No Collision Penalty");
+	}
+
 	ImGui::End();
 
 
 	pFSM->DrawUI();
+
+}
+
+void Vehicle::ActivateCollisionPenalty()
+{
+	_isCollisionPenaltyActive = true;
+	_collisionPenaltyTimer = _collisionPenaltyDuration;
+	_steerSpeedFactor = _collisionSpeedFactor;
 
 }
 
@@ -124,7 +149,8 @@ void Vehicle::OnNotify(Event event)
 	case PICKUP_COLLECTED:
 		_isSpeedBoostActive = true;
 		_speedBoostTimer = _speedBoostDuration;
-		_steerSpeedFactor = 4.5f;
+		_steerSpeedFactor = _pickupSpeedFactor;
+		;
 		break;
 	default:
 		break;

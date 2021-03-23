@@ -22,6 +22,8 @@ public:
 
 	void DrawUI();
 
+	void ActivateCollisionPenalty();
+
 #pragma region Getters
 	Vector2D GetSide() const {
 		return _side;
@@ -129,6 +131,12 @@ protected:
 	float _mass = 1.0f;
 
 	float _steerSpeedFactor = 1.0f;
+	float _pickupSpeedFactor = 4.5f;
+	float _collisionSpeedFactor = 0.1f;
+
+	float _collisionPenaltyDuration = 3.0f;
+	float _collisionPenaltyTimer = _collisionPenaltyDuration;
+	bool _isCollisionPenaltyActive = false;
 
 	float _speedBoostDuration = 3.0f;
 	float _speedBoostTimer = _speedBoostDuration;
