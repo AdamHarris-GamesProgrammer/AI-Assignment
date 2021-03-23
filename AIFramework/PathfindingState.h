@@ -36,7 +36,7 @@ public:
 			pTrack->SolvePathToNextPoint(pCurrentNode->pos, Vector2D(11,15));
 			_currentPath = pTrack->GetNodePath();
 
-			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos.x, pCurrentNode->pos.y)->getPosition();
+			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
 
 			_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
@@ -74,7 +74,7 @@ private:
 		_currentPath.pop_back();
 
 
-		XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos.x, pCurrentNode->pos.y)->getPosition();
+		XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
 
 		_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 

@@ -15,7 +15,7 @@ class Vehicle : public DrawableGameObject, public Observer
 {
 	Steering* pSteering;
 public:
-	Vehicle(ID3D11Device* device, std::wstring textureName);
+	Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed);
 	void InitializeStates();
 
 	virtual void update(const float deltaTime);
@@ -41,6 +41,9 @@ public:
 		assert(y >= 0 && y < 20);
 
 		return _waypoints[y * 20 + x];
+	}
+	Waypoint* GetWaypoint(const Vector2D vec) {
+		return GetWaypoint(vec.x, vec.y);
 	}
 	Vector2D GetWanderTarget() const {
 		return _wanderTarget;

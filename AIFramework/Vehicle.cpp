@@ -6,13 +6,12 @@
 
 #define MAX_SPEED 500
 
-Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
+Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed)
+	: _maxSpeed(maxSpeed), _waypoints(waypoints)
 {
 	m_scale = XMFLOAT3(30, 20, 1);
-	SetMaxSpeed(MAX_SPEED);
-	_currentSpeed = _maxSpeed;
 
-	SetVehiclePosition(Vector2D(74.5, 205));
+	SetVehiclePosition(startPos);
 
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);

@@ -23,18 +23,7 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
-	// create a pickup item ----------------------------------------------
-	_pPickup = new PickupItem();
-	HRESULT hr = _pPickup->initMesh(pd3dDevice);
 
-	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
-	_pRaceCar->SetMaxSpeed(150.0f);
-
-	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds");
-	_pDodgeCar->SetMaxSpeed(50.0f);
-
-	_pPickup->AddObserver(_pRaceCar);
-	
 
 	InitializeWaypoints(pd3dDevice);
 
@@ -45,17 +34,18 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 		}
 	}
 
+	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds", 
+		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f); 
+
+	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
+		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 50.0f);
+
+	
+	
+	_pPickup = new PickupItem();
+	HRESULT hr = _pPickup->initMesh(pd3dDevice);
 	_pPickup->SetPlaceablePositions(placeablePoints);
-
 	_pPickup->GenerateNewPosition();
-
-	_pRaceCar->SetWaypoints(m_waypoints);
-	_pDodgeCar->SetWaypoints(m_waypoints);
-
-
-	_pRaceCar->SetVehiclePosition(GetWaypoint(11, 14)->GetVectorPosition());
-
-	_pDodgeCar->SetVehiclePosition(GetWaypoint(10, 16)->GetVectorPosition());
 
 	_pRaceCar->InitializeStates();
 	_pDodgeCar->InitializeStates();
@@ -63,7 +53,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
 
-	
+	_pPickup->AddObserver(_pRaceCar);
 
 	return hr;
 }
