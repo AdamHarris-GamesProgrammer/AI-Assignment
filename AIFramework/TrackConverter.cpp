@@ -101,8 +101,7 @@ bool TrackConverter::ProcessMap(char* map)
 			}
 
 			//Initializes all default values for each node
-			mNodeMap[index].xPos = x;
-			mNodeMap[index].yPos = y;
+			mNodeMap[index].pos = Vector2D(x,y);
 
 
 			//Sets neighbor nodes

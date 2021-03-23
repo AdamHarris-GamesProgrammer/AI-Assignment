@@ -18,7 +18,7 @@ bool Pathfinder::FindPath()
 	auto distance = [](Node* a, Node* b)
 	{
 		//Returns the distance between the two nodes
-		return sqrtf((a->xPos - b->xPos) * (a->xPos - b->xPos) + (a->yPos - b->yPos) * (a->yPos - b->yPos));
+		return Vec2DDistance(a->pos, b->pos);
 	};
 
 	/// <summary>
@@ -36,8 +36,7 @@ bool Pathfinder::FindPath()
 	std::list<Node*> untestedNodes;
 
 	Node* currentNode = new Node();
-	currentNode->xPos = mStartNode->xPos;
-	currentNode->yPos = mStartNode->yPos;
+	currentNode->pos = mStartNode->pos;
 	currentNode->localGoal = 0.0f;
 	currentNode->globalGoal = heuristic(currentNode, mEndNode);
 	currentNode->isObstacle = mStartNode->isObstacle;

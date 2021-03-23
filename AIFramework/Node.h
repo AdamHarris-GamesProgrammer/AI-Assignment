@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Vector2D.h"
 
 /// <summary>
 /// The Node struct is used to represent the information of a cell in the maze
@@ -17,8 +18,10 @@ struct Node {
 	float localGoal = FLT_MAX;
 
 	//X and Y position of the node in the map
-	int xPos = 0;
-	int yPos = 0;
+	/*int xPos = 0;
+	int yPos = 0;*/
+
+	Vector2D pos = Vector2D(0, 0);
 
 	//A vector containing all of the nodes in the maze level
 	std::vector<Node*> neighborNodes;

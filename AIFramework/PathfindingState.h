@@ -1,3 +1,4 @@
+#pragma once
 #include "State.h"
 #include "Vector2D.h"
 #include "Track.h"
@@ -32,10 +33,10 @@ public:
 	void Update(float dt) override {
 		if (GetAsyncKeyState('Q')) {
 			_index = 0;
-			pTrack->SolvePathToNextPoint(Vector2D(pCurrentNode->xPos, pCurrentNode->yPos), Vector2D(11,15));
+			pTrack->SolvePathToNextPoint(pCurrentNode->pos, Vector2D(11,15));
 			_currentPath = pTrack->GetNodePath();
 
-			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->xPos, pCurrentNode->yPos)->getPosition();
+			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos.x, pCurrentNode->pos.y)->getPosition();
 
 			_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
@@ -54,11 +55,7 @@ private:
 	void NextTarget()
 	{
 		if (_currentPath.empty()) {
-			_index++;
-
-			if (_index >= 15) {
-				_index = 0;
-			}
+			_index = (_index + 1) % 15;
 
 			if (_index == 0) {
 
@@ -77,7 +74,7 @@ private:
 		_currentPath.pop_back();
 
 
-		XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->xPos, pCurrentNode->yPos)->getPosition();
+		XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos.x, pCurrentNode->pos.y)->getPosition();
 
 		_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 

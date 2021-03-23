@@ -382,13 +382,13 @@
     <ClCompile Include="TrackConverter.cpp" />
     <ClCompile Include="TrackReader.cpp" />
     <ClCompile Include="Vehicle.cpp" />
-    <ClCompile Include="VehicleFSM.cpp" />
     <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DecisionMakingState.h" />
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.h" />

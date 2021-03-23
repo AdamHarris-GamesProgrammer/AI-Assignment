@@ -4,7 +4,7 @@
 
 #include "VehicleFSM.h"
 
-#define MAX_SPEED 150
+#define MAX_SPEED 500
 
 Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName)
 {
@@ -55,8 +55,14 @@ void Vehicle::update(const float deltaTime)
 
 	_velocity += acceleration * _currentSpeedFactor * deltaTime;
 
-	//Stops the velocity going beyond our maximum speed
-	_velocity.Truncate(_maxSpeed);
+
+	if(!_isSpeedBoostActive)
+	{
+		//Stops the velocity going beyond our maximum speed
+		_velocity.Truncate(_maxSpeed);
+	}
+
+	
 
 	//Adds the velocity to our current position
 	_currentPosition += _velocity * deltaTime;
@@ -89,14 +95,14 @@ void Vehicle::DrawUI()
 {
 	ImGui::Begin("Car Information");
 	ImGui::Text("Car Details");
-	ImGui::Text("Current Position: %f, %f", _currentPosition.x, _currentPosition.y);
-	ImGui::Text("Radian Rotation: %f", m_radianRotation);
-	ImGui::Text("Target Rotation: %f", m_targetRotation);
-	ImGui::Text("Forward Vector: %f, %f", _forward.x, _forward.y);
-	ImGui::Text("Wander Target: %f, %f", _wanderTarget.x, _wanderTarget.y);
+	ImGui::Text("Current Position: %.2f, %.2f", _currentPosition.x, _currentPosition.y);
+	ImGui::Text("Radian Rotation: %.2f", m_radianRotation);
+	ImGui::Text("Velocity: %.2f, %.2f", _velocity.x, _velocity.y);
+	ImGui::Text("Forward Vector: %.2f, %.2f", _forward.x, _forward.y);
+	ImGui::Text("Wander Target: %.2f, %.2f", _wanderTarget.x, _wanderTarget.y);
 
 	if (_isSpeedBoostActive) {
-		ImGui::Text("Speed boost active, time left: %f", _speedBoostTimer);
+		ImGui::Text("Speed boost active, time left: %.2f", _speedBoostTimer);
 	}
 	else
 	{
@@ -104,7 +110,7 @@ void Vehicle::DrawUI()
 	}
 
 	if (_isCollisionPenaltyActive) {
-		ImGui::Text("Collision Penalty active, time left: %f", _collisionPenaltyTimer);
+		ImGui::Text("Collision Penalty active, time left: %.2f", _collisionPenaltyTimer);
 	}
 	else {
 		ImGui::Text("No Collision Penalty");

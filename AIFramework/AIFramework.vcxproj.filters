@@ -51,7 +51,6 @@
     <ClCompile Include="State.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="VehicleFSM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -136,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="DecisionMakingState.h">
+      <Filter>FSM\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

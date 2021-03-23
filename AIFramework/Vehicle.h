@@ -130,10 +130,11 @@ protected:
 	float _currentSpeed;
 	float _mass = 1.0f;
 
-	float _currentSpeedFactor = _steerSpeedFactor;
 	float _steerSpeedFactor = 1.0f;
 	float _pickupSpeedFactor = 4.5f;
 	float _collisionSpeedFactor = 0.1f;
+
+	float _currentSpeedFactor = _steerSpeedFactor;
 
 	float _collisionPenaltyDuration = 3.0f;
 	float _collisionPenaltyTimer = _collisionPenaltyDuration;
