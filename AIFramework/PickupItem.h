@@ -24,6 +24,7 @@ public:
 
     Vector2D GetPosition() const { return _position; }
     Vector2D GetTilePosition() const { return _tilePosition; }
+    bool PickedUp() const { return _isPickedUp; }
 protected:
 
 private:

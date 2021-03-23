@@ -213,14 +213,15 @@ void AIManager::CollisionDetection()
 
 	if (bsRaceCar.Intersects(boundingSpherePU))
 	{
-		_pPickup->CollisionResolution();
+		if (!_pPickup->PickedUp()) {
+			_pPickup->CollisionResolution();
+		}
 	}
 
 	//Dont check for car collisions if they are not active
 	if (_pDodgeCar->GetActive()) {
 		if (raceCarBox.Intersects(dodgeCarBox)) {
 			_pRaceCar->ActivateCollisionPenalty();
-
 		}
 	}
 	

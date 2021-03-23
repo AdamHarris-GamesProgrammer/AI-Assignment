@@ -136,7 +136,7 @@ protected:
 	float _mass = 1.0f;
 
 	float _defaultSpeedFactor = 1.0f;
-	float _pickupSpeedFactor = 1.5f;
+	float _pickupSpeedFactor = 1.1f;
 	float _collisionSpeedFactor = 0.5f;
 
 	float _currentSpeedFactor = _defaultSpeedFactor;
