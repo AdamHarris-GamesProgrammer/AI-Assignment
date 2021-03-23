@@ -120,7 +120,6 @@
     <ClInclude Include="PathfindingState.h">
       <Filter>FSM\States</Filter>
     </ClInclude>
-    <ClInclude Include="VehicleFSM.h" />
     <ClInclude Include="SteeringState.h">
       <Filter>FSM\States</Filter>
     </ClInclude>
@@ -138,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="DecisionMakingState.h">
       <Filter>FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleFSM.h">
+      <Filter>FSM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

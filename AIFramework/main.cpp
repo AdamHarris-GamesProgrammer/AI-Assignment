@@ -154,7 +154,7 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
 	g_viewHeight = height;
 
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
-    g_hWnd = CreateWindow( L"TutorialWindowClass", L"Direct3D 11 Tutorial 5",
+    g_hWnd = CreateWindow( L"TutorialWindowClass", L"Adam Harris - AI Practical Assignment",
                            WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                            CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
                            nullptr );

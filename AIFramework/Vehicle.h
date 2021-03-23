@@ -24,6 +24,8 @@ public:
 
 	void ActivateCollisionPenalty();
 
+	void ResetVehicle();
+
 #pragma region Getters
 	Vector2D GetSide() const {
 		return _side;
@@ -133,11 +135,11 @@ protected:
 	float _currentSpeed;
 	float _mass = 1.0f;
 
-	float _steerSpeedFactor = 1.0f;
-	float _pickupSpeedFactor = 4.5f;
-	float _collisionSpeedFactor = 0.1f;
+	float _defaultSpeedFactor = 1.0f;
+	float _pickupSpeedFactor = 1.5f;
+	float _collisionSpeedFactor = 0.5f;
 
-	float _currentSpeedFactor = _steerSpeedFactor;
+	float _currentSpeedFactor = _defaultSpeedFactor;
 
 	float _collisionPenaltyDuration = 3.0f;
 	float _collisionPenaltyTimer = _collisionPenaltyDuration;
@@ -154,6 +156,7 @@ protected:
 	Vector2D _positionTo;
 	Vector2D _lastPosition;
 	Vector2D _velocity;
+	Vector2D _startingPosition;
 
 	Vector2D _wanderTarget;
 

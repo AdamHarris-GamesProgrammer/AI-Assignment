@@ -6,8 +6,7 @@
 #include "Vehicle.h"
 #include "PathfindingState.h"
 #include "SteeringState.h"
-
-
+#include "DecisionMakingState.h"
 
 
 class VehicleFSM : public FSMManager
@@ -31,6 +30,8 @@ public:
 		pPathfindingState = new PathfindingState(_pOwner);
 		
 		pSteeringState = new SteeringState(_pOwner);
+
+		pDecisionMakingState = new DecisionMakingState(_pOwner);
 
 		ChangeState(pPathfindingState);
 
@@ -97,6 +98,7 @@ public:
 	void Section3AI() {
 		_section = pathfinding;
 		pSteeringState->Clear();
+		ChangeState(pDecisionMakingState);
 	}
 
 	Sections GetSection() const {
@@ -179,6 +181,7 @@ private:
 
 	PathfindingState* pPathfindingState;
 	SteeringState* pSteeringState;
+	DecisionMakingState* pDecisionMakingState;
 
 	Sections _section;
 };

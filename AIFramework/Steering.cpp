@@ -27,8 +27,6 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += ObstacleAvoidance() * 4.0;
 	}
 
-
-
 	_steeringForce.Truncate(pOwner->GetMaxSpeed());
 
 	return _steeringForce;
@@ -231,11 +229,6 @@ Vector2D Steering::ObstacleAvoidance()
 
 		steeringForce.x = (bRadius - localPos.x) * breakPower;
 	}
-
-
-	//Vec: steering force
-	//heading: pOwner forward
-	//side: pOwner Side
 
 	XMFLOAT3X3 transform;
 	

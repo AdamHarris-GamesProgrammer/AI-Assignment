@@ -51,6 +51,10 @@ public:
 	void SolvePathToNextPoint(int current, int next);
 	void SolvePathToNextPoint(Vector2D a, Vector2D b);
 
+	TrackConverter* GetConverter() const {
+		return mConverter;
+	}
+
 	void ResetMap();
 
 private:

@@ -15,11 +15,16 @@ public:
 
 	void OnEnter() override
 	{
+		pOwner->ResetVehicle();
 		_index = 0;
 		pTrack = new Track("Resources/waypoints.txt");
 
+		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
+
 		pOwner->GetSteering()->SeekOn();
 		
+		pOwner->GetOtherVehicle()->SetActive(false);
+
 		NextTarget();
 	}
 
@@ -55,11 +60,10 @@ private:
 	void NextTarget()
 	{
 		if (_currentPath.empty()) {
-			_index = (_index + 1) % 15;
+			_index = (_index + 1) % _numOfWaypoints;
 
 			if (_index == 0) {
-
-				pTrack->SolvePathToNextPoint(14, 0);
+				pTrack->SolvePathToNextPoint(_numOfWaypoints - 1, 0);
 			}
 			else
 			{
@@ -82,6 +86,8 @@ private:
 	}
 
 private:
+	int _numOfWaypoints;
+
 	int _index = 0;
 
 	//This value is how closely the car will follow the path, higher value is less accurate the path but more realistic looking. 

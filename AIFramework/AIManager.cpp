@@ -23,10 +23,21 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
-
-
 	InitializeWaypoints(pd3dDevice);
 
+	//Initialize car objects with the device, texture path, starting position, waypoints and there max speed
+	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds",
+		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f);
+
+	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
+		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 120.0f);
+
+	//Initialize the pickup item
+	_pPickup = new PickupItem();
+	HRESULT hr = _pPickup->initMesh(pd3dDevice);
+
+	//Builds a vector of Vector2D objects to find which nodes are on the track, this is used so the
+	//pickup item will always spawn on the track itself
 	std::vector<Vector2D> placeablePoints;
 	for (int i = 0; i < m_waypoints.size(); i++) {
 		if (m_waypoints[i]->isOnTrack()) {
@@ -34,26 +45,17 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 		}
 	}
 
-	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds", 
-		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f); 
-
-	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
-		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 50.0f);
-
-	
-	
-	_pPickup = new PickupItem();
-	HRESULT hr = _pPickup->initMesh(pd3dDevice);
 	_pPickup->SetPlaceablePositions(placeablePoints);
-	_pPickup->GenerateNewPosition();
+	//_pPickup->GenerateNewPosition();
+	_pPickup->AddObserver(_pRaceCar);
 
-	_pRaceCar->InitializeStates();
-	_pDodgeCar->InitializeStates();
 
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
-	_pDodgeCar->SetOtherVehicle(_pRaceCar);
+	_pRaceCar->InitializeStates();
 
-	_pPickup->AddObserver(_pRaceCar);
+	_pDodgeCar->SetOtherVehicle(_pRaceCar);
+	_pDodgeCar->InitializeStates();
+
 
 	return hr;
 }
@@ -81,17 +83,17 @@ void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 void AIManager::update(const float fDeltaTime)
 {
 	_pRaceCar->update(fDeltaTime);
-
+	_pPickup->update(fDeltaTime);
 
 	//Checks we are active 
 	if (_pDodgeCar->GetActive()) {
 		_pDodgeCar->update(fDeltaTime);
 	}
 
-
 	CollisionDetection();
-	Render(fDeltaTime);
 
+
+	Render(fDeltaTime);
 }
 
 void AIManager::DrawUI()
@@ -110,7 +112,6 @@ void AIManager::DrawUI()
 		_inMenus = true;
 	}
 	ImGui::End();
-
 }
 
 void AIManager::Render(const float fDeltaTime)
@@ -123,8 +124,6 @@ void AIManager::Render(const float fDeltaTime)
 		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
-
-	_pPickup->update(fDeltaTime);
 	AddItemToDrawList(_pPickup);
 
 	AddItemToDrawList(_pRaceCar);
@@ -137,7 +136,7 @@ void AIManager::Render(const float fDeltaTime)
 void AIManager::mouseUp(int x, int y)
 {
 	//If we are not over a menu then set our steering target
-	if (!_inMenus) { 
+	if (!_inMenus) {
 		_pRaceCar->SetSteeringTarget(Vector2D(x, y));
 	}
 }
@@ -148,20 +147,8 @@ void AIManager::keyPress(WPARAM param)
 	{
 	case VK_NUMPAD0:
 	{
-		
 		break;
 	}
-	case VK_NUMPAD1:
-	{
-		OutputDebugStringA("1 pressed \n");
-		break;
-	}
-	case VK_NUMPAD2:
-	{
-		break;
-	}
-	default:
-		break;
 	}
 }
 
@@ -185,8 +172,6 @@ void AIManager::CollisionDetection()
 	XMStoreFloat3(&bsRaceCar.Center, raceCarPos);
 	bsRaceCar.Radius = raceScale.x;
 
-
-
 	// the dodge car
 	XMVECTOR dodgeCarPos;
 	XMVECTOR dodgeCarScale;
@@ -203,6 +188,13 @@ void AIManager::CollisionDetection()
 	XMStoreFloat3(&bsDodgeCar.Center, dodgeCarPos);
 	bsDodgeCar.Radius = dodgeScale.x;
 
+	BoundingBox raceCarBox;
+	XMStoreFloat3(&raceCarBox.Center, raceCarPos);
+	XMStoreFloat3(&raceCarBox.Extents, raceCarScale);
+
+	BoundingBox dodgeCarBox;
+	XMStoreFloat3(&dodgeCarBox.Center, dodgeCarPos);
+	XMStoreFloat3(&dodgeCarBox.Extents, dodgeCarScale);
 
 	//Pickup system
 	XMVECTOR puPos;
@@ -219,15 +211,17 @@ void AIManager::CollisionDetection()
 	XMStoreFloat3(&boundingSpherePU.Center, puPos);
 	boundingSpherePU.Radius = raceScale.x;
 
-	// test
 	if (bsRaceCar.Intersects(boundingSpherePU))
 	{
 		_pPickup->CollisionResolution();
 	}
 
-	if (bsRaceCar.Intersects(bsDodgeCar)) {
-		//TODO: Slow down race car upon collision with dodge car
-		_pRaceCar->ActivateCollisionPenalty();
+	//Dont check for car collisions if they are not active
+	if (_pDodgeCar->GetActive()) {
+		if (raceCarBox.Intersects(dodgeCarBox)) {
+			_pRaceCar->ActivateCollisionPenalty();
 
+		}
 	}
+	
 }

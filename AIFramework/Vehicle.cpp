@@ -7,14 +7,22 @@
 #define MAX_SPEED 500
 
 Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed)
-	: _maxSpeed(maxSpeed), _waypoints(waypoints)
+	: _maxSpeed(maxSpeed), _waypoints(waypoints), _startingPosition(startPos)
 {
+	_currentSpeed = _maxSpeed;
+
+	_velocity = Vector2D(0, 0);
+
+
 	m_scale = XMFLOAT3(30, 20, 1);
 
 	SetVehiclePosition(startPos);
 
 	setTextureName(textureName);
 	DrawableGameObject::initMesh(device);
+
+	_isSpeedBoostActive = false;
+	_currentSpeedFactor = _defaultSpeedFactor;
 }
 
 void Vehicle::InitializeStates()
@@ -38,7 +46,7 @@ void Vehicle::update(const float deltaTime)
 		_speedBoostTimer -= deltaTime;
 		if (_speedBoostTimer <= 0.0f) {
 			_isSpeedBoostActive = false;
-			_currentSpeedFactor = _steerSpeedFactor;
+			_currentSpeedFactor = _defaultSpeedFactor;
 		}
 	}
 
@@ -46,22 +54,19 @@ void Vehicle::update(const float deltaTime)
 		_collisionPenaltyTimer -= deltaTime;
 		if (_collisionPenaltyTimer <= 0.0f) {
 			_isCollisionPenaltyActive = false;
-			_currentSpeedFactor = _steerSpeedFactor;
+			_currentSpeedFactor = _defaultSpeedFactor;
 		}
 	}
 
 	Vector2D acceleration = steeringForce / _mass;
 
-	_velocity += acceleration * _currentSpeedFactor * deltaTime;
+	_velocity += acceleration * deltaTime;
 
 
-	if(!_isSpeedBoostActive)
-	{
-		//Stops the velocity going beyond our maximum speed
-		_velocity.Truncate(_maxSpeed);
-	}
+	//Stops the velocity going beyond our maximum speed
+	_velocity.Truncate(_maxSpeed);
 
-	
+	_velocity *= _currentSpeedFactor;
 
 	//Adds the velocity to our current position
 	_currentPosition += _velocity * deltaTime;
@@ -119,7 +124,6 @@ void Vehicle::DrawUI()
 
 
 	pFSM->DrawUI();
-
 }
 
 void Vehicle::ActivateCollisionPenalty()
@@ -128,6 +132,14 @@ void Vehicle::ActivateCollisionPenalty()
 	_collisionPenaltyTimer = _collisionPenaltyDuration;
 	_currentSpeedFactor = _collisionSpeedFactor;
 
+}
+
+void Vehicle::ResetVehicle()
+{
+	SetVehiclePosition(_startingPosition);
+	_currentSpeedFactor = _defaultSpeedFactor;
+	pSteering->ClearFlags();
+	_velocity = Vector2D(0, 0);
 }
 
 void Vehicle::SetSteeringTarget(Vector2D pos)
@@ -139,7 +151,7 @@ void Vehicle::SetSteeringTarget(Vector2D pos)
 
 void Vehicle::OnNotify(const Entity& entity, Event event)
 {
-	
+
 }
 
 void Vehicle::OnNotify(Event event)
@@ -154,7 +166,7 @@ void Vehicle::OnNotify(Event event)
 	case PICKUP_COLLECTED:
 		_isSpeedBoostActive = true;
 		_speedBoostTimer = _speedBoostDuration;
-		_collisionSpeedFactor = _pickupSpeedFactor;
+		_currentSpeedFactor = _pickupSpeedFactor;
 		;
 		break;
 	default:

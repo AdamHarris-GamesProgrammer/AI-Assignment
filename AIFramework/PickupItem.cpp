@@ -11,7 +11,9 @@ HRESULT	PickupItem::initMesh(ID3D11Device* pd3dDevice)
 
 	HRESULT hr = DrawableGameObject::initMesh(pd3dDevice);
 
-	setPosition(XMFLOAT3(100, 200, 0));
+	setPosition(XMFLOAT3(1000, 1000, 0));
+
+	_isPickedUp = true;
 
 	return hr;
 }

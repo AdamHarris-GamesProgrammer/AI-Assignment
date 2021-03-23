@@ -14,6 +14,7 @@ public:
 
 	void OnEnter() override
 	{
+		pOwner->ResetVehicle();
 		pOwner->GetSteering()->ClearFlags();
 	}
 
