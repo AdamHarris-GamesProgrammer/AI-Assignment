@@ -9,7 +9,7 @@ Vector2D Steering::CalculateForce()
 
 	if (IsOn(seek))
 	{
-		_steeringForce += Seek(pOwner->GetTarget());
+		_steeringForce += Seek(pOwner->GetTarget()) * 5.0f;
 	}
 	if (IsOn(arrive)) {
 		_steeringForce += Arrive(pOwner->GetTarget());

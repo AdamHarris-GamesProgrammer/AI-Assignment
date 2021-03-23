@@ -26,8 +26,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	// create a pickup item ----------------------------------------------
 	_pPickup = new PickupItem();
 	HRESULT hr = _pPickup->initMesh(pd3dDevice);
-		
-
 
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds");
 	_pRaceCar->SetMaxSpeed(150.0f);
@@ -55,13 +53,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pDodgeCar->SetWaypoints(m_waypoints);
 
 
-	Vector2D position = GetWaypoint(11, 15)->GetVectorPosition();
-	_pRaceCar->setPosition(XMFLOAT3(position.x, position.y, 0.0f));
-	_pRaceCar->SetPositionTo(Vector2D(0, 0));
+	_pRaceCar->SetVehiclePosition(GetWaypoint(11, 14)->GetVectorPosition());
 
-	Vector2D dodgePosition = GetWaypoint(9, 16)->GetVectorPosition();
-	_pDodgeCar->setPosition(XMFLOAT3(dodgePosition.x, dodgePosition.y, 0.0f));
-	_pDodgeCar->SetPositionTo(Vector2D(0, 0));
+	_pDodgeCar->SetVehiclePosition(GetWaypoint(10, 16)->GetVectorPosition());
 
 	_pRaceCar->InitializeStates();
 	_pDodgeCar->InitializeStates();
@@ -69,7 +63,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
 
-	_pDodgeCar->SetActive(false);
 	
 
 	return hr;

@@ -39,7 +39,7 @@ void Vehicle::update(const float deltaTime)
 		_speedBoostTimer -= deltaTime;
 		if (_speedBoostTimer <= 0.0f) {
 			_isSpeedBoostActive = false;
-			_steerSpeedFactor = 1.0f;
+			_currentSpeedFactor = _steerSpeedFactor;
 		}
 	}
 
@@ -47,13 +47,13 @@ void Vehicle::update(const float deltaTime)
 		_collisionPenaltyTimer -= deltaTime;
 		if (_collisionPenaltyTimer <= 0.0f) {
 			_isCollisionPenaltyActive = false;
-			_steerSpeedFactor = 1.0f;
+			_currentSpeedFactor = _steerSpeedFactor;
 		}
 	}
 
-	Vector2D acceleration = (steeringForce * _steerSpeedFactor) / _mass;
+	Vector2D acceleration = steeringForce / _mass;
 
-	_velocity += acceleration * deltaTime;
+	_velocity += acceleration * _currentSpeedFactor * deltaTime;
 
 	//Stops the velocity going beyond our maximum speed
 	_velocity.Truncate(_maxSpeed);
@@ -121,7 +121,7 @@ void Vehicle::ActivateCollisionPenalty()
 {
 	_isCollisionPenaltyActive = true;
 	_collisionPenaltyTimer = _collisionPenaltyDuration;
-	_steerSpeedFactor = _collisionSpeedFactor;
+	_currentSpeedFactor = _collisionSpeedFactor;
 
 }
 
@@ -149,7 +149,7 @@ void Vehicle::OnNotify(Event event)
 	case PICKUP_COLLECTED:
 		_isSpeedBoostActive = true;
 		_speedBoostTimer = _speedBoostDuration;
-		_steerSpeedFactor = _pickupSpeedFactor;
+		_collisionSpeedFactor = _pickupSpeedFactor;
 		;
 		break;
 	default:
