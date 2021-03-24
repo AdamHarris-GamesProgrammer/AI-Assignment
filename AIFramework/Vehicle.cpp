@@ -6,8 +6,8 @@
 
 #define MAX_SPEED 500
 
-Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed)
-	: _maxSpeed(maxSpeed), _waypoints(waypoints), _startingPosition(startPos)
+Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed, std::string name)
+	: _maxSpeed(maxSpeed), _waypoints(waypoints), _startingPosition(startPos), _vehicleName(name)
 {
 	_currentSpeed = _maxSpeed;
 

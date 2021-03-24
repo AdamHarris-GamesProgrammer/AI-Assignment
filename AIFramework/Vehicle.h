@@ -15,7 +15,7 @@ class Vehicle : public DrawableGameObject, public Observer
 {
 	Steering* pSteering;
 public:
-	Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed);
+	Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed, std::string name);
 	void InitializeStates();
 
 	virtual void update(const float deltaTime);
@@ -70,9 +70,16 @@ public:
 	{
 		return _currentSpeed;
 	}
+
+	std::string GetName() const {
+		return _vehicleName;
+	}
 	Vector2D GetTarget()
 	{
 		return _positionTo;
+	}
+	VehicleFSM* GetStateMachine() const {
+		return pFSM;
 	}
 #pragma endregion
 
@@ -130,6 +137,10 @@ public:
 
 	void OnNotify(Event event) override;
 
+	Vector2D GetStartPosition() const
+	{
+		return _startingPosition;
+	}
 protected:
 	float _maxSpeed;
 	float _currentSpeed;
@@ -169,6 +180,8 @@ protected:
 	vector<Waypoint*> _waypoints;
 
 	Vehicle* _pOtherVehicle;
+
+	std::string _vehicleName;
 };
 
 #endif // !VEHICHLE_H

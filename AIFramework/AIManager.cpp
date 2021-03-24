@@ -9,6 +9,8 @@
 #include "Steering.h"
 #include "Vehicle.h"
 
+#include "VehicleFSM.h"
+
 Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 {
 	if (x < 0 || y < 0) return nullptr;
@@ -27,10 +29,10 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	//Initialize car objects with the device, texture path, starting position, waypoints and there max speed
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds",
-		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f);
+		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f, "Race Car");
 
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
-		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 120.0f);
+		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 120.0f, "Dodge Car");
 
 	//Initialize the pickup item
 	_pPickup = new PickupItem();
@@ -55,13 +57,15 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
 	_pDodgeCar->InitializeStates();
 
+	//Changes the dodge car to the decision making state
+	_pDodgeCar->GetStateMachine()->Section3AI();
 
 	return hr;
 }
 
 void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 {
-	//Calculate shared values for each waypoiny
+	//Calculate shared values for each waypoints
 	float xGap = SCREEN_WIDTH / WAYPOINT_RESOLUTION;
 	float yGap = SCREEN_HEIGHT / WAYPOINT_RESOLUTION;
 	float xStart = -(SCREEN_WIDTH / 2) + (xGap / 2);

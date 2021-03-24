@@ -6,6 +6,8 @@
 #include "Waypoint.h"
 #include "Steering.h"
 
+#include <sstream>
+
 class Vehicle;
 
 class DecisionMakingState : public State {
@@ -52,9 +54,15 @@ public:
 
 private:
 	void DrawUI() {
+		std::ostringstream lap;
+		lap  << pOwner->GetName() << " " << "Lap " << _lapCounter << "/" << _numOfLaps;
+
+		std::ostringstream index;
+		index << pOwner->GetName() << " " << "Index " << _index << "/" << _numOfWaypoints;
+
 		ImGui::Begin("RACE MODE");
-		ImGui::Text("First Place: TODO");
-		ImGui::Text("Lap %i/5", _lapCounter);
+		ImGui::Text(lap.str().c_str());
+		ImGui::Text(index.str().c_str());
 		ImGui::End();
 	}
 
@@ -86,9 +94,11 @@ private:
 				pOwner->GetSteering()->ArriveOn();
 				_isFinished = true;
 
-				XMFLOAT3* pos = pOwner->GetWaypoint(Vector2D(13, 14))->getPosition();
+				Vector2D pos = pOwner->GetStartPosition();
 
-				_targetPosition = Vector2D(pos->x, pos->y);
+				pos.x += 60.0f;
+
+				_targetPosition = pos;
 				pOwner->SetPositionTo(_targetPosition);
 			}
 
@@ -111,7 +121,7 @@ private:
 	int _index = 0;
 
 	int _lapCounter = 1;
-	int _numOfLaps = 5;
+	int _numOfLaps = 1;
 
 	bool _isFinished = false;
 
