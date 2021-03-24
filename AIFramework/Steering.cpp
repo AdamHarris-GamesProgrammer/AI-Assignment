@@ -12,7 +12,7 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Seek(pOwner->GetTarget()) * 5.0f;
 	}
 	if (IsOn(arrive)) {
-		_steeringForce += Arrive(pOwner->GetTarget());
+		_steeringForce += Arrive(pOwner->GetTarget()) * 2.0f;
 	}
 	if (IsOn(flee)) {
 		_steeringForce += Flee(pOwner->GetTarget()) * 15.0f;
@@ -29,7 +29,7 @@ Vector2D Steering::CalculateForce()
 
 	_steeringForce.Truncate(pOwner->GetMaxSpeed());
 
-	return _steeringForce;
+	return _steeringForce * 2.0;
 }
 
 Vector2D Steering::Seek(Vector2D target)
@@ -55,7 +55,7 @@ Vector2D Steering::Arrive(Vector2D target)
 
 	double distance = direction.Length();
 
-	if (distance > 20.0) {
+	if (distance > 0.0) {
 		double speed = distance / 2;
 		speed = min(speed, pOwner->GetMaxSpeed());
 

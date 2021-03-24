@@ -46,7 +46,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	}
 
 	_pPickup->SetPlaceablePositions(placeablePoints);
-	//_pPickup->GenerateNewPosition();
 	_pPickup->AddObserver(_pRaceCar);
 
 
@@ -121,7 +120,7 @@ void AIManager::Render(const float fDeltaTime)
 
 	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
 		m_waypoints[i]->update(fDeltaTime);
-		//AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
+		AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
 	AddItemToDrawList(_pPickup);

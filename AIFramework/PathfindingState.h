@@ -92,7 +92,7 @@ private:
 
 	//This value is how closely the car will follow the path, higher value is less accurate the path but more realistic looking. 
 	//higher values also work better when it comes to overtaking
-	float _waypointTolerance = 90.0f;
+	float _waypointTolerance = 50.0f;
 
 	Node* pCurrentNode = nullptr;
 	std::list<Node*> _currentPath;
