@@ -86,6 +86,8 @@ void Vehicle::update(const float deltaTime)
 	//Calculate the forward vector
 	_forward = Vector2D(cosf(m_radianRotation), sinf(m_radianRotation));
 
+	setDirection(XMFLOAT3(_forward.x, _forward.y, 0.0f));
+
 	//Calculate the right vector
 	_side = _forward.Perp();
 

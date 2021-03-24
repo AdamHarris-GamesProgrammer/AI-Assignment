@@ -39,14 +39,15 @@ public:
 
 	void Update(float dt) override
 	{
+		DrawUI();
+
+
 		if (_isFinished) return;
 
 		//Using the Squared distance saves on a square root operation which is computationally expensive
 		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) < _waypointTolerance * _waypointTolerance) {
 			NextTarget();
 		}
-
-		DrawUI();
 	}
 
 private:
@@ -110,7 +111,7 @@ private:
 	int _index = 0;
 
 	int _lapCounter = 1;
-	int _numOfLaps = 1;
+	int _numOfLaps = 5;
 
 	bool _isFinished = false;
 

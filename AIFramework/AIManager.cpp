@@ -165,35 +165,28 @@ void AIManager::CollisionDetection()
 		XMLoadFloat4x4(_pRaceCar->getTransform())
 	);
 
-	XMFLOAT3 raceScale;
-	XMStoreFloat3(&raceScale, raceCarScale);
-	BoundingSphere bsRaceCar;
-	XMStoreFloat3(&bsRaceCar.Center, raceCarPos);
-	bsRaceCar.Radius = raceScale.x;
+	raceCarScale.m128_f32[0] /= 2.0f;
+	BoundingOrientedBox orientedRaceCarBox;
+	XMStoreFloat3(&orientedRaceCarBox.Center, raceCarPos);
+	XMStoreFloat3(&orientedRaceCarBox.Extents, raceCarScale);
+	XMStoreFloat4(&orientedRaceCarBox.Orientation, dummy);
 
 	// the dodge car
+	XMVECTOR dodgeCarDummy;
 	XMVECTOR dodgeCarPos;
 	XMVECTOR dodgeCarScale;
 	XMMatrixDecompose(
 		&dodgeCarScale,
-		&dummy,
+		&dodgeCarDummy,
 		&dodgeCarPos,
 		XMLoadFloat4x4(_pDodgeCar->getTransform())
 	);
 
-	XMFLOAT3 dodgeScale;
-	XMStoreFloat3(&dodgeScale, dodgeCarScale);
-	BoundingSphere bsDodgeCar;
-	XMStoreFloat3(&bsDodgeCar.Center, dodgeCarPos);
-	bsDodgeCar.Radius = dodgeScale.x;
-
-	BoundingBox raceCarBox;
-	XMStoreFloat3(&raceCarBox.Center, raceCarPos);
-	XMStoreFloat3(&raceCarBox.Extents, raceCarScale);
-
-	BoundingBox dodgeCarBox;
-	XMStoreFloat3(&dodgeCarBox.Center, dodgeCarPos);
-	XMStoreFloat3(&dodgeCarBox.Extents, dodgeCarScale);
+	dodgeCarScale.m128_f32[0] /= 2.0f;
+	BoundingOrientedBox orientedDodgeCarBox;
+	XMStoreFloat3(&orientedDodgeCarBox.Center, dodgeCarPos);
+	XMStoreFloat3(&orientedDodgeCarBox.Extents, dodgeCarScale);
+	XMStoreFloat4(&orientedDodgeCarBox.Orientation, dodgeCarDummy);
 
 	//Pickup system
 	XMVECTOR puPos;
@@ -205,12 +198,11 @@ void AIManager::CollisionDetection()
 		XMLoadFloat4x4(_pPickup->getTransform())
 	);
 
-	XMStoreFloat3(&raceScale, puScale);
 	BoundingSphere boundingSpherePU;
 	XMStoreFloat3(&boundingSpherePU.Center, puPos);
-	boundingSpherePU.Radius = raceScale.x;
+	boundingSpherePU.Radius = puScale.m128_f32[0];
 
-	if (bsRaceCar.Intersects(boundingSpherePU))
+	if (orientedRaceCarBox.Intersects(boundingSpherePU))
 	{
 		if (!_pPickup->PickedUp()) {
 			_pPickup->CollisionResolution();
@@ -219,7 +211,7 @@ void AIManager::CollisionDetection()
 
 	//Dont check for car collisions if they are not active
 	if (_pDodgeCar->GetActive()) {
-		if (raceCarBox.Intersects(dodgeCarBox)) {
+		if (orientedRaceCarBox.Intersects(orientedDodgeCarBox)) {
 			_pRaceCar->ActivateCollisionPenalty();
 		}
 	}
