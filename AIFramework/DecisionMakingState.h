@@ -38,6 +38,8 @@ public:
 		_index = 0;
 		pCurrentNode = nullptr;
 		_currentPath.clear();
+		_isFinished = false;
+		_lapCounter = 1;
 	}
 
 
@@ -88,36 +90,17 @@ private:
 
 
 			if (_index == _pickupIndex) {
-				float pathEffort = 0;
-				float pickupPathEffort = 0;
-
-				pathEffort = pTrack->GetNodePath().size();
-
+				float pathEffort = pTrack->GetNodePath().size();
 				
-				std::list<Node*> path;
-
 				PickupItem* item = pOwner->GetPickup();
-
-
 				Vector2D start = item->GetCurrentWaypoint()->GetTilePosition();
 				Vector2D mid = item->GetTilePosition();
 				Vector2D end = item->GetNextWaypoint()->GetTilePosition();
 
-
 				pTrack->SolvePathToNextPoint(start, mid);
-				path = pTrack->GetNodePath();
+				std::list<Node*> path = pTrack->GetNodePath();
 
-				pTrack->GetNodePath().clear();
-				pTrack->SolvePathToNextPoint(mid, end);
-				std::list<Node*> appendList = pTrack->GetNodePath();
-				
-				for (auto& node : appendList) {
-					path.push_back(node);
-				}
-
-				pickupPathEffort = path.size();
-
-
+				float pickupPathEffort = path.size();
 				if (pickupPathEffort / 1.5 < pathEffort) {
 					_currentPath.clear();
 					_currentPath = path;
