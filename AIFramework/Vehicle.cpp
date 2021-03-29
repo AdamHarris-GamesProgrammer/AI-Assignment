@@ -58,7 +58,7 @@ void Vehicle::update(const float deltaTime)
 		}
 	}
 
-	Vector2D acceleration = steeringForce / _mass;
+	Vector2D acceleration = (steeringForce * _currentSpeedFactor * 3.0) / _mass;
 
 	_velocity += acceleration * deltaTime;
 
@@ -162,14 +162,14 @@ void Vehicle::OnNotify(Event event)
 	{
 	case PICKUP_SPAWNED:
 		//TODO Add in pickup to vehicle AI system
-
+		pFSM->Pickup();
 
 		break;
 	case PICKUP_COLLECTED:
 		_isSpeedBoostActive = true;
 		_speedBoostTimer = _speedBoostDuration;
 		_currentSpeedFactor = _pickupSpeedFactor;
-		;
+
 		break;
 	default:
 		break;

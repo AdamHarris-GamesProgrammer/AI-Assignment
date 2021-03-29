@@ -59,8 +59,6 @@ public:
 			_isSteering = false;
 			_isPathfinding = false;
 
-			_pOwner->GetOtherVehicle()->SetActive(true);
-
 			Section3AI();
 		}
 		
@@ -96,9 +94,13 @@ public:
 	}
 
 	void Section3AI() {
-		_section = pathfinding;
+		_section = decisionMaking;
 		pSteeringState->Clear();
 		ChangeState(pDecisionMakingState);
+	}
+
+	void Pickup() {
+		pDecisionMakingState->PickupSpawned();
 	}
 
 	Sections GetSection() const {

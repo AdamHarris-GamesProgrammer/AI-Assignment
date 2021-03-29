@@ -129,6 +129,14 @@ public:
 	Vehicle* GetOtherVehicle() const {
 		return _pOtherVehicle;
 	}
+
+	void SetPickup(PickupItem* pickup) 
+	{
+		_pPickup = pickup;
+	}
+	PickupItem* GetPickup() const {
+		return _pPickup;
+	}
 #pragma endregion
 
 
@@ -182,6 +190,9 @@ protected:
 	Vehicle* _pOtherVehicle;
 
 	std::string _vehicleName;
+
+	PickupItem* _pPickup;
+
 };
 
 #endif // !VEHICHLE_H

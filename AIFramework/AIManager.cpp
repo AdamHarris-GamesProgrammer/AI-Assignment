@@ -59,6 +59,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	_pDodgeCar->SetOtherVehicle(_pRaceCar);
 	_pDodgeCar->InitializeStates();
 
+	_pDodgeCar->SetPickup(_pPickup);
+	_pRaceCar->SetPickup(_pPickup);
+
 	//Changes the dodge car to the decision making state
 	_pDodgeCar->GetStateMachine()->Section3AI();
 

@@ -14,6 +14,9 @@
 
 using namespace DirectX;
 
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
+
 class DrawableGameObject
 {
 public:
@@ -33,6 +36,18 @@ public:
 
 	Vector2D GetVectorPosition() const {
 		return Vector2D(m_position.x, m_position.y);
+	}
+
+	Vector2D GetTilePosition() const {
+		Vector2D pos = GetVectorPosition();
+
+		pos.x += SCREEN_WIDTH / 2;
+		pos.y += SCREEN_HEIGHT / 2;
+
+		pos.x /= 51.2;
+		pos.y /= 38.4;
+
+		return pos;
 	}
 
 	XMFLOAT3 GetScale() const {

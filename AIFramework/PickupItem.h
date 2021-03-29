@@ -33,15 +33,22 @@ public:
     bool PickedUp() const { return _isPickedUp; }
 
     Waypoint* GetCurrentWaypoint() const {
-        return _closestWaypoint;
+        return _currentWaypoint;
     }
 
     Waypoint* GetNextWaypoint() const {
         return _nextWaypoint;
     }
+
+    int GetIndex() const {
+        return _pickupIndex;
+    }
+
 protected:
 
 private:
+    int _pickupIndex;
+
     int _xPos;
     int _yPos;
 

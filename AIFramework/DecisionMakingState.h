@@ -6,6 +6,8 @@
 #include "Waypoint.h"
 #include "Steering.h"
 
+#include "PickupItem.h"
+
 #include <sstream>
 
 class Vehicle;
@@ -23,7 +25,7 @@ public:
 
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
-		pOwner->GetOtherVehicle()->SetActive();
+		//pOwner->GetOtherVehicle()->SetActive();
 		pOwner->GetSteering()->SeekOn();
 		pOwner->GetSteering()->ObstacleAvoidanceOn();
 
@@ -50,6 +52,10 @@ public:
 		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) < _waypointTolerance * _waypointTolerance) {
 			NextTarget();
 		}
+	}
+	
+	void PickupSpawned() {
+		_pickupIndex = pOwner->GetPickup()->GetIndex();
 	}
 
 private:
@@ -80,8 +86,55 @@ private:
 				pTrack->SolvePathToNextPoint(_index - 1, _index);
 			}
 
-			_currentPath.clear();
-			_currentPath = pTrack->GetNodePath();
+
+			if (_index == _pickupIndex) {
+				float pathEffort = 0;
+				float pickupPathEffort = 0;
+
+				pathEffort = pTrack->GetNodePath().size();
+
+				
+				std::list<Node*> path;
+
+				PickupItem* item = pOwner->GetPickup();
+
+
+				Vector2D start = item->GetCurrentWaypoint()->GetTilePosition();
+				Vector2D mid = item->GetTilePosition();
+				Vector2D end = item->GetNextWaypoint()->GetTilePosition();
+
+
+				pTrack->SolvePathToNextPoint(start, mid);
+				path = pTrack->GetNodePath();
+
+				pTrack->GetNodePath().clear();
+				pTrack->SolvePathToNextPoint(mid, end);
+				std::list<Node*> appendList = pTrack->GetNodePath();
+				
+				for (auto& node : appendList) {
+					path.push_back(node);
+				}
+
+				pickupPathEffort = path.size();
+
+
+				if (pickupPathEffort / 1.5 < pathEffort) {
+					_currentPath.clear();
+					_currentPath = path;
+				}
+				else
+				{
+					pTrack->SolvePathToNextPoint(start, end);
+					_currentPath.clear();
+					_currentPath = pTrack->GetNodePath();
+				}
+			}
+			else
+			{
+				_currentPath.clear();
+				_currentPath = pTrack->GetNodePath();
+			}
+			
 		}
 
 		pCurrentNode = _currentPath.back();
@@ -125,9 +178,13 @@ private:
 
 	bool _isFinished = false;
 
+	int _pickupIndex;
+
+	
+
 	//This value is how closely the car will follow the path, higher value is less accurate the path but more realistic looking. 
 	//higher values also work better when it comes to overtaking
-	float _waypointTolerance = 90.0f;
+	float _waypointTolerance = 50.0f;
 
 	Node* pCurrentNode = nullptr;
 	std::list<Node*> _currentPath;
