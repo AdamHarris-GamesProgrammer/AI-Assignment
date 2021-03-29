@@ -85,6 +85,8 @@ void PickupItem::FindClosestWaypoint()
 
 	_currentWaypoint = _waypoints[vecCheckpoint[index]];
 
+	_pickupIndex = index;
+
 	Notify(PICKUP_SPAWNED);
 }
 
