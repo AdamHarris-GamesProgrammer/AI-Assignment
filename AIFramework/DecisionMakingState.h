@@ -58,7 +58,7 @@ private:
 		lap  << pOwner->GetName() << " " << "Lap " << _lapCounter << "/" << _numOfLaps;
 
 		std::ostringstream index;
-		index << pOwner->GetName() << " " << "Index " << _index << "/" << _numOfWaypoints;
+		index << pOwner->GetName() << " " << "Index " << _index + 1 << "/" << _numOfWaypoints;
 
 		ImGui::Begin("RACE MODE");
 		ImGui::Text(lap.str().c_str());

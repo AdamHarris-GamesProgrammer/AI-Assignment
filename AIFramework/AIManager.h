@@ -45,7 +45,7 @@ protected:
 	void	CollisionDetection();
 
 private:
-	vecWaypoints            m_waypoints;
+	vecWaypoints            _waypoints;
 	//vecPickups              m_pickups;
 	PickupItem* _pPickup;
 	Vehicle*				_pRaceCar = nullptr;

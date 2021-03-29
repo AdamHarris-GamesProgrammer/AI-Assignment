@@ -20,7 +20,7 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 	assert(x >= 0 && x < WAYPOINT_RESOLUTION);
 	assert(y >= 0 && y < WAYPOINT_RESOLUTION);
 
-	return m_waypoints[y * WAYPOINT_RESOLUTION + x];
+	return _waypoints[y * WAYPOINT_RESOLUTION + x];
 }
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
@@ -29,10 +29,10 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	//Initialize car objects with the device, texture path, starting position, waypoints and there max speed
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds",
-		GetWaypoint(11, 14)->GetVectorPosition(), m_waypoints, 150.0f, "Race Car");
+		GetWaypoint(11, 14)->GetVectorPosition(), _waypoints, 150.0f, "Race Car");
 
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
-		GetWaypoint(10, 16)->GetVectorPosition(), m_waypoints, 120.0f, "Dodge Car");
+		GetWaypoint(10, 16)->GetVectorPosition(), _waypoints, 120.0f, "Dodge Car");
 
 	//Initialize the pickup item
 	_pPickup = new PickupItem();
@@ -41,11 +41,13 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 	//Builds a vector of Vector2D objects to find which nodes are on the track, this is used so the
 	//pickup item will always spawn on the track itself
 	std::vector<Vector2D> placeablePoints;
-	for (int i = 0; i < m_waypoints.size(); i++) {
-		if (m_waypoints[i]->isOnTrack()) {
-			placeablePoints.push_back(m_waypoints[i]->GetVectorPosition());
+	for (int i = 0; i < _waypoints.size(); i++) {
+		if (_waypoints[i]->isOnTrack()) {
+			placeablePoints.push_back(_waypoints[i]->GetVectorPosition());
 		}
 	}
+
+	_pPickup->SetWaypoints(_waypoints);
 
 	_pPickup->SetPlaceablePositions(placeablePoints);
 	_pPickup->AddObserver(_pRaceCar);
@@ -78,7 +80,7 @@ void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 			Waypoint* wp = new Waypoint();
 			wp->initMesh(pd3dDevice, index++);
 			wp->setPosition(XMFLOAT3(xStart + (xGap * i), yStart + (yGap * j), 0));
-			m_waypoints.push_back(wp);
+			_waypoints.push_back(wp);
 		}
 	}
 }
@@ -122,9 +124,9 @@ void AIManager::Render(const float fDeltaTime)
 	DrawUI();
 	_pRaceCar->DrawUI();
 
-	for (unsigned int i = 0; i < m_waypoints.size(); i++) {
-		m_waypoints[i]->update(fDeltaTime);
-		AddItemToDrawList(m_waypoints[i]); // if you comment this in, it will display the way points
+	for (unsigned int i = 0; i < _waypoints.size(); i++) {
+		_waypoints[i]->update(fDeltaTime);
+		AddItemToDrawList(_waypoints[i]); // if you comment this in, it will display the way points
 	}
 
 	AddItemToDrawList(_pPickup);

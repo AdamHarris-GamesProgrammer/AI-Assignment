@@ -1,4 +1,5 @@
 #include "PickupItem.h"
+#include "Waypoint.h"
 
 
 
@@ -40,15 +41,49 @@ void PickupItem::GenerateNewPosition()
 	_position.x += SCREEN_WIDTH / 2;
 	_position.y += SCREEN_HEIGHT / 2;
 
-	int xPos = _position.x / 51.2;
-	int yPos = _position.y / 38.4;
+	_xPos = _position.x / 51.2;
+	_yPos = _position.y / 38.4;
 
-	_tilePosition = Vector2D(xPos, yPos);
+	_tilePosition = Vector2D(_xPos, _yPos);
 
 	_position.x -= SCREEN_WIDTH / 2;
 	_position.y -= SCREEN_HEIGHT / 2;
 
 	setPosition(XMFLOAT3(_position.x, _position.y, 0.0f));
+
+	FindClosestWaypoint();
+}
+
+void PickupItem::FindClosestWaypoint()
+{
+	std::vector<int> vecCheckpoint{ 311,239,159,58,54,93,176,209,264,87,47,44,162,240,362 };
+
+	Waypoint* startNode = _waypoints[_yPos * WAYPOINT_RESOLUTION + _xPos];
+
+	float lowestDistance = FLT_MAX;
+	int index = 0;
+
+	//Finds the closest waypoint to the pickup
+	for (int i = 0; i < vecCheckpoint.size(); i++) {
+		float distance = Vec2DDistance(startNode->GetVectorPosition(), _waypoints[vecCheckpoint[i]]->GetVectorPosition());
+
+		if (distance < lowestDistance) {
+			lowestDistance = distance;
+			index = i;
+		}
+	}
+
+	_nextWaypoint = _waypoints[vecCheckpoint[index]];
+
+	if (index == 0) {
+		index = vecCheckpoint.size() - 1;
+	}
+	else
+	{
+		index--;
+	}
+
+	_currentWaypoint = _waypoints[vecCheckpoint[index]];
 }
 
 void PickupItem::update(const float t)
