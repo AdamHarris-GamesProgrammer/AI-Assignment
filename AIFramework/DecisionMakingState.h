@@ -25,7 +25,7 @@ public:
 
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
-		//pOwner->GetOtherVehicle()->SetActive();
+		pOwner->GetOtherVehicle()->SetActive();
 		pOwner->GetSteering()->SeekOn();
 		pOwner->GetSteering()->ObstacleAvoidanceOn();
 
@@ -101,7 +101,7 @@ private:
 				std::list<Node*> path = pTrack->GetNodePath();
 
 				float pickupPathEffort = path.size();
-				if (pickupPathEffort / 1.5 < pathEffort) {
+				if (pickupPathEffort / 1.75 < pathEffort) {
 					_currentPath.clear();
 					_currentPath = path;
 				}

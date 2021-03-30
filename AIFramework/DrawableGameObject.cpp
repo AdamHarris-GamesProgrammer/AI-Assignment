@@ -18,6 +18,7 @@ DrawableGameObject::DrawableGameObject()
 	m_position = XMFLOAT3(0, 0, 0);
 	m_direction = XMFLOAT3(1, 0, 0);
 	m_scale = XMFLOAT3(10, 10, 10);
+	m_radianRotation = 0.0f;
 	setTextureName(L"Resources\\stone.dds");
 
 	m_radianRotation = 0;
@@ -152,9 +153,6 @@ void DrawableGameObject::setPosition(XMFLOAT3 position)
 
 void DrawableGameObject::update(float deltaTime)
 {
-	//Snap to angle
-	m_radianRotation = m_targetRotation;
-
 	XMMATRIX mRotate = DirectX::XMMatrixRotationZ(m_radianRotation);
 	XMMATRIX mTranslate = DirectX::XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX mScale = DirectX::XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);

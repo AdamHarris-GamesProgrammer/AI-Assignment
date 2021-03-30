@@ -13,7 +13,6 @@ Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startP
 
 	_velocity = Vector2D(0, 0);
 
-
 	m_scale = XMFLOAT3(30, 20, 1);
 
 	SetVehiclePosition(startPos);
@@ -78,7 +77,7 @@ void Vehicle::update(const float deltaTime)
 	Vector2D diff = _currentPosition - _lastPosition;
 	if (diff.Length() > 0) { // if zero then don't update rotation
 		diff.Normalize();
-		m_targetRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
+		m_radianRotation = atan2f(diff.y, diff.x); // this is used by DrawableGameObject to set the rotation
 	}
 
 	_lastPosition = _currentPosition;

@@ -71,8 +71,6 @@ protected:
 protected: // protected variables
 	XMFLOAT3							m_scale;
 	float								m_radianRotation;
-	float m_targetRotation;
-	float m_rotationSpeed = 7.15f;
 
 private: // private variables
 	
