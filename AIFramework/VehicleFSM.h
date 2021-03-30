@@ -90,12 +90,14 @@ public:
 	void Section2AI() {
 		_section = pathfinding; 
 		pSteeringState->Clear();
+		DisableBehaviors();
 		ChangeState(pPathfindingState);
 	}
 
 	void Section3AI() {
 		_section = decisionMaking;
 		pSteeringState->Clear();
+		DisableBehaviors();
 		ChangeState(pDecisionMakingState);
 	}
 
@@ -164,6 +166,7 @@ private:
 			_isAvoiding = false;
 			_isWandering = false;
 			_pOwner->GetOtherVehicle()->SetActive(false);
+			_pOwner->GetOtherVehicle()->Reset();
 		}
 
 private:

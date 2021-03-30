@@ -24,7 +24,7 @@ Vector2D Steering::CalculateForce()
 		_steeringForce += Wander();
 	}
 	if (IsOn(obstacle_avoidance)) {
-		_steeringForce += ObstacleAvoidance() * 5.0;
+		_steeringForce += ObstacleAvoidance() * 15.0f;
 	}
 
 	_steeringForce.Truncate(pOwner->GetMaxSpeed());

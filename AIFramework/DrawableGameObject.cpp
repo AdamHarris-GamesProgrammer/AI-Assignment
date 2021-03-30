@@ -33,10 +33,10 @@ void DrawableGameObject::setDirection(XMFLOAT3 direction)
 
 DrawableGameObject::~DrawableGameObject()
 {
-	if( m_pVertexBuffer ) 
+	if( m_pVertexBuffer) 
 		m_pVertexBuffer->Release();
 	
-	if( m_pIndexBuffer )
+	if( m_pIndexBuffer)
 		m_pIndexBuffer->Release();	
 
 	if (m_pTextureResourceView)

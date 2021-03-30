@@ -130,6 +130,11 @@ public:
 		return _pOtherVehicle;
 	}
 
+	void Reset() {
+		_currentPosition = _startingPosition;
+		_velocity = Vector2D(0, 0);
+	}
+
 	void SetPickup(PickupItem* pickup) 
 	{
 		_pPickup = pickup;

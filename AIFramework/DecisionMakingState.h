@@ -157,7 +157,7 @@ private:
 	int _index = 0;
 
 	int _lapCounter = 1;
-	int _numOfLaps = 1;
+	int _numOfLaps = 5;
 
 	bool _isFinished = false;
 
