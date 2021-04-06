@@ -45,6 +45,10 @@ public:
 
 	void NewWanderTarget();
 
+	bool IsWantingToOvertake() const {
+		return _wantingToOvertake;
+	}
+
 private:
 	enum BehaviorType {
 		none = 0x00000,
@@ -70,7 +74,7 @@ private:
 private:
 	bool IsOn(BehaviorType bt);
 
-	
+	bool _wantingToOvertake = false;
 };
 
 #endif

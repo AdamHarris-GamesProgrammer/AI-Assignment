@@ -192,6 +192,8 @@ Vector2D Steering::ObstacleAvoidance()
 
 	double range = aRadius + bRadius;
 
+	_wantingToOvertake = false;
+
 	//Target is actually in front of us
 	if (localPos.x >= 0.0f) {
 
@@ -212,6 +214,7 @@ Vector2D Steering::ObstacleAvoidance()
 					ip = cX + sqrPart;
 				}
 
+				
 				possibleCollision = pOwner->GetOtherVehicle();
 			}
 		}
@@ -221,6 +224,8 @@ Vector2D Steering::ObstacleAvoidance()
 	Vector2D steeringForce = Vector2D();
 
 	if (possibleCollision != nullptr) {
+		_wantingToOvertake = true;
+
 		double multiplier = 1.0 + (mininumBoxLength - localPos.x) / mininumBoxLength;
 
 		steeringForce.y = (bRadius - localPos.y) * multiplier;

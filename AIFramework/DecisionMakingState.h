@@ -59,8 +59,15 @@ public:
 
 		if (_isFinished) return;
 
+		if (pOwner->GetSteering()->IsWantingToOvertake()) {
+			_waypointToleranceFactor = 2.0f;
+		}
+		else {
+			_waypointToleranceFactor = 1.0f;
+		}
+
 		//Using the Squared distance saves on a square root operation which is computationally expensive
-		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) < _waypointTolerance * _waypointTolerance) {
+		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) < (_waypointTolerance * _waypointToleranceFactor) * (_waypointTolerance * _waypointToleranceFactor)) {
 			NextTarget();
 		}
 	}
@@ -169,11 +176,11 @@ private:
 
 	int _pickupIndex;
 
-	
+	float _waypointToleranceFactor = 1.0f;
 
 	//This value is how closely the car will follow the path, higher value is less accurate the path but more realistic looking. 
 	//higher values also work better when it comes to overtaking
-	float _waypointTolerance = 100.0f;
+	float _waypointTolerance = 50.0f;
 
 	Node* pCurrentNode = nullptr;
 	std::list<Node*> _currentPath;
