@@ -25,13 +25,22 @@ public:
 
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
-		pOwner->GetOtherVehicle()->SetActive();
+
+		if (pOwner->GetName() == "Race Car") {
+			pOwner->GetOtherVehicle()->SetActive();
+			pOwner->GetOtherVehicle()->ResetState();
+		}
+		
+
 		pOwner->GetSteering()->SeekOn();
 		pOwner->GetSteering()->ObstacleAvoidanceOn();
 
 		NextTarget();
 	}
 
+	void SetWaypointTolerance(float val) {
+		_waypointTolerance = val;
+	}
 
 	void OnExit() override
 	{
@@ -147,9 +156,6 @@ private:
 
 			pOwner->SetPositionTo(_targetPosition);
 		}
-
-
-		
 	}
 
 	int _numOfWaypoints;
@@ -167,7 +173,7 @@ private:
 
 	//This value is how closely the car will follow the path, higher value is less accurate the path but more realistic looking. 
 	//higher values also work better when it comes to overtaking
-	float _waypointTolerance = 50.0f;
+	float _waypointTolerance = 100.0f;
 
 	Node* pCurrentNode = nullptr;
 	std::list<Node*> _currentPath;

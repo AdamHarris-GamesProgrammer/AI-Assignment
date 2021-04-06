@@ -182,13 +182,13 @@ Vector2D Steering::ObstacleAvoidance()
 	Vehicle* possibleCollision = nullptr;
 
 	float mininumBoxLength = 30.0f + (pOwner->GetCurrentSpeed() / pOwner->GetMaxSpeed()) * 30.0f;
-	mininumBoxLength *= 1.5f;
+	//mininumBoxLength *= 1.5f;
 
 	//Based on scale of cars
 	
 
-	double aRadius = 45.0;
-	double bRadius = 45.0;
+	double aRadius = 30.0;
+	double bRadius = 30.0;
 
 	double range = aRadius + bRadius;
 

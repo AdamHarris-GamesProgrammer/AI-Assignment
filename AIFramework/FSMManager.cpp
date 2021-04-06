@@ -17,7 +17,7 @@ void FSMManager::ChangeState(State* newState)
 	//Check we have an existing state
 	if (pCurrentState != nullptr) {
 		//if the passed in state is the same as the previous state then dont change 
-		if (newState == pCurrentState) return;
+		
 
 		pCurrentState->OnExit();
 	}

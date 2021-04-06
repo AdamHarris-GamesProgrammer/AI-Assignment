@@ -143,6 +143,12 @@ void Vehicle::ResetVehicle()
 	_velocity = Vector2D(0, 0);
 }
 
+void Vehicle::ResetState()
+{
+	pFSM->SetWaypointTolerance(50.0f);
+	pFSM->Section3AI();
+}
+
 void Vehicle::SetSteeringTarget(Vector2D pos)
 {
 	if (pFSM->GetSection() == VehicleFSM::steering) {

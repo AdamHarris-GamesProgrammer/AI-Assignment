@@ -7,7 +7,6 @@
 #include "Observer.h"
 
 
-
 class VehicleFSM;
 class Steering;
 
@@ -25,6 +24,8 @@ public:
 	void ActivateCollisionPenalty();
 
 	void ResetVehicle();
+
+	void ResetState();
 
 #pragma region Getters
 	Vector2D GetSide() const {
@@ -197,7 +198,6 @@ protected:
 	std::string _vehicleName;
 
 	PickupItem* _pPickup;
-
 };
 
 #endif // !VEHICHLE_H

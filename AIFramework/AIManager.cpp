@@ -26,13 +26,13 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
 	InitializeWaypoints(pd3dDevice);
-
+	
 	//Initialize car objects with the device, texture path, starting position, waypoints and there max speed
 	_pRaceCar = new Vehicle(pd3dDevice, L"Resources\\car_red.dds",
-		GetWaypoint(11, 14)->GetVectorPosition(), _waypoints, 150.0f, "Race Car");
+		GetWaypoint(10, 16)->GetVectorPosition(), _waypoints, 150.0f, "Race Car");
 
 	_pDodgeCar = new Vehicle(pd3dDevice, L"Resources\\car_blue.dds",
-		GetWaypoint(10, 16)->GetVectorPosition(), _waypoints, 150.0f, "Dodge Car");
+		GetWaypoint(11, 14)->GetVectorPosition(), _waypoints, 130.0f, "Dodge Car");
 
 	//Initialize the pickup item
 	_pPickup = new PickupItem();

@@ -101,6 +101,10 @@ public:
 		ChangeState(pDecisionMakingState);
 	}
 
+	void SetWaypointTolerance(float val) {
+		pDecisionMakingState->SetWaypointTolerance(val);
+	}
+
 	void Pickup() {
 		pDecisionMakingState->PickupSpawned();
 	}
