@@ -14,6 +14,7 @@ public:
 
 	void OnEnter() override
 	{
+		//Reset state data
 		_pOwner->ResetVehicle();
 		Clear();
 	}
@@ -31,6 +32,7 @@ public:
 	}
 
 	void DrawUI() {
+		//ImGUI control panel for what type of behaviour is active
 		ImGui::Text("Steering Options");
 		if (ImGui::RadioButton("Seek", _isSeeking)) {
 			Seek();
@@ -57,6 +59,7 @@ public:
 	}
 
 private:
+	//Enables our seeking behavior
 	void Seek() {
 		DisableBehaviors();
 		_isSeeking = true;
@@ -64,6 +67,7 @@ private:
 		_pOwner->GetSteering()->SeekOn();
 	}
 
+	//Enables our arrive behavior 
 	void Arrive() {
 		DisableBehaviors();
 		_isArriving = true;
@@ -71,6 +75,7 @@ private:
 		_pOwner->GetSteering()->ArriveOn();
 	}
 
+	//Enables our flee behavior
 	void Flee() {
 		DisableBehaviors();
 		_isFleeing = true;
@@ -78,6 +83,7 @@ private:
 		_pOwner->GetSteering()->FleeOn();
 	}
 
+	//Enables our pursuit behavior
 	void Pursuit() {
 		DisableBehaviors();
 		_isPursuing = true;
@@ -87,6 +93,7 @@ private:
 		_pOwner->GetOtherVehicle()->SetActive();
 	}
 
+	//Enables our Obstacle Avoidance behavior
 	void ObstacleAvoidance() {
 		DisableBehaviors();
 		_isAvoiding = true;
@@ -96,6 +103,7 @@ private:
 		_pOwner->GetOtherVehicle()->SetActive();
 	}
 
+	//Enables our Wandering behavior
 	void Wandering() {
 		DisableBehaviors();
 		_isWandering = true;
@@ -103,6 +111,7 @@ private:
 		_pOwner->GetSteering()->WanderOn();
 	}
 
+	//Disables all the current behaviours and bools
 	void DisableBehaviors() {
 		_pOwner->GetOtherVehicle()->SetActive(false);
 		_pOwner->SetMaxSpeed(150.0f);
@@ -117,6 +126,7 @@ private:
 
 private:
 	//Steering Settings
+	//These bools are used for controlling the ImGUI radio buttons
 	bool _isSeeking = false;
 	bool _isFleeing = false;
 	bool _isArriving = false;

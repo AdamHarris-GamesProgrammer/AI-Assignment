@@ -25,7 +25,12 @@ typedef vector<PickupItem*> vecPickups;
 class AIManager
 {
 public:
-
+	/// <summary>
+	/// Gets a waypoint based on it's X and Y tile position
+	/// </summary>
+	/// <param name="x">X Tile of the waypoint</param>
+	/// <param name="y">Y Tile of the waypoint</param>
+	/// <returns>Returns a pointer to the Waypoint at this position</returns>
 	Waypoint* GetWaypoint(const unsigned int x, const unsigned int y);
 
 	HRESULT initialise(ID3D11Device* pd3dDevice);
@@ -41,12 +46,17 @@ public:
 	void	mouseUp(int x, int y);
 	void	keyPress(WPARAM param);
 
+	~AIManager();
+
 protected:
+	/// <summary>
+	/// Collision Detection and Resolution
+	/// </summary>
 	void	CollisionDetection();
 
 private:
 	vecWaypoints            _waypoints;
-	//vecPickups              m_pickups;
+	//Single Pickup pointer
 	PickupItem* _pPickup;
 	Vehicle*				_pRaceCar = nullptr;
 	Vehicle* _pDodgeCar = nullptr;

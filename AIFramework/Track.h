@@ -48,7 +48,17 @@ public:
 	/// </summary>
 	std::list<char> GetDirections();
 
+	/// <summary>
+	/// Solves a path between two waypoints based off there index
+	/// </summary>
+	/// <param name="current">The current waypoint</param>
+	/// <param name="next">The next waypoint</param>
 	void SolvePathToNextPoint(int current, int next);
+	/// <summary>
+	/// Solves a path between two vector positions, by converting them to a tile position
+	/// </summary>
+	/// <param name="a">Starting vector</param>
+	/// <param name="b">End point vector</param>
 	void SolvePathToNextPoint(Vector2D a, Vector2D b);
 
 	TrackConverter* GetConverter() const {

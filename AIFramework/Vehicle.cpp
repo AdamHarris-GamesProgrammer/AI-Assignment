@@ -6,6 +6,7 @@
 
 #define MAX_SPEED 500
 
+//Initializes the vehicles data
 Vehicle::Vehicle(ID3D11Device* device, std::wstring textureName, Vector2D startPos, std::vector<Waypoint*> waypoints, float maxSpeed, std::string name)
 	: _maxSpeed(maxSpeed), _waypoints(waypoints), _startingPosition(startPos), _vehicleName(name)
 {
@@ -33,13 +34,13 @@ void Vehicle::InitializeStates()
 
 void Vehicle::update(const float deltaTime)
 {
+	//updates the vehicles state machine
 	pFSM->Update(deltaTime);
 
-	Vector2D steeringForce;
-	steeringForce = pSteering->CalculateForce();
+	//gets the steering force for this frame
+	Vector2D steeringForce = pSteering->CalculateForce();
 
-
-
+	//Works out the vehicles speed factor for if a speed boost is active
 	if (_isSpeedBoostActive)
 	{
 		_speedBoostTimer -= deltaTime;
@@ -49,6 +50,7 @@ void Vehicle::update(const float deltaTime)
 		}
 	}
 
+	//Works out the vehicles speed factor if it recently hit the other car
 	if (_isCollisionPenaltyActive) {
 		_collisionPenaltyTimer -= deltaTime;
 		if (_collisionPenaltyTimer <= 0.0f) {
@@ -57,8 +59,10 @@ void Vehicle::update(const float deltaTime)
 		}
 	}
 
+	//Calculates the vehicles acceleration based on the steering force, speed factor and mass of the vehicle
 	Vector2D acceleration = (steeringForce * _currentSpeedFactor * 3.0) / _mass;
 
+	//Adds our acceleration to the velocity
 	_velocity += acceleration * deltaTime;
 
 
@@ -99,6 +103,7 @@ void Vehicle::update(const float deltaTime)
 
 void Vehicle::DrawUI()
 {
+	//Outputs basic information about the vehicle
 	ImGui::Begin("Car Information");
 	ImGui::Text("Car Details");
 	ImGui::Text("Wander Target: %.2f, %.2f", _wanderTarget.x, _wanderTarget.y);
@@ -125,6 +130,7 @@ void Vehicle::DrawUI()
 
 void Vehicle::ActivateCollisionPenalty()
 {
+	
 	_isCollisionPenaltyActive = true;
 	_collisionPenaltyTimer = _collisionPenaltyDuration;
 	_currentSpeedFactor = _collisionSpeedFactor;
@@ -145,6 +151,17 @@ void Vehicle::ResetState()
 	pFSM->Section3AI();
 }
 
+Vehicle::~Vehicle()
+{
+	_waypoints.clear();
+	
+	//We don't want to delete these as they are reffered to by the AIManager, instead we just clear our knowledge of their memory address
+	_pOtherVehicle = nullptr;
+	_pPickup = nullptr;
+	
+	
+}
+
 void Vehicle::SetSteeringTarget(Vector2D pos)
 {
 	if (pFSM->GetSection() == VehicleFSM::steering) {
@@ -152,20 +169,17 @@ void Vehicle::SetSteeringTarget(Vector2D pos)
 	}
 }
 
-void Vehicle::OnNotify(const Entity& entity, Event event)
-{
-
-}
-
 void Vehicle::OnNotify(Event event)
 {
 	switch (event)
 	{
 	case PICKUP_SPAWNED:
+		//if the received event is the pickup spawning let the state machine know
 		pFSM->Pickup();
 
 		break;
 	case PICKUP_COLLECTED:
+		//if the received event is that the pickup has been collected then activate the vehicles speed boost
 		_isSpeedBoostActive = true;
 		_speedBoostTimer = _speedBoostDuration;
 		_currentSpeedFactor = _pickupSpeedFactor;

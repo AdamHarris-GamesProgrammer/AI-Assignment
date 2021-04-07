@@ -13,6 +13,7 @@ public:
     virtual HRESULT initMesh(ID3D11Device* pd3dDevice);
 
     void CollisionResolution();
+    ~PickupItem();
 
     void GenerateNewPosition();
 

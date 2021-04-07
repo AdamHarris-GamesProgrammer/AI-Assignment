@@ -49,6 +49,7 @@ bool TrackConverter::ProcessMap(char* map)
 				mStartPoint = &mNodeMap[index];
 
 				break;
+				//All the rest of our switch statement checks where the waypoints are and adds them to the waypoints vector
 			case 'A':
 				mWaypoints[0] = &mNodeMap[index];
 				break;

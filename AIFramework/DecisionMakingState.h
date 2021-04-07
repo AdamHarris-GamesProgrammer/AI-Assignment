@@ -18,26 +18,36 @@ public:
 
 	void OnEnter() override
 	{
+		//Resets our vehicle
 		_pOwner->ResetVehicle();
 
+
 		_index = 0;
+
+		//Loads our track data
 		pTrack = new Track("Resources/waypoints.txt");
 
+		//Sets the number of waypoints in the map
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
-
+		//Sets the dodge car active if we are the race car
 		if (_pOwner->GetName() == "Race Car") {
 			_pOwner->GetOtherVehicle()->SetActive();
 			_pOwner->GetOtherVehicle()->ResetState();
 		}
 
-
+		//Turns seek and obstacle avoidance on
 		_pOwner->GetSteering()->SeekOn();
 		_pOwner->GetSteering()->ObstacleAvoidanceOn();
 
+		//Gets our next target
 		NextTarget();
 	}
 
+	/// <summary>
+	/// Modifies the obstacle avoidance of the path planning system, can be used to alter behavior
+	/// </summary>
+	/// <param name="val"></param>
 	void SetWaypointTolerance(float val) {
 		_waypointTolerance = val;
 	}

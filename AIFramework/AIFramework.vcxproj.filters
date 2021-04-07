@@ -48,9 +48,6 @@
     <ClCompile Include="FSMManager.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>FSM</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -114,17 +111,11 @@
     <ClInclude Include="FSMManager.h">
       <Filter>FSM</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>FSM</Filter>
-    </ClInclude>
     <ClInclude Include="PathfindingState.h">
       <Filter>FSM\States</Filter>
     </ClInclude>
     <ClInclude Include="SteeringState.h">
       <Filter>FSM\States</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>ObserverPattern</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>ObserverPattern</Filter>
@@ -140,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="VehicleFSM.h">
       <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>FSM\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

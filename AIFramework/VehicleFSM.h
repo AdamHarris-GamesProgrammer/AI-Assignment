@@ -8,7 +8,7 @@
 #include "SteeringState.h"
 #include "DecisionMakingState.h"
 
-
+//A extension of the base state machine, this is to create a state machine specific to this assignment rather than clog up a reusable state machine with project specific data
 class VehicleFSM : public FSMManager
 {
 private:
@@ -23,21 +23,24 @@ public:
 	};
 
 	VehicleFSM(Vehicle* owner) {
-		//initializes pathfinding state
+		//initializes the owner
 		_pOwner = owner;
 
+		//Initializes all our states
 		pPathfindingState = new PathfindingState(_pOwner);
 
 		pSteeringState = new SteeringState(_pOwner);
 
 		pDecisionMakingState = new DecisionMakingState(_pOwner);
 
+		//Changes to the pathfinding state which I chose for our default state
 		ChangeState(pPathfindingState);
 
 		_section = pathfinding;
 	}
 
 	void DrawUI() {
+		//Draws the UI for controlling what state the race car is in
 		ImGui::Begin("AI Control Panel");
 		if (ImGui::RadioButton("Steering", _isSteering)) {
 			_isSteering = true;
@@ -60,24 +63,27 @@ public:
 
 			Section3AI();
 		}
-
+		//Draws UI for the current state
 		pCurrentState->DrawUI();
 
 		ImGui::End();
 	}
 
+	//Sets us on the SectionA steering behaviors AI
 	void Section1AI() {
 		_section = steering;
 		DisableBehaviors();
 		ChangeState(pSteeringState);
 	}
 
+	//Sets us on the SectionB steering behaviors AI
 	void Section2AI() {
 		_section = pathfinding;
 		DisableBehaviors();
 		ChangeState(pPathfindingState);
 	}
 
+	//Sets us on the SectionC steering behaviors AI
 	void Section3AI() {
 		_section = decisionMaking;
 		DisableBehaviors();

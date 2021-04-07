@@ -17,16 +17,7 @@ public:
 	}
 
 protected:
-
-	//Allows events to be sent about a specific entity for example (entity:player, event:FELL_OFF_BRIDGE)
-	void Notify(const Entity& entity, Event event) {
-		for (int i = 0; i < _numOfObservers; i++)
-		{
-			_observers[i]->OnNotify(entity, event);
-		}
-	}
-
-	//Allows non-entity specific events to be sent for example (PICKUP_SPAWNED)
+	//Allows events to be sent for example (PICKUP_SPAWNED)
 	void Notify(Event event) {
 		for (int i = 0; i < _numOfObservers; i++)
 		{

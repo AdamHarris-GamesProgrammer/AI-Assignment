@@ -376,7 +376,6 @@
     </ClCompile>
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PickupItem.cpp" />
-    <ClCompile Include="State.cpp" />
     <ClCompile Include="Steering.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="TrackConverter.cpp" />
@@ -390,7 +389,6 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DecisionMakingState.h" />
     <ClInclude Include="DrawableGameObject.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="FSMManager.h" />
     <ClInclude Include="ImGUIManager.h" />

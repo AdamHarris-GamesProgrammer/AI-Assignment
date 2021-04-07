@@ -74,8 +74,11 @@ void Track::SolvePathToNextPoint(int current, int next)
 	ResetMap();
 	mPathfinder = new Pathfinder(mConverter->GetWaypoints()[current], mConverter->GetWaypoints()[next]);
 
+	//Finds a path we can use
 	mPathfinder->FindPath();
+	//proceses the directions
 	mPathfinder->ProcessDirections();
+	//sets our node path
 	mNodePath = mPathfinder->GetPathOfNodes();
 }
 
@@ -83,6 +86,7 @@ void Track::SolvePathToNextPoint(Vector2D a, Vector2D b)
 {
 	ResetMap();
 
+	//Calculates the tile position of the vectors
 	int aX = a.x;
 	int aY = a.y;
 	int bX = b.x;
@@ -91,6 +95,7 @@ void Track::SolvePathToNextPoint(Vector2D a, Vector2D b)
 	Node* nodeA = &mConverter->GetNodeMap()[aY * mConverter->GetHeight() + aX];
 	Node* nodeB = &mConverter->GetNodeMap()[bY * mConverter->GetHeight() + bX];
 
+	//Finds and sets our new path
 	mPathfinder = new Pathfinder(nodeA, nodeB);
 	mPathfinder->FindPath();
 	mPathfinder->ProcessDirections();

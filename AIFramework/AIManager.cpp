@@ -19,7 +19,6 @@ Waypoint* AIManager::GetWaypoint(const unsigned int x, const unsigned int y)
 
 	assert(x >= 0 && x < WAYPOINT_RESOLUTION);
 	assert(y >= 0 && y < WAYPOINT_RESOLUTION);
-
 	return _waypoints[y * WAYPOINT_RESOLUTION + x];
 }
 
@@ -91,17 +90,20 @@ void AIManager::InitializeWaypoints(ID3D11Device* pd3dDevice)
 
 void AIManager::update(const float fDeltaTime)
 {
+	//Updates our race car and pickup
 	_pRaceCar->update(fDeltaTime);
 	_pPickup->update(fDeltaTime);
 
-	//Checks we are active 
+	//Checks if the dodge car is active 
 	if (_pDodgeCar->GetActive()) {
+		//Update the dodge car
 		_pDodgeCar->update(fDeltaTime);
 	}
 
+	//Checks for collisions this frame
 	CollisionDetection();
 
-
+	//Renders the frame
 	Render(fDeltaTime);
 }
 
@@ -109,6 +111,7 @@ void AIManager::DrawUI()
 {
 	_inMenus = false;
 
+	//Checks if the windows are focused, meaning we are in the UI
 	ImGui::Begin("Car Information");
 	if (ImGui::IsWindowFocused()) {
 		_inMenus = true;
@@ -132,9 +135,11 @@ void AIManager::DrawUI()
 
 void AIManager::Render(const float fDeltaTime)
 {
+	//Draws relevant UI
 	DrawUI();
 	_pRaceCar->DrawUI();
 
+	//Updates and draws (if wanted) the waypoints
 	for (unsigned int i = 0; i < _waypoints.size(); i++) {
 		_waypoints[i]->update(fDeltaTime);
 		if (_displayWaypoints) {
@@ -142,10 +147,11 @@ void AIManager::Render(const float fDeltaTime)
 		}
 	}
 
+	//Draws the pickup and racecar
 	AddItemToDrawList(_pPickup);
-
 	AddItemToDrawList(_pRaceCar);
 
+	//Draws the dodge car if it's active
 	if (_pDodgeCar->GetActive()) {
 		AddItemToDrawList(_pDodgeCar);
 	}
@@ -170,8 +176,24 @@ void AIManager::keyPress(WPARAM param)
 	}
 }
 
+AIManager::~AIManager()
+{
+	//Deletes memory associated with AIManager variables
+	delete _pPickup;
+	_pPickup = nullptr;
+
+	delete _pRaceCar;
+	_pRaceCar = nullptr;
+
+	delete _pDodgeCar;
+	_pDodgeCar = nullptr;
+
+	_waypoints.clear();
+}
+
 void AIManager::CollisionDetection()
 {
+	//Dummy vector for getting the transform of the world objects
 	XMVECTOR dummy;
 
 	// the race car
@@ -184,7 +206,9 @@ void AIManager::CollisionDetection()
 		XMLoadFloat4x4(_pRaceCar->getTransform())
 	);
 
+	//Scale seemed "off" when it's at its full value, dividing by two fixed this
 	raceCarScale.m128_f32[0] /= 2.0f;
+	//Uses a oriented bounding box for collision checks
 	BoundingOrientedBox orientedRaceCarBox;
 	XMStoreFloat3(&orientedRaceCarBox.Center, raceCarPos);
 	XMStoreFloat3(&orientedRaceCarBox.Extents, raceCarScale);
@@ -208,6 +232,7 @@ void AIManager::CollisionDetection()
 	XMStoreFloat4(&orientedDodgeCarBox.Orientation, dodgeCarDummy);
 
 	//Pickup system
+	//generates transform for the pickup
 	XMVECTOR puPos;
 	XMVECTOR puScale;
 	XMMatrixDecompose(
@@ -217,18 +242,22 @@ void AIManager::CollisionDetection()
 		XMLoadFloat4x4(_pPickup->getTransform())
 	);
 
+	//Creates the bounding sphere for a pickup item
 	BoundingSphere boundingSpherePU;
 	XMStoreFloat3(&boundingSpherePU.Center, puPos);
 	boundingSpherePU.Radius = puScale.m128_f32[0];
 
+	//Checks if the race car collides with the pickup
 	if (orientedRaceCarBox.Intersects(boundingSpherePU))
 	{
+		//Checks that the pickup has not already been picked up (shouldn't be, this is just for exceptions)
 		if (!_pPickup->PickedUp()) {
+			//Resolves the collision
 			_pPickup->CollisionResolution();
 		}
 	}
 
-	//Dont check for car collisions if they are not active
+	//Dont check for car collisions if the dodge car is not active
 	if (_pDodgeCar->GetActive()) {
 		if (orientedRaceCarBox.Intersects(orientedDodgeCarBox)) {
 			_pRaceCar->ActivateCollisionPenalty();
