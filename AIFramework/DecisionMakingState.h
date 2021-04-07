@@ -18,7 +18,7 @@ public:
 
 	void OnEnter() override
 	{
-		pOwner->ResetVehicle();
+		_pOwner->ResetVehicle();
 
 		_index = 0;
 		pTrack = new Track("Resources/waypoints.txt");
@@ -26,14 +26,14 @@ public:
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
 
-		if (pOwner->GetName() == "Race Car") {
-			pOwner->GetOtherVehicle()->SetActive();
-			pOwner->GetOtherVehicle()->ResetState();
+		if (_pOwner->GetName() == "Race Car") {
+			_pOwner->GetOtherVehicle()->SetActive();
+			_pOwner->GetOtherVehicle()->ResetState();
 		}
 		
 
-		pOwner->GetSteering()->SeekOn();
-		pOwner->GetSteering()->ObstacleAvoidanceOn();
+		_pOwner->GetSteering()->SeekOn();
+		_pOwner->GetSteering()->ObstacleAvoidanceOn();
 
 		NextTarget();
 	}
@@ -59,7 +59,7 @@ public:
 
 		if (_isFinished) return;
 
-		if (pOwner->GetSteering()->IsWantingToOvertake()) {
+		if (_pOwner->GetSteering()->IsWantingToOvertake()) {
 			_waypointToleranceFactor = 2.0f;
 		}
 		else {
@@ -67,22 +67,22 @@ public:
 		}
 
 		//Using the Squared distance saves on a square root operation which is computationally expensive
-		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) < (_waypointTolerance * _waypointToleranceFactor) * (_waypointTolerance * _waypointToleranceFactor)) {
+		if (Vec2DDistanceSq(_pOwner->GetVectorPosition(), _targetPosition) < (_waypointTolerance * _waypointToleranceFactor) * (_waypointTolerance * _waypointToleranceFactor)) {
 			NextTarget();
 		}
 	}
 	
 	void PickupSpawned() {
-		_pickupIndex = pOwner->GetPickup()->GetIndex();
+		_pickupIndex = _pOwner->GetPickup()->GetIndex();
 	}
 
 private:
 	void DrawUI() {
 		std::ostringstream lap;
-		lap  << pOwner->GetName() << " " << "Lap " << _lapCounter << "/" << _numOfLaps;
+		lap  << _pOwner->GetName() << " " << "Lap " << _lapCounter << "/" << _numOfLaps;
 
 		std::ostringstream index;
-		index << pOwner->GetName() << " " << "Index " << _index + 1 << "/" << _numOfWaypoints;
+		index << _pOwner->GetName() << " " << "Index " << _index + 1 << "/" << _numOfWaypoints;
 
 		ImGui::Begin("RACE MODE");
 		ImGui::Text(lap.str().c_str());
@@ -108,7 +108,7 @@ private:
 			if (_index == _pickupIndex) {
 				float pathEffort = pTrack->GetNodePath().size();
 				
-				PickupItem* item = pOwner->GetPickup();
+				PickupItem* item = _pOwner->GetPickup();
 				Vector2D start = item->GetCurrentWaypoint()->GetTilePosition();
 				Vector2D mid = item->GetTilePosition();
 				Vector2D end = item->GetNextWaypoint()->GetTilePosition();
@@ -142,26 +142,26 @@ private:
 		
 		if (_lapCounter == _numOfLaps && _index == _numOfWaypoints - 1) {
 			if (_currentPath.size() == 1) {
-				pOwner->GetSteering()->SeekOff();
-				pOwner->GetSteering()->ArriveOn();
+				_pOwner->GetSteering()->SeekOff();
+				_pOwner->GetSteering()->ArriveOn();
 				_isFinished = true;
 
-				Vector2D pos = pOwner->GetStartPosition();
+				Vector2D pos = _pOwner->GetStartPosition();
 
 				pos.x += 60.0f;
 
 				_targetPosition = pos;
-				pOwner->SetPositionTo(_targetPosition);
+				_pOwner->SetPositionTo(_targetPosition);
 			}
 
 		}
 		else
 		{
-			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
+			XMFLOAT3* wpPosition = _pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
 
 			_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-			pOwner->SetPositionTo(_targetPosition);
+			_pOwner->SetPositionTo(_targetPosition);
 		}
 	}
 

@@ -10,8 +10,7 @@ public:
 	virtual void Update(float dt);
 	void ChangeState(State* newState);
 
-private:
-
+protected:
 	State* pCurrentState = nullptr;
 
 };

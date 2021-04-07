@@ -26,9 +26,8 @@ public:
 		//initializes pathfinding state
 		_pOwner = owner;
 
-
 		pPathfindingState = new PathfindingState(_pOwner);
-		
+
 		pSteeringState = new SteeringState(_pOwner);
 
 		pDecisionMakingState = new DecisionMakingState(_pOwner);
@@ -61,42 +60,26 @@ public:
 
 			Section3AI();
 		}
-		
-		switch (_section)
-		{
-		case steering:
-			DrawSteeringOptions();
-			break;
-		case pathfinding:
-			DrawPathfindingOptions();
-			break;
-		case decisionMaking:
-			DrawDecisionMakingOptions();
-			break;
-		default:
-			break;
-		}
+
+		pCurrentState->DrawUI();
 
 		ImGui::End();
 	}
 
 	void Section1AI() {
 		_section = steering;
-		pSteeringState->Clear();
 		DisableBehaviors();
 		ChangeState(pSteeringState);
 	}
 
 	void Section2AI() {
-		_section = pathfinding; 
-		pSteeringState->Clear();
+		_section = pathfinding;
 		DisableBehaviors();
 		ChangeState(pPathfindingState);
 	}
 
 	void Section3AI() {
 		_section = decisionMaking;
-		pSteeringState->Clear();
 		DisableBehaviors();
 		ChangeState(pDecisionMakingState);
 	}
@@ -114,77 +97,16 @@ public:
 	}
 
 private:
-		void DrawPathfindingOptions()
-		{
-
-		}
-
-		void DrawDecisionMakingOptions()
-		{
-
-		}
-
-		void DrawSteeringOptions()
-		{
-			ImGui::Text("Steering Options");
-			if (ImGui::RadioButton("Seek", _isSeeking)) {
-				DisableBehaviors();
-				_isSeeking = true;
-				pSteeringState->Seek();
-			}
-			else if (ImGui::RadioButton("Flee", _isFleeing)) {
-				DisableBehaviors();
-				_isFleeing = true;
-				pSteeringState->Flee();
-			}
-			else if (ImGui::RadioButton("Arrive", _isArriving)) {
-				DisableBehaviors();
-				_isArriving = true;
-				pSteeringState->Arrive();
-			}
-			else if (ImGui::RadioButton("Pursuit", _isPursuing)) {
-				DisableBehaviors();
-				_isPursuing = true;
-				pSteeringState->Pursuit();
-				_pOwner->GetOtherVehicle()->SetActive();
-			}
-			else if (ImGui::RadioButton("Obstacle Avoidance", _isAvoiding)) {
-				DisableBehaviors();
-				_isAvoiding = true;
-				pSteeringState->ObstacleAvoidance();
-				_pOwner->GetOtherVehicle()->SetActive();
-			}
-			else if (ImGui::RadioButton("Wandering", _isWandering)) {
-				DisableBehaviors();
-				_isWandering = true;
-				pSteeringState->Wandering();
-			}
-		}
-
-		void DisableBehaviors()
-		{
-			_isSeeking = false;
-			_isFleeing = false;
-			_isArriving = false;
-			_isPursuing = false;
-			_isAvoiding = false;
-			_isWandering = false;
-			_pOwner->GetOtherVehicle()->SetActive(false);
-			_pOwner->GetOtherVehicle()->Reset();
-		}
+	void DisableBehaviors()
+	{
+		_pOwner->GetOtherVehicle()->SetActive(false);
+		_pOwner->GetOtherVehicle()->Reset();
+	}
 
 private:
 	bool _isSteering = false;
 	bool _isPathfinding = true;
 	bool _isDecisionMaking = false;
-
-	//Steering Settings
-	bool _isSeeking = false;
-	bool _isFleeing = false;
-	bool _isArriving = false;
-	bool _isPursuing = false;
-	bool _isAvoiding = false;
-	bool _isWandering = false;
 
 	Vehicle* _pOwner;
 

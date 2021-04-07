@@ -15,15 +15,15 @@ public:
 
 	void OnEnter() override
 	{
-		pOwner->ResetVehicle();
+		_pOwner->ResetVehicle();
 		_index = 0;
 		pTrack = new Track("Resources/waypoints.txt");
 
 		_numOfWaypoints = pTrack->GetConverter()->GetWaypoints().size();
 
-		pOwner->GetSteering()->SeekOn();
+		_pOwner->GetSteering()->SeekOn();
 		
-		pOwner->GetOtherVehicle()->SetActive(false);
+		_pOwner->GetOtherVehicle()->SetActive(false);
 
 		NextTarget();
 	}
@@ -41,16 +41,16 @@ public:
 			pTrack->SolvePathToNextPoint(pCurrentNode->pos, Vector2D(11,15));
 			_currentPath = pTrack->GetNodePath();
 
-			XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
+			XMFLOAT3* wpPosition = _pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
 
 			_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-			pOwner->SetPositionTo(_targetPosition);
+			_pOwner->SetPositionTo(_targetPosition);
 		}
 
 
 		//Using the Squared distance saves on a square root operation which is computationally expensive
-		if (Vec2DDistanceSq(pOwner->GetVectorPosition(), _targetPosition) <_waypointTolerance * _waypointTolerance) {
+		if (Vec2DDistanceSq(_pOwner->GetVectorPosition(), _targetPosition) <_waypointTolerance * _waypointTolerance) {
 			NextTarget();
 		}
 	}
@@ -78,11 +78,11 @@ private:
 		_currentPath.pop_back();
 
 
-		XMFLOAT3* wpPosition = pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
+		XMFLOAT3* wpPosition = _pOwner->GetWaypoint(pCurrentNode->pos)->getPosition();
 
 		_targetPosition = Vector2D(wpPosition->x, wpPosition->y);
 
-		pOwner->SetPositionTo(_targetPosition);
+		_pOwner->SetPositionTo(_targetPosition);
 	}
 
 private:

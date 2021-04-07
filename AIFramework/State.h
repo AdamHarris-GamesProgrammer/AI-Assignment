@@ -6,15 +6,16 @@ class Vehicle;
 class State {
 public:
 	State(Vehicle* owner) {
-		pOwner = owner;
+		_pOwner = owner;
 	}
 
 	virtual void OnEnter() = 0;
 	virtual void OnExit() = 0;
 	virtual void Update(float dt) = 0;
+	virtual void DrawUI() {}
 
 protected:
-	Vehicle* pOwner = nullptr;
+	Vehicle* _pOwner = nullptr;
 
 };
 
