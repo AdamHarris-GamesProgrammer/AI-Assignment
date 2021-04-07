@@ -52,6 +52,7 @@ private:
 	Vehicle* _pDodgeCar = nullptr;
 
 	bool _inMenus = false;
+	bool _displayWaypoints = false;
 
 
 };

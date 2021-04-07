@@ -55,6 +55,11 @@ public:
 		}
 	}
 
+	void DrawUI() {
+		ImGui::Text("Waypoint tolerance \nadjusts how closely the \nAI will stick \nto the path");
+		ImGui::SliderFloat("Waypoint Tolerance: ", &_waypointTolerance, 1.0f, 150.0f, "%.2f", 1.0f);
+	}
+
 private:
 
 	void NextTarget()

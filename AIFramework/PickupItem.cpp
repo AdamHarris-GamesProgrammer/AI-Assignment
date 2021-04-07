@@ -24,7 +24,7 @@ void PickupItem::CollisionResolution()
 	_timer = _timeBetweenPickups;
 	_isPickedUp = true;
 
-	//Move pickup off screen instead of deleting it
+	//Move pickup off screen instead of deleting it, this is more efficient
 	setPosition(XMFLOAT3(1000.0f, 1000.0f, 0.0f));
 
 	//Notifies observers that a pickup has been collected

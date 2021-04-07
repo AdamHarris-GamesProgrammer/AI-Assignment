@@ -65,6 +65,7 @@ void Vehicle::update(const float deltaTime)
 	//Stops the velocity going beyond our maximum speed
 	_velocity.Truncate(_maxSpeed);
 
+	//Multiplies our velocity by the speed factor (1.1 for speed boost, 0.5 for collision penalty)
 	_velocity *= _currentSpeedFactor;
 
 	//Adds the velocity to our current position
@@ -100,10 +101,6 @@ void Vehicle::DrawUI()
 {
 	ImGui::Begin("Car Information");
 	ImGui::Text("Car Details");
-	ImGui::Text("Current Position: %.2f, %.2f", _currentPosition.x, _currentPosition.y);
-	ImGui::Text("Radian Rotation: %.2f", m_radianRotation);
-	ImGui::Text("Velocity: %.2f, %.2f", _velocity.x, _velocity.y);
-	ImGui::Text("Forward Vector: %.2f, %.2f", _forward.x, _forward.y);
 	ImGui::Text("Wander Target: %.2f, %.2f", _wanderTarget.x, _wanderTarget.y);
 
 	if (_isSpeedBoostActive) {
@@ -120,7 +117,6 @@ void Vehicle::DrawUI()
 	else {
 		ImGui::Text("No Collision Penalty");
 	}
-
 	ImGui::End();
 
 
@@ -166,7 +162,6 @@ void Vehicle::OnNotify(Event event)
 	switch (event)
 	{
 	case PICKUP_SPAWNED:
-		//TODO Add in pickup to vehicle AI system
 		pFSM->Pickup();
 
 		break;

@@ -49,10 +49,11 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	_pPickup->SetWaypoints(_waypoints);
 
+	//Adds our race car as an observer to the pickup, uses the observer pattern
 	_pPickup->SetPlaceablePositions(placeablePoints);
 	_pPickup->AddObserver(_pRaceCar);
 
-
+	//Initialize all the required data for the race car and dodge car
 	_pRaceCar->SetOtherVehicle(_pDodgeCar);
 	_pRaceCar->InitializeStates();
 
@@ -61,9 +62,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 
 	_pDodgeCar->SetPickup(_pPickup);
 	_pRaceCar->SetPickup(_pPickup);
-
-	
-	
 
 	//Changes the dodge car to the decision making state
 	_pDodgeCar->GetStateMachine()->Section3AI();
@@ -123,6 +121,13 @@ void AIManager::DrawUI()
 		_inMenus = true;
 	}
 	ImGui::End();
+
+	ImGui::Begin("Waypoints");
+	ImGui::Checkbox("Display Waypoints", &_displayWaypoints);
+	if (ImGui::IsWindowFocused()) {
+		_inMenus = true;
+	}
+	ImGui::End();
 }
 
 void AIManager::Render(const float fDeltaTime)
@@ -132,7 +137,9 @@ void AIManager::Render(const float fDeltaTime)
 
 	for (unsigned int i = 0; i < _waypoints.size(); i++) {
 		_waypoints[i]->update(fDeltaTime);
-		//AddItemToDrawList(_waypoints[i]); // if you comment this in, it will display the way points
+		if (_displayWaypoints) {
+			AddItemToDrawList(_waypoints[i]); // if you comment this in, it will display the way points
+		}
 	}
 
 	AddItemToDrawList(_pPickup);
